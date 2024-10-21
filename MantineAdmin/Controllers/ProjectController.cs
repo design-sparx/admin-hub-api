@@ -1,4 +1,5 @@
 ﻿using MantineAdmin.Data;
+using MantineAdmin.Dtos.Project;
 using MantineAdmin.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,5 +35,15 @@ public class ProjectController : ControllerBase
         }
 
         return Ok(project.ToProjectDto());
+    }
+
+    [HttpPost]
+    public IActionResult CreateProject([FromBody] CreateProjectRequestDto projectDto)
+    {
+        var projectModel = projectDto.ToProjectFromCreateDto();
+        _context.Projects.Add(projectModel);
+        _context.SaveChanges();
+
+        return CreatedAtAction(nameof(GetProjectById), new { id = projectModel.Id }, projectModel.ToProjectDto());
     }
 }

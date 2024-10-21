@@ -9,8 +9,18 @@ public static class ProjectMappers
         return new ProjectDto
         {
             Id = project.Id,
+            Name = project.Name,
             Description = project.Description,
             CreatedAt = project.CreatedAt
+        };
+    }
+
+    public static Project ToProjectFromCreateDto(this CreateProjectRequestDto projectDto)
+    {
+        return new Project
+        {
+            Name = projectDto.Name,
+            Description = projectDto.Description,
         };
     }
 }
