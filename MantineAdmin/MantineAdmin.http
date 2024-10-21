@@ -1,0 +1,6 @@
+@MantineAdmin_HostAddress = http://localhost:5108
+
+GET {{MantineAdmin_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
