@@ -4,14 +4,15 @@ namespace MantineAdmin.Mappers;
 
 public static class ProjectMapper
 {
-    public static ProjectDto ToProjectDto(this Project project)
+    public static ProjectDto ToProjectDto(this Project projectModel)
     {
         return new ProjectDto
         {
-            Id = project.Id,
-            Name = project.Name,
-            Description = project.Description,
-            CreatedAt = project.CreatedAt
+            Id = projectModel.Id,
+            Name = projectModel.Name,
+            Description = projectModel.Description,
+            CreatedAt = projectModel.CreatedAt,
+            Comments = projectModel.Comments.Select(c => c.ToProjectCommentDto()).ToList(),
         };
     }
 

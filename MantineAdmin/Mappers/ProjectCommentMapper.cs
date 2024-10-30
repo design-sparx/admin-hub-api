@@ -15,4 +15,14 @@ public static class ProjectCommentMapper
             ProjectId = projectCommentModel.ProjectId,
         };
     }
+
+    public static ProjectComment ToCommentFromCreate(this CreateProjectCommentDto commentDto, int projectId)
+    {
+        return new ProjectComment
+        {
+            Title = commentDto.Title,
+            Content = commentDto.Content,
+            ProjectId = projectId
+        };
+    }
 }

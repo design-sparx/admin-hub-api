@@ -1,4 +1,6 @@
-﻿namespace MantineAdmin.Dtos.Project;
+﻿using MantineAdmin.Dtos.ProjectComment;
+
+namespace MantineAdmin.Dtos.Project;
 
 public class ProjectDto
 {
@@ -6,4 +8,5 @@ public class ProjectDto
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public List<ProjectCommentDto> Comments { get; set; }
 }

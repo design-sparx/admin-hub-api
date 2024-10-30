@@ -16,12 +16,12 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<List<Project>> GetAllAsync()
     {
-        return await _context.Projects.ToListAsync();
+        return await _context.Projects.Include(c => c.Comments).ToListAsync();
     }
 
     public async Task<Project?> GetByIdAsync(int id)
     {
-        return await _context.Projects.FindAsync(id);
+        return await _context.Projects.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Project> CreateAsync(Project projectModel)
@@ -63,5 +63,10 @@ public class ProjectRepository : IProjectRepository
         await _context.SaveChangesAsync();
 
         return projectModel;
+    }
+
+    public Task<bool> ProjectExists(int id)
+    {
+        return _context.Projects.AnyAsync(x => x.Id == id);
     }
 }

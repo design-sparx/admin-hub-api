@@ -9,4 +9,5 @@ public interface IProjectRepository
     Task<Project> CreateAsync(Project projectModel);
     Task<Project?> UpdateAsync(int id, UpdateProjectRequestDto projectDto);
     Task<Project?> DeleteAsync(int id);
+    Task<bool> ProjectExists(int id);
 }
