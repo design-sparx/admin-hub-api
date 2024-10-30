@@ -30,4 +30,20 @@ public class ProjectCommentRepository : IProjectCommentRepository
 
         return commentModel;
     }
+
+    public async Task<ProjectComment?> DeleteAsync(int id)
+    {
+        var commentModel = await _context.ProjectComments.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (commentModel == null)
+        {
+            return null;
+        }
+
+        _context.ProjectComments.Remove(commentModel);
+
+        await _context.SaveChangesAsync();
+
+        return commentModel;
+    }
 }

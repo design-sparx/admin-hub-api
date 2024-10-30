@@ -58,4 +58,18 @@ public class ProjectCommentController : ControllerBase
         return CreatedAtAction(nameof(GetProjectCommentById), new { id = commentModel.Id },
             commentModel.ToProjectCommentDto());
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteProjectComment([FromRoute] int id)
+    {
+        var commentModel = await _projectCommentRepository.DeleteAsync(id);
+
+        if (commentModel == null)
+        {
+            return NotFound("Project comment not found!");
+        }
+
+        return Ok(commentModel);
+    }
 }
