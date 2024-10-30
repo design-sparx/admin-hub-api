@@ -2,7 +2,7 @@
 
 namespace MantineAdmin.Mappers;
 
-public static class ProjectMappers
+public static class ProjectMapper
 {
     public static ProjectDto ToProjectDto(this Project project)
     {
