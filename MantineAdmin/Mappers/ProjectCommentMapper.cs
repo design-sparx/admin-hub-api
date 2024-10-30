@@ -25,4 +25,14 @@ public static class ProjectCommentMapper
             ProjectId = projectId
         };
     }
+    
+    public static ProjectComment ToCommentFromUpdate(this UpdateProjectCommentDto commentDto, int projectId)
+    {
+        return new ProjectComment
+        {
+            Title = commentDto.Title,
+            Content = commentDto.Content,
+            ProjectId = projectId
+        };
+    }
 }

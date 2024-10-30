@@ -48,9 +48,9 @@ public class ProjectCommentRepository : IProjectCommentRepository
         return commentModel;
     }
 
-    public async Task<ProjectComment?> UpdateAsync(int id, UpdateProjectCommentDto commentDto)
+    public async Task<ProjectComment?> UpdateAsync(int id, ProjectComment commentDto)
     {
-        var existingComment = await _context.ProjectComments.FirstOrDefaultAsync(x => x.Id == id);
+        var existingComment = await _context.ProjectComments.FindAsync(id);
 
         if (existingComment == null)
         {

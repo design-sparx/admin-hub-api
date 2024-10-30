@@ -67,6 +67,23 @@ public class ProjectCommentController : ControllerBase
         return CreatedAtAction(nameof(GetProjectCommentById), new { id = commentModel.Id },
             commentModel.ToProjectCommentDto());
     }
+    
+    [HttpPut]
+    [Route("{id:int}")]
+    public async Task<IActionResult> UpdateProjectComment([FromRoute] int id, [FromBody] UpdateProjectCommentDto updateDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        var commentModel = await _projectCommentRepository.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
+
+        if (commentModel == null)
+        {
+            return NotFound("Project comment not found!");
+        }
+
+        return Ok(commentModel.ToProjectCommentDto());
+    }
 
     [HttpDelete]
     [Route("{id:int}")]
@@ -83,22 +100,5 @@ public class ProjectCommentController : ControllerBase
         }
 
         return Ok(commentModel);
-    }
-
-    [HttpPut]
-    [Route("{id:int}")]
-    public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectCommentDto commentDto)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        
-        var commentModel = await _projectCommentRepository.UpdateAsync(id, commentDto);
-
-        if (commentModel == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(commentModel.ToProjectCommentDto());
     }
 }

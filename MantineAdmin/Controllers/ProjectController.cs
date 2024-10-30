@@ -1,5 +1,6 @@
 ﻿using MantineAdmin.Data;
 using MantineAdmin.Dtos.Project;
+using MantineAdmin.Helpers;
 using MantineAdmin.Interfaces;
 using MantineAdmin.Mappers;
 using MantineAdmin.Repository;
@@ -22,12 +23,12 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProjects()
+    public async Task<IActionResult> GetAllProjects([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        var projects = await _projectRepository.GetAllAsync();
+        var projects = await _projectRepository.GetAllAsync(query);
 
         var projectsDto = projects.Select(s => s.ToProjectDto());
 
