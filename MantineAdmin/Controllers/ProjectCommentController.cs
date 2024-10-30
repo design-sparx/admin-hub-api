@@ -23,6 +23,9 @@ public class ProjectCommentController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetProjectComments()
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var comments = await _projectCommentRepository.GetAllAsync();
 
         var commentDto = comments.Select(s => s.ToProjectCommentDto());
@@ -33,6 +36,9 @@ public class ProjectCommentController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProjectCommentById(int id)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var comment = await _projectCommentRepository.GetByIdAsync(id);
 
         if (comment == null)
@@ -46,6 +52,9 @@ public class ProjectCommentController : ControllerBase
     [HttpPost("{projectId:int}")]
     public async Task<IActionResult> CreateProjectComment([FromRoute] int projectId, CreateProjectCommentDto commentDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         if (!await _projectRepository.ProjectExists(projectId))
         {
             return BadRequest("Project does not exist!");
@@ -63,6 +72,9 @@ public class ProjectCommentController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> DeleteProjectComment([FromRoute] int id)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var commentModel = await _projectCommentRepository.DeleteAsync(id);
 
         if (commentModel == null)
@@ -72,11 +84,14 @@ public class ProjectCommentController : ControllerBase
 
         return Ok(commentModel);
     }
-    
+
     [HttpPut]
     [Route("{id:int}")]
     public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectCommentDto commentDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var commentModel = await _projectCommentRepository.UpdateAsync(id, commentDto);
 
         if (commentModel == null)

@@ -24,6 +24,9 @@ public class ProjectController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllProjects()
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var projects = await _projectRepository.GetAllAsync();
 
         var projectsDto = projects.Select(s => s.ToProjectDto());
@@ -34,6 +37,9 @@ public class ProjectController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProjectById([FromRoute] int id)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var project = await _projectRepository.GetByIdAsync(id);
 
         if (project == null)
@@ -47,6 +53,9 @@ public class ProjectController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequestDto projectDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var projectModel = projectDto.ToProjectFromCreateDto();
 
         await _projectRepository.CreateAsync(projectModel);
@@ -58,6 +67,9 @@ public class ProjectController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var projectModel = await _projectRepository.UpdateAsync(id, projectDto);
 
         if (projectModel == null)
@@ -72,6 +84,9 @@ public class ProjectController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> DeleteProject([FromRoute] int id)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var projectModel = await _projectRepository.DeleteAsync(id);
 
         if (projectModel == null)
