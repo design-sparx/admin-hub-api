@@ -46,4 +46,42 @@ public class ProjectController : ControllerBase
 
         return CreatedAtAction(nameof(GetProjectById), new { id = projectModel.Id }, projectModel.ToProjectDto());
     }
+
+    [HttpPut]
+    [Route("{id}")]
+    public IActionResult UpdateProject([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
+    {
+        var projectModel = _context.Projects.FirstOrDefault(p => p.Id == id);
+
+        if (projectModel == null)
+        {
+            return NotFound();
+        }
+
+        projectModel.Name = projectDto.Name;
+        projectModel.Description = projectDto.Description;
+        projectModel.CreatedAt = projectDto.CreatedAt;
+
+        _context.SaveChanges();
+
+        return Ok(projectModel.ToProjectDto());
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public IActionResult DeleteProject([FromRoute] int id)
+    {
+        var projectModel = _context.Projects.FirstOrDefault(p => p.Id == id);
+
+        if (projectModel == null)
+        {
+            return NotFound();
+        }
+
+        _context.Projects.Remove(projectModel);
+
+        _context.SaveChanges();
+
+        return NoContent();
+    }
 }
