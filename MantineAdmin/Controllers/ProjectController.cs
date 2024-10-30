@@ -2,6 +2,7 @@
 using MantineAdmin.Dtos.Project;
 using MantineAdmin.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MantineAdmin.Controllers;
 
@@ -17,17 +18,19 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAllProjects()
+    public async Task<IActionResult> GetAllProjects()
     {
-        var projects = _context.Projects.ToList().Select(s => s.ToProjectDto());
+        var projects = await _context.Projects.ToListAsync();
+
+        var projectsDto = projects.Select(s => s.ToProjectDto());
 
         return Ok(projects);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetProjectById([FromRoute] int id)
+    public async Task<IActionResult> GetProjectById([FromRoute] int id)
     {
-        var project = _context.Projects.FirstOrDefault(p => p.Id == id);
+        var project = await _context.Projects.FindAsync(id);
 
         if (project == null)
         {
@@ -38,20 +41,22 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateProject([FromBody] CreateProjectRequestDto projectDto)
+    public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequestDto projectDto)
     {
         var projectModel = projectDto.ToProjectFromCreateDto();
-        _context.Projects.Add(projectModel);
-        _context.SaveChanges();
+        
+        await _context.Projects.AddAsync(projectModel);
+        
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetProjectById), new { id = projectModel.Id }, projectModel.ToProjectDto());
     }
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult UpdateProject([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
+    public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
     {
-        var projectModel = _context.Projects.FirstOrDefault(p => p.Id == id);
+        var projectModel = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
 
         if (projectModel == null)
         {
@@ -62,16 +67,16 @@ public class ProjectController : ControllerBase
         projectModel.Description = projectDto.Description;
         projectModel.CreatedAt = projectDto.CreatedAt;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return Ok(projectModel.ToProjectDto());
     }
 
     [HttpDelete]
     [Route("{id}")]
-    public IActionResult DeleteProject([FromRoute] int id)
+    public async Task<IActionResult> DeleteProject([FromRoute] int id)
     {
-        var projectModel = _context.Projects.FirstOrDefault(p => p.Id == id);
+        var projectModel = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
 
         if (projectModel == null)
         {
@@ -79,8 +84,8 @@ public class ProjectController : ControllerBase
         }
 
         _context.Projects.Remove(projectModel);
-
-        _context.SaveChanges();
+        
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
