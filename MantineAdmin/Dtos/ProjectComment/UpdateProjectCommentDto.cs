@@ -2,7 +2,7 @@
 
 namespace MantineAdmin.Dtos.ProjectComment;
 
-public class CreateProjectCommentDto
+public class UpdateProjectCommentDto
 {
     [Required]
     [MinLength(5, ErrorMessage = "Title must be at least 5 characters long.")]

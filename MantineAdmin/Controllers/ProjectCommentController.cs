@@ -30,7 +30,7 @@ public class ProjectCommentController : ControllerBase
         return Ok(commentDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProjectCommentById(int id)
     {
         var comment = await _projectCommentRepository.GetByIdAsync(id);
@@ -43,7 +43,7 @@ public class ProjectCommentController : ControllerBase
         return Ok(comment.ToProjectCommentDto());
     }
 
-    [HttpPost("{projectId}")]
+    [HttpPost("{projectId:int}")]
     public async Task<IActionResult> CreateProjectComment([FromRoute] int projectId, CreateProjectCommentDto commentDto)
     {
         if (!await _projectRepository.ProjectExists(projectId))
@@ -60,7 +60,7 @@ public class ProjectCommentController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public async Task<IActionResult> DeleteProjectComment([FromRoute] int id)
     {
         var commentModel = await _projectCommentRepository.DeleteAsync(id);
@@ -71,5 +71,19 @@ public class ProjectCommentController : ControllerBase
         }
 
         return Ok(commentModel);
+    }
+    
+    [HttpPut]
+    [Route("{id:int}")]
+    public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectCommentDto commentDto)
+    {
+        var commentModel = await _projectCommentRepository.UpdateAsync(id, commentDto);
+
+        if (commentModel == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(commentModel.ToProjectCommentDto());
     }
 }

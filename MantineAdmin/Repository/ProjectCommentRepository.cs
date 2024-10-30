@@ -1,4 +1,5 @@
 ﻿using MantineAdmin.Data;
+using MantineAdmin.Dtos.ProjectComment;
 using MantineAdmin.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,5 +46,22 @@ public class ProjectCommentRepository : IProjectCommentRepository
         await _context.SaveChangesAsync();
 
         return commentModel;
+    }
+
+    public async Task<ProjectComment?> UpdateAsync(int id, UpdateProjectCommentDto commentDto)
+    {
+        var existingComment = await _context.ProjectComments.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (existingComment == null)
+        {
+            return null;
+        }
+
+        existingComment.Title = commentDto.Title;
+        existingComment.Content = commentDto.Content;
+
+        await _context.SaveChangesAsync();
+
+        return existingComment;
     }
 }
