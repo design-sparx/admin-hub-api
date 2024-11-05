@@ -24,6 +24,14 @@ public class ProjectRepository : IProjectRepository
             projects = projects.Where(s => s.Name.Contains(query.Name));
         }
 
+        if (!string.IsNullOrWhiteSpace(query.SortBy))
+        {
+            if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+            {
+                projects = query.IsDescending ? projects.OrderByDescending(p => p.Name) : projects.OrderBy(p => p.Name);
+            }
+        }
+
         return await projects.ToListAsync();
     }
 
