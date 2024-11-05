@@ -1,5 +1,6 @@
 ﻿using MantineAdmin.Data;
 using MantineAdmin.Dtos.ProjectComment;
+using MantineAdmin.Helpers;
 using MantineAdmin.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +15,13 @@ public class ProjectCommentRepository : IProjectCommentRepository
         _context = context;
     }
 
-    public async Task<List<ProjectComment>> GetAllAsync()
+    public async Task<List<ProjectComment>> GetAllAsync(QueryObject query)
     {
-        return await _context.ProjectComments.ToListAsync();
+        var comments = _context.ProjectComments.AsQueryable();
+
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+        return await comments.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 
     public async Task<ProjectComment?> GetByIdAsync(int id)

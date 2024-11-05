@@ -1,5 +1,6 @@
 ﻿using MantineAdmin.Data;
 using MantineAdmin.Dtos.ProjectComment;
+using MantineAdmin.Helpers;
 using MantineAdmin.Interfaces;
 using MantineAdmin.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,12 @@ public class ProjectCommentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProjectComments()
+    public async Task<IActionResult> GetProjectComments([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var comments = await _projectCommentRepository.GetAllAsync();
+        var comments = await _projectCommentRepository.GetAllAsync(query);
 
         var commentDto = comments.Select(s => s.ToProjectCommentDto());
 

@@ -24,15 +24,18 @@ public class ProjectRepository : IProjectRepository
             projects = projects.Where(s => s.Name.Contains(query.Name));
         }
 
-        if (!string.IsNullOrWhiteSpace(query.SortBy))
-        {
-            if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
-            {
-                projects = query.IsDescending ? projects.OrderByDescending(p => p.Name) : projects.OrderBy(p => p.Name);
-            }
-        }
+        // if (!string.IsNullOrWhiteSpace(query.SortBy))
+        // {
+        //     if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+        //     {
+        //         projects = query.IsDescending ? projects.OrderByDescending(p => p.Name) : projects.OrderBy(p => p.Name);
+        //     }
+        // }
 
-        return await projects.ToListAsync();
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+
+        return await projects.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 
     public async Task<Project?> GetByIdAsync(int id)
