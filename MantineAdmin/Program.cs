@@ -2,6 +2,7 @@ using MantineAdmin;
 using MantineAdmin.Data;
 using MantineAdmin.Interfaces;
 using MantineAdmin.Repository;
+using MantineAdmin.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectCommentRepository, ProjectCommentRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
