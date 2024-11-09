@@ -33,4 +33,20 @@ public class AppUserProjectRepository : IAppUserProjectRepository
 
         return appUserProject;
     }
+
+    public async Task<AppUserProject> DeleteAsync(AppUser appUser, int projectId)
+    {
+        var userProjectModel =
+            await _context.AppUserProjects.FirstOrDefaultAsync(x =>
+                x.AppUserId == appUser.Id && x.ProjectId == projectId);
+
+        if (userProjectModel == null)
+            return null;
+
+        _context.AppUserProjects.Remove(userProjectModel);
+
+        await _context.SaveChangesAsync();
+
+        return userProjectModel;
+    }
 }
