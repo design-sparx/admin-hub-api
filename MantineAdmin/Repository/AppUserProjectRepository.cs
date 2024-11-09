@@ -25,4 +25,12 @@ public class AppUserProjectRepository : IAppUserProjectRepository
                 Description = project.Project.Description,
             }).ToListAsync();
     }
+
+    public async Task<AppUserProject> CreateAsync(AppUserProject appUserProject)
+    {
+        await _context.AppUserProjects.AddAsync(appUserProject);
+        await _context.SaveChangesAsync();
+
+        return appUserProject;
+    }
 }

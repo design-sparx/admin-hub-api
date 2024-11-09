@@ -31,4 +31,36 @@ public class AppUserProjectController : ControllerBase
         
         return Ok(userProject);
     }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddPortfolio(int projectId)
+    {
+        var username = User.GetUserName();
+        var appUser = await _userManager.FindByNameAsync(username);
+        var project = await _projectRepository.GetByIdAsync(projectId);
+
+        if (project == null)
+            return BadRequest("Project not found");
+        
+        var userProject = await _appUserProjectRepository.GetUserProjects(appUser);
+        
+        if (userProject.Any(x => x.Id == projectId))
+            return BadRequest("Project already exists, cannot add project!");
+
+        var appUserProjectModel = new AppUserProject
+        {
+            ProjectId = project.Id,
+            AppUserId = appUser.Id,
+        };
+
+        await _appUserProjectRepository.CreateAsync(appUserProjectModel);
+
+        if (appUserProjectModel == null)
+        {
+            return StatusCode(500, "Could not create");
+        }
+
+        return Created();
+    }
 }
