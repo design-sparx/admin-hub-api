@@ -1,8 +1,11 @@
 ﻿using MantineAdmin.Data;
 using MantineAdmin.Dtos.ProjectComment;
+using MantineAdmin.Extensions;
 using MantineAdmin.Helpers;
 using MantineAdmin.Interfaces;
 using MantineAdmin.Mappers;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MantineAdmin.Controllers;
@@ -13,16 +16,18 @@ public class ProjectCommentController : ControllerBase
 {
     private readonly IProjectCommentRepository _projectCommentRepository;
     private readonly IProjectRepository _projectRepository;
+    private readonly UserManager<AppUser> _userManager;
 
     public ProjectCommentController(IProjectCommentRepository projectCommentRepository,
-        IProjectRepository projectRepository)
+        IProjectRepository projectRepository, UserManager<AppUser> userManager)
     {
         _projectCommentRepository = projectCommentRepository;
         _projectRepository = projectRepository;
+        _userManager = userManager;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProjectComments([FromQuery] QueryObject query)
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -35,7 +40,7 @@ public class ProjectCommentController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetProjectCommentById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -51,7 +56,7 @@ public class ProjectCommentController : ControllerBase
     }
 
     [HttpPost("{projectId:int}")]
-    public async Task<IActionResult> CreateProjectComment([FromRoute] int projectId, CreateProjectCommentDto commentDto)
+    public async Task<IActionResult> Create([FromRoute] int projectId, CreateProjectCommentDto commentDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -61,17 +66,24 @@ public class ProjectCommentController : ControllerBase
             return BadRequest("Project does not exist!");
         }
 
-        var commentModel = commentDto.ToCommentFromCreate(projectId);
+        var username = User.GetUserName();
+        var appUser = await _userManager.FindByNameAsync(username);
 
+        if (appUser == null)
+            return BadRequest("User not found!");
+
+        var commentModel = commentDto.ToCommentFromCreate(projectId);
+        commentModel.AppUserId = appUser.Id;
+        
         await _projectCommentRepository.CreateAsync(commentModel);
 
-        return CreatedAtAction(nameof(GetProjectCommentById), new { id = commentModel.Id },
+        return CreatedAtAction(nameof(GetById), new { id = commentModel.Id },
             commentModel.ToProjectCommentDto());
     }
     
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> UpdateProjectComment([FromRoute] int id, [FromBody] UpdateProjectCommentDto updateDto)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProjectCommentDto updateDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -88,7 +100,7 @@ public class ProjectCommentController : ControllerBase
 
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<IActionResult> DeleteProjectComment([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

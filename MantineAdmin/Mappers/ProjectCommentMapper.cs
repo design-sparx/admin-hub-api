@@ -12,6 +12,7 @@ public static class ProjectCommentMapper
             Title = projectCommentModel.Title,
             CreatedAt = projectCommentModel.CreatedAt,
             Content = projectCommentModel.Content,
+            CreatedBy = projectCommentModel.AppUser.UserName,
             ProjectId = projectCommentModel.ProjectId,
         };
     }
@@ -25,7 +26,7 @@ public static class ProjectCommentMapper
             ProjectId = projectId
         };
     }
-    
+
     public static ProjectComment ToCommentFromUpdate(this UpdateProjectCommentDto commentDto, int projectId)
     {
         return new ProjectComment

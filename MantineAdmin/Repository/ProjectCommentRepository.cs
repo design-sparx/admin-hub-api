@@ -17,7 +17,7 @@ public class ProjectCommentRepository : IProjectCommentRepository
 
     public async Task<List<ProjectComment>> GetAllAsync(QueryObject query)
     {
-        var comments = _context.ProjectComments.AsQueryable();
+        var comments = _context.ProjectComments.Include(c => c.AppUser).AsQueryable();
 
         var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
@@ -26,7 +26,7 @@ public class ProjectCommentRepository : IProjectCommentRepository
 
     public async Task<ProjectComment?> GetByIdAsync(int id)
     {
-        return await _context.ProjectComments.FindAsync(id);
+        return await _context.ProjectComments.Include(c => c.AppUser).FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<ProjectComment> CreateAsync(ProjectComment commentModel)

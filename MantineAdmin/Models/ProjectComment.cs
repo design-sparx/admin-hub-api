@@ -11,4 +11,6 @@ public class ProjectComment
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
+    public string AppUserId { get; set; }
+    public AppUser AppUser { get; set; }
 }

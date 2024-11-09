@@ -24,20 +24,20 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProjects([FromQuery] QueryObject query)
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
         var projects = await _projectRepository.GetAllAsync(query);
 
-        var projectsDto = projects.Select(s => s.ToProjectDto());
+        var projectsDto = projects.Select(s => s.ToProjectDto()).ToList();
 
-        return Ok(projects);
+        return Ok(projectsDto);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetProjectById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -53,7 +53,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequestDto projectDto)
+    public async Task<IActionResult> Create([FromBody] CreateProjectRequestDto projectDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -62,12 +62,12 @@ public class ProjectController : ControllerBase
 
         await _projectRepository.CreateAsync(projectModel);
 
-        return CreatedAtAction(nameof(GetProjectById), new { id = projectModel.Id }, projectModel.ToProjectDto());
+        return CreatedAtAction(nameof(GetById), new { id = projectModel.Id }, projectModel.ToProjectDto());
     }
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> UpdateProject([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProjectRequestDto projectDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -84,7 +84,7 @@ public class ProjectController : ControllerBase
 
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<IActionResult> DeleteProject([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

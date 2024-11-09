@@ -17,7 +17,7 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<List<Project>> GetAllAsync(QueryObject query)
     {
-        var projects = _context.Projects.Include(c => c.Comments).AsQueryable();
+        var projects = _context.Projects.Include(c => c.Comments).ThenInclude(p => p.AppUser).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(query.Name))
         {
@@ -40,7 +40,7 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<Project?> GetByIdAsync(int id)
     {
-        return await _context.Projects.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Projects.Include(c => c.Comments).ThenInclude(p => p.AppUser).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Project> CreateAsync(Project projectModel)
