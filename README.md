@@ -34,7 +34,7 @@ Admin Hub API serves as the core backend infrastructure for managing multiple ad
 
 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/admin-hub-api.git
+git clone https://github.com/design-sparx/admin-hub-api.git
 cd admin-hub-api
 ```
 
@@ -42,7 +42,7 @@ cd admin-hub-api
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=your-server;Database=AdminHubDB;Trusted_Connection=True;"
+    "DefaultConnection": "Data Source={{PC-NAME}}\\SQLEXPRESS;Initial Catalog={{DB-NAME}};Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   }
 }
 ```
@@ -54,22 +54,26 @@ dotnet ef database update
 
 4. Start the application
 ```bash
-dotnet run
+dotnet watch run
 ```
 
 ## Project Structure
 
 ```
 admin-hub-api/
-├── src/
-│   ├── AdminHub.API/          # API project
-│   ├── AdminHub.Core/         # Business logic and domain models
-│   ├── AdminHub.Data/         # Data access layer
-│   └── AdminHub.Common/       # Shared utilities and helpers
+├── AdminHubApi/
+│   ├── Controllers/          
+│   ├── Data/         
+│   ├── Dtos/        
+│   └── Extensions/      
+│   └── Helpers/      
+│   └── Interfaces/      
+│   └── Mappers/       
+│   └── Migrations/       
+│   └── Models/       
+│   └── Repository/       
+│   └── Service/       
 ├── tests/
-│   ├── AdminHub.API.Tests/
-│   ├── AdminHub.Core.Tests/
-│   └── AdminHub.Data.Tests/
 └── docs/                      # Additional documentation
 ```
 
@@ -81,7 +85,7 @@ API documentation is available via Swagger UI at `/swagger` when running the app
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+3. Commit your changes (`git commit -m 'feat:Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
