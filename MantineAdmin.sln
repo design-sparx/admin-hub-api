@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MantineAdmin", "MantineAdmin\MantineAdmin.csproj", "{325449E0-7B9A-4B10-93AE-417B086F3FD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminHubApi", "AdminHubApi\AdminHubApi.csproj", "{325449E0-7B9A-4B10-93AE-417B086F3FD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
