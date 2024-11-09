@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Dtos.Account;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AdminHubApi.Service;

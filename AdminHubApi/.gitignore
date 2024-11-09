@@ -384,7 +384,7 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 
-../MantineAdmin/.idea/.idea.MantineAdmin/**
+../AdminHubApi/.idea/.idea.AdminHubApi/**
 
 ### Rider ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

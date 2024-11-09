@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace AdminHubApi;
+namespace AdminHubApi.Models;
 
 public class AppUser : IdentityUser
 {

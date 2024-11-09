@@ -1,4 +1,6 @@
-﻿namespace AdminHubApi.Interfaces;
+﻿using AdminHubApi.Models;
+
+namespace AdminHubApi.Interfaces;
 
 public interface IAppUserProjectRepository
 {

@@ -1,6 +1,7 @@
 using AdminHubApi;
 using AdminHubApi.Data;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Models;
 using AdminHubApi.Repository;
 using AdminHubApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

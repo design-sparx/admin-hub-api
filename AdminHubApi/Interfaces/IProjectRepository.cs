@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Dtos.Project;
 using AdminHubApi.Helpers;
+using AdminHubApi.Models;
 
 namespace AdminHubApi.Interfaces;
 

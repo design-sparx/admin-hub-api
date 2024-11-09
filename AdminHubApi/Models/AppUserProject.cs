@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdminHubApi;
+namespace AdminHubApi.Models;
 
 [Table("AppUserProjects")]
 public class AppUserProject

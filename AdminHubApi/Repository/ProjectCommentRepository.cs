@@ -2,6 +2,7 @@
 using AdminHubApi.Helpers;
 using AdminHubApi.Interfaces;
 using AdminHubApi.Dtos.ProjectComment;
+using AdminHubApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminHubApi.Repository;

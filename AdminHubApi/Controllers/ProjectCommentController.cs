@@ -4,6 +4,7 @@ using AdminHubApi.Interfaces;
 using AdminHubApi.Data;
 using AdminHubApi.Extensions;
 using AdminHubApi.Mappers;
+using AdminHubApi.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

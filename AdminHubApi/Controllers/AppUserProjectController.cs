@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Interfaces;
 using AdminHubApi.Extensions;
+using AdminHubApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
