@@ -4,6 +4,7 @@ using MantineAdmin.Helpers;
 using MantineAdmin.Interfaces;
 using MantineAdmin.Mappers;
 using MantineAdmin.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
