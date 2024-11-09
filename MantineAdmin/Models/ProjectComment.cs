@@ -1,5 +1,8 @@
-﻿namespace MantineAdmin;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace MantineAdmin;
+
+[Table("ProjectComments")]
 public class ProjectComment
 {
     public int Id { get; set; }
