@@ -97,22 +97,23 @@ builder.Services.AddScoped<IAppUserProjectRepository, AppUserProjectRepository>(
 var app = builder.Build();
 
 app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API V1");
-
-    if (app.Environment.IsDevelopment())
-    {
-        options.RoutePrefix = "swagger";
-    }
-    else
-    {
-        options.RoutePrefix = string.Empty;
-    }
-});
-
-app.UseSwagger();
+// app.UseSwaggerUI(options =>
+// {
+//     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API V1");
+//
+//     if (app.Environment.IsDevelopment())
+//     {
+//         options.RoutePrefix = "swagger";
+//     }
+//     else
+//     {
+//         options.RoutePrefix = string.Empty;
+//     }
+// });
+//
+// app.UseSwagger();
 
 // // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
