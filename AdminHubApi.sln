@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminHubApi", "AdminHubApi\AdminHubApi.csproj", "{325449E0-7B9A-4B10-93AE-417B086F3FD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminHubApi", "AdminHubApi.csproj", "{F50320FF-FB5E-4CFC-9052-1ECA73EB40D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{325449E0-7B9A-4B10-93AE-417B086F3FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{325449E0-7B9A-4B10-93AE-417B086F3FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{325449E0-7B9A-4B10-93AE-417B086F3FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{325449E0-7B9A-4B10-93AE-417B086F3FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F50320FF-FB5E-4CFC-9052-1ECA73EB40D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F50320FF-FB5E-4CFC-9052-1ECA73EB40D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F50320FF-FB5E-4CFC-9052-1ECA73EB40D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F50320FF-FB5E-4CFC-9052-1ECA73EB40D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
