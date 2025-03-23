@@ -1,4 +1,5 @@
 ﻿using AdminHubApi.Dtos;
+using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Entities;
 using AdminHubApi.Repositories;
 
@@ -41,16 +42,19 @@ public class ProjectService : IProjectService
         };
     }
 
-    public async Task AddProductAsync(ProjectResponseDto projectDto)
+    public async Task<Guid> AddProductAsync(CreateProjectDto projectDto)
     {
         var project = new Project
         {
+            Id = Guid.NewGuid(),
             Title = projectDto.Title,
             Description = projectDto.Description,
             Status = projectDto.Status,
         };
         
         await _projectRepository.CreateAsync(project);
+
+        return project.Id;
     }
 
     public async Task UpdateProductAsync(Guid id, ProjectResponseDto projectDto)
