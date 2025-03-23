@@ -1,0 +1,12 @@
+﻿using AdminHubApi.Entities;
+
+namespace AdminHubApi.Repositories;
+
+public interface IProjectRepository
+{
+    Task<IEnumerable<Project>> GetAllAsync();
+    Task<Project> GetByIdAsync(Guid id);
+    Task CreateAsync(Project project);
+    Task UpdateAsync(Project project);
+    Task DeleteAsync(Guid id);
+}
