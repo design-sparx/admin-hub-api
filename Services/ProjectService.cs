@@ -14,35 +14,23 @@ public class ProjectService : IProjectService
         _projectRepository = projectRepository;
     }
 
-    public async Task<IEnumerable<ProjectResponseDto>> GetAllProductsAsync()
+    public async Task<IEnumerable<ProjectResponseDto>> GetAllProjectsAsync()
     {
         var projects = await _projectRepository.GetAllAsync();
 
-        return projects.Select(project => new ProjectResponseDto
-        {
-            Id = project.Id,
-            Title = project.Title,
-            Description = project.Description,
-            Status = project.Status,
-        });
+        return projects.Select(MapToResponseDto);
     }
 
-    public async Task<ProjectResponseDto> GetProductByIdAsync(Guid id)
+    public async Task<ProjectResponseDto> GetProjectByIdAsync(Guid id)
     {
         var project = await _projectRepository.GetByIdAsync(id);
 
         if (project == null) throw new KeyNotFoundException($"Project with id: {id} was not found");
 
-        return new ProjectResponseDto
-        {
-            Id = project.Id,
-            Title = project.Title,
-            Description = project.Description,
-            Status = project.Status,
-        };
+        return MapToResponseDto(project);
     }
 
-    public async Task<Guid> AddProductAsync(CreateProjectDto projectDto)
+    public async Task<Guid> AddProjectAsync(CreateProjectDto projectDto)
     {
         var project = new Project
         {
@@ -57,7 +45,7 @@ public class ProjectService : IProjectService
         return project.Id;
     }
 
-    public async Task UpdateProductAsync(Guid id, ProjectResponseDto projectDto)
+    public async Task UpdateProjectAsync(Guid id, ProjectResponseDto projectDto)
     {
         var project = await _projectRepository.GetByIdAsync(id);
         
@@ -70,12 +58,34 @@ public class ProjectService : IProjectService
         await _projectRepository.UpdateAsync(project);
     }
 
-    public async Task DeleteProductAsync(Guid id)
+    public async Task DeleteProjectAsync(Guid id)
     {
         var project = _projectRepository.GetByIdAsync(id);
         
         if (project == null) throw new KeyNotFoundException($"Project with id: {id} was not found");
         
         await _projectRepository.DeleteAsync(id);
+    }
+
+    public async Task<IEnumerable<ProjectResponseDto>> GetProjectsByStatusAsync(ProjectStatus status)
+    {
+        var projects = await _projectRepository.GetProjectsByStatusAsync(status);
+
+        return projects.Select(MapToResponseDto);
+    }
+
+    private static ProjectResponseDto MapToResponseDto(Project project)
+    {
+        return new ProjectResponseDto
+        {
+            Id = project.Id,
+            Title = project.Title,
+            Description = project.Description,
+            Status = project.Status,
+            CreatedDate = project.CreatedDate,
+            StartDate = project.StartDate,
+            DueDate = project.DueDate,
+            CompletedDate = project.CompletedDate,
+        };
     }
 }

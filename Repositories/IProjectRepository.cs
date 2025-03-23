@@ -9,4 +9,5 @@ public interface IProjectRepository
     Task CreateAsync(Project project);
     Task UpdateAsync(Project project);
     Task DeleteAsync(Guid id);
+    Task<IEnumerable<Project>> GetProjectsByStatusAsync(ProjectStatus status);
 }

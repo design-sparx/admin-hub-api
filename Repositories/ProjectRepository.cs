@@ -41,11 +41,16 @@ public class ProjectRepository : IProjectRepository
     {
         var projectToDelete = await _dbContext.Projects.FindAsync(id);
 
-        if (projectToDelete == null)
+        if (projectToDelete != null)
         {
             _dbContext.Projects.Remove(projectToDelete);
             
             await _dbContext.SaveChangesAsync();
         }
+    }
+
+    public async Task<IEnumerable<Project>> GetProjectsByStatusAsync(ProjectStatus status)
+    {
+        return await _dbContext.Projects.Where(p => p.Status == status).ToListAsync();
     }
 }

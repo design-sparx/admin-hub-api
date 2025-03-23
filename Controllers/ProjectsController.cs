@@ -18,11 +18,19 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] ProjectStatus? status = null)
     {
-        var projects = await _projectService.GetAllProductsAsync();
-
-        return Ok(projects);
+        if (status.HasValue)
+        {
+            var filteredProjects = await _projectService.GetProjectsByStatusAsync(status.Value);
+            
+            return Ok(filteredProjects);
+        }
+        else
+        {
+            var allProjects = await _projectService.GetAllProjectsAsync();
+            return Ok(allProjects);
+        }
     }
 
     [HttpGet("{id}")]
@@ -30,7 +38,7 @@ public class ProjectsController : ControllerBase
     {
         try
         {
-            var project = await _projectService.GetProductByIdAsync(id);
+            var project = await _projectService.GetProjectByIdAsync(id);
 
             return Ok(project);
         }
@@ -43,9 +51,9 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateProjectDto projectDto)
     {
-        var createdProjectId = await _projectService.AddProductAsync(projectDto);
+        var createdProjectId = await _projectService.AddProjectAsync(projectDto);
         
-        var createdProject = await _projectService.GetProductByIdAsync(createdProjectId);
+        var createdProject = await _projectService.GetProjectByIdAsync(createdProjectId);
         
         return CreatedAtAction(nameof(GetById), new { id = createdProjectId }, createdProject);
     }
@@ -55,7 +63,7 @@ public class ProjectsController : ControllerBase
     {
         try
         {
-            await _projectService.UpdateProductAsync(id, projectDto);
+            await _projectService.UpdateProjectAsync(id, projectDto);
 
             return NoContent();
         }
@@ -70,7 +78,7 @@ public class ProjectsController : ControllerBase
     {
         try
         {
-            await _projectService.DeleteProductAsync(id);
+            await _projectService.DeleteProjectAsync(id);
 
             return NoContent();
         }
