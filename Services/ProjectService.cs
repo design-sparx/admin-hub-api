@@ -1,6 +1,7 @@
-﻿using AdminHubApi.Dtos;
+﻿using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Entities;
+using AdminHubApi.Interfaces;
 using AdminHubApi.Repositories;
 
 namespace AdminHubApi.Services;
@@ -14,23 +15,35 @@ public class ProjectService : IProjectService
         _projectRepository = projectRepository;
     }
 
-    public async Task<IEnumerable<ProjectResponseDto>> GetAllProjectsAsync()
+    public async Task<ApiResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()
     {
         var projects = await _projectRepository.GetAllAsync();
 
-        return projects.Select(MapToResponseDto);
+        return new ApiResponse<IEnumerable<ProjectResponseDto>>
+        {
+            Succeeded = true,
+            Data = projects.Select(MapToResponseDto),
+            Message = "Projects retrieved",
+            Errors = []
+        };
     }
 
-    public async Task<ProjectResponseDto> GetProjectByIdAsync(Guid id)
+    public async Task<ApiResponse<ProjectResponseDto>> GetProjectByIdAsync(Guid id)
     {
         var project = await _projectRepository.GetByIdAsync(id);
 
         if (project == null) throw new KeyNotFoundException($"Project with id: {id} was not found");
 
-        return MapToResponseDto(project);
+        return new ApiResponse<ProjectResponseDto>
+        {
+            Succeeded = true,
+            Data = MapToResponseDto(project),
+            Message = "Projects retrieved",
+            Errors = []
+        };
     }
 
-    public async Task<Guid> AddProjectAsync(CreateProjectDto projectDto)
+    public async Task<ApiResponse<Guid>> AddProjectAsync(CreateProjectDto projectDto)
     {
         var project = new Project
         {
@@ -39,39 +52,50 @@ public class ProjectService : IProjectService
             Description = projectDto.Description,
             Status = projectDto.Status,
         };
-        
+
         await _projectRepository.CreateAsync(project);
 
-        return project.Id;
+        return new ApiResponse<Guid>
+        {
+            Succeeded = true,
+            Data = project.Id,
+            Message = "Projects retrieved",
+            Errors = []
+        };
     }
 
     public async Task UpdateProjectAsync(Guid id, ProjectResponseDto projectDto)
     {
         var project = await _projectRepository.GetByIdAsync(id);
-        
+
         if (project == null) throw new KeyNotFoundException($"Project with id: {id} was not found");
-        
+
         project.Title = projectDto.Title;
         project.Description = projectDto.Description;
         project.Status = projectDto.Status;
-        
+
         await _projectRepository.UpdateAsync(project);
     }
 
     public async Task DeleteProjectAsync(Guid id)
     {
         var project = _projectRepository.GetByIdAsync(id);
-        
+
         if (project == null) throw new KeyNotFoundException($"Project with id: {id} was not found");
-        
+
         await _projectRepository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<ProjectResponseDto>> GetProjectsByStatusAsync(ProjectStatus status)
+    public async Task<ApiResponse<IEnumerable<ProjectResponseDto>>> GetProjectsByStatusAsync(ProjectStatus status)
     {
         var projects = await _projectRepository.GetProjectsByStatusAsync(status);
 
-        return projects.Select(MapToResponseDto);
+        return new ApiResponse<IEnumerable<ProjectResponseDto>>{
+            Succeeded = true,
+            Data = projects.Select(MapToResponseDto),
+            Message = "Projects retrieved",
+            Errors = []
+        };
     }
 
     private static ProjectResponseDto MapToResponseDto(Project project)

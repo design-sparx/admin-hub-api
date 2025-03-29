@@ -1,7 +1,6 @@
-﻿using AdminHubApi.Dtos;
-using AdminHubApi.Dtos.Projects;
+﻿using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Entities;
-using AdminHubApi.Services;
+using AdminHubApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers;
@@ -23,12 +22,13 @@ public class ProjectsController : ControllerBase
         if (status.HasValue)
         {
             var filteredProjects = await _projectService.GetProjectsByStatusAsync(status.Value);
-            
+
             return Ok(filteredProjects);
         }
         else
         {
             var allProjects = await _projectService.GetAllProjectsAsync();
+
             return Ok(allProjects);
         }
     }
@@ -51,11 +51,19 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateProjectDto projectDto)
     {
-        var createdProjectId = await _projectService.AddProjectAsync(projectDto);
+        var createdProjectIdResponse = await _projectService.AddProjectAsync(projectDto);
         
-        var createdProject = await _projectService.GetProjectByIdAsync(createdProjectId);
+        if (!createdProjectIdResponse.Succeeded)
+        {
+            return BadRequest(createdProjectIdResponse);
+        }
         
-        return CreatedAtAction(nameof(GetById), new { id = createdProjectId }, createdProject);
+        var createdProjectId = createdProjectIdResponse.Data;
+        var createdProjectResponse = await _projectService.GetProjectByIdAsync(createdProjectId);
+        
+        return createdProjectResponse.Succeeded 
+            ? CreatedAtAction(nameof(GetById), new { id = createdProjectId }, createdProjectResponse) 
+            : BadRequest(createdProjectResponse);
     }
 
     [HttpPut("{id}")]
