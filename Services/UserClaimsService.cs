@@ -67,4 +67,24 @@ public class UserClaimsService : IUserClaimsService
         
         await _userManager.ReplaceUserClaimsAsync(user, CustomClaimTypes.SubscriptionLevel, new[] { level });
     }
+    
+    public async Task AddClaimAsync(string userId, string claimType, string claimValue)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if(user == null)
+            throw new ArgumentException("User not found", nameof(userId));
+        
+        var claim = new Claim(claimType, claimValue);
+        await _userManager.AddClaimAsync(user, claim);
+    }
+    
+    public async Task RemoveClaimAsync(string userId, string claimType, string claimValue)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if(user == null)
+            throw new ArgumentException("User not found", nameof(userId));
+        
+        var claim = new Claim(claimType, claimValue);
+        await _userManager.RemoveClaimAsync(user, claim);
+    }
 }
