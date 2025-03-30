@@ -21,4 +21,10 @@
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="AdminHubApi\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="AdminHubApi\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AdminHubApi\Properties\launchSettings.json" />
+    </ItemGroup>
+
 </Project>
