@@ -1,22 +1,24 @@
-# Adjust DOTNET_OS_VERSION as desired
-ARG DOTNET_OS_VERSION="-alpine"
-ARG DOTNET_SDK_VERSION=9.0
-
-FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}${DOTNET_OS_VERSION} AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# copy everything
-COPY . ./
-# restore as distinct layers
+# Copy csproj and restore dependencies
+COPY *.csproj ./
 RUN dotnet restore
-# build and publish a release
+
+# Copy everything else and build
+COPY . ./
 RUN dotnet publish -c Release -o /app
 
-# final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}
-ENV ASPNETCORE_URLS http://+:8080
-ENV ASPNETCORE_ENVIRONMENT Production
-EXPOSE 8080
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=build /app .
-ENTRYPOINT [ "dotnet", "AdminHubApi.dll" ]
+COPY --from=build /app ./
+
+# Configure environment variables
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+# Expose port that Cloud Run will use
+EXPOSE 8080
+
+ENTRYPOINT ["dotnet", "AdminHubApi.dll"]
