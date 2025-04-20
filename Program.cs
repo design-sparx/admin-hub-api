@@ -123,8 +123,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var seeder = services.GetRequiredService<IdentitySeeder>();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate(); // This applies pending migrations automatically
+
+    var seeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
     await seeder.SeedAsync();
 }
 
