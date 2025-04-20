@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using AdminHubApi.Constants;
 using AdminHubApi.Entities;
-using AdminHubApi.Extenstions;
+using AdminHubApi.Extensions;
 using AdminHubApi.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
