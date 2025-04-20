@@ -61,8 +61,13 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Expiration = DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
-            Username = user.UserName,
-            Roles = userRoles
+            User = new UserDto
+            {
+                Username = user.UserName,
+                UserId = user.Id,
+                Email = user.Email
+            },
+            Roles = userRoles,
         });
     }
 
@@ -203,7 +208,12 @@ public class AuthController : ControllerBase
         {
             Token = newToken,
             Expiration = DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
-            Username = user.UserName,
+            User = new UserDto
+            {
+                Username = user.UserName,
+                UserId = user.Id,
+                Email = user.Email
+            },
             Roles = roles
         });
     }
