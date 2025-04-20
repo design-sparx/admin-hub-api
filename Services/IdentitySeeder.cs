@@ -33,6 +33,7 @@ public class IdentitySeeder
         {
             adminUser = new ApplicationUser
             {
+                Id = "6362b986-14c9-4901-8cf0-b2c2bb067907",
                 UserName = "admin",
                 Email = "admin@example.com",
                 EmailConfirmed = true
