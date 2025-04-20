@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AdminHubApi.Constants;
 using AdminHubApi.Data;
@@ -69,9 +70,27 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(key),
         };
 
-        // When using WebSockets or SignalR
+        // Add custom token validation to check blacklist
         options.Events = new JwtBearerEvents
         {
+            OnTokenValidated = async context =>
+            {
+                var tokenService = context.HttpContext.RequestServices.GetRequiredService<ITokenService>();
+                var token = context.SecurityToken as JwtSecurityToken;
+                var tokenBlacklistRepository = context.HttpContext.RequestServices.GetRequiredService<ITokenBlacklistRepository>();
+                
+                if (token != null)
+                {
+                    var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
+                    
+                    // Check if token is blacklisted
+                    if (!string.IsNullOrEmpty(tokenId) && await tokenBlacklistRepository.IsTokenBlacklistedAsync(tokenId))
+                    {
+                        context.Fail("Token has been revoked");
+                    }
+                }
+            },
+            
             OnMessageReceived = context =>
             {
                 // Extract token from query string from WebSocket connections if needed
@@ -112,6 +131,10 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
+
+// Register token cleanup background service
+builder.Services.AddHostedService<TokenCleanupService>();
 
 // Identity seeder
 builder.Services.AddScoped<IdentitySeeder>();
@@ -126,8 +149,13 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate(); // This applies pending migrations automatically
 
-    var seeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
-    await seeder.SeedAsync();
+    // Only seed if needed (check if users exist)
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    if (!await userManager.Users.AnyAsync())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
+        await seeder.SeedAsync();
+    }
 }
 
 // Configure the HTTP request pipeline.

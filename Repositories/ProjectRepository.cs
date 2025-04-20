@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Data;
 using AdminHubApi.Entities;
+using AdminHubApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminHubApi.Repositories;

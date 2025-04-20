@@ -10,4 +10,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     { }
     
     public DbSet<Project> Projects { get; set; }
+    
+    public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+    
+        // Configure BlacklistedToken entity
+        builder.Entity<BlacklistedToken>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TokenId).IsUnique();
+            entity.HasIndex(e => e.ExpiryDate); // For efficient cleanup queries
+        });
+    }
 }

@@ -9,13 +9,16 @@ public class IdentitySeeder
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    
+    private readonly IConfiguration _configuration;
+
     public IdentitySeeder(
         RoleManager<IdentityRole> roleManager,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IConfiguration configuration)
     {
         _roleManager = roleManager;
         _userManager = userManager;
+        _configuration = configuration;
     }
     
     public async Task SeedAsync()
@@ -39,7 +42,11 @@ public class IdentitySeeder
                 EmailConfirmed = true
             };
             
-            var result = await _userManager.CreateAsync(adminUser, "Admin123!"); // Change this in production!
+            // Get password from configuration
+            var adminPassword = _configuration["AdminUser:Password"];
+            
+            var result = await _userManager.CreateAsync(adminUser, adminPassword ?? "Admin123!");
+            
             if (result.Succeeded)
             {
                 // Add admin to Admin role

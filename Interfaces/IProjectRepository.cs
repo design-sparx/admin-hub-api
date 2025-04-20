@@ -1,6 +1,6 @@
 ﻿using AdminHubApi.Entities;
 
-namespace AdminHubApi.Repositories;
+namespace AdminHubApi.Interfaces;
 
 public interface IProjectRepository
 {

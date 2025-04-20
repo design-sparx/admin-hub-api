@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdminHubApi.Dtos.Auth;
+namespace AdminHubApi.Dtos.Profile;
 
 public class ChangePasswordRequestDto
 {
