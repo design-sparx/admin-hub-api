@@ -1,17 +1,15 @@
-﻿using System.Security.Claims;
-using AdminHubApi.Constants;
+﻿using AdminHubApi.Constants;
 using AdminHubApi.Dtos.UserManagement;
-using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers;
 
 [ApiController]
 [Route("api/users")]
-[Authorize(Policy = "CanManageUsers")] // Apply policy-based authorization for all admin functions
+// Apply authorization at the controller level
+[PermissionAuthorize(Permissions.Users.View)]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -26,7 +24,7 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get a list of all users (admin only)
+    /// Get a list of all users
     /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10,
@@ -38,7 +36,7 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Get a specific user by ID (admin only)
+    /// Get a specific user by ID
     /// </summary>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(string id)
@@ -52,9 +50,10 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new user (admin only)
+    /// Create a new user
     /// </summary>
     [HttpPost]
+    [PermissionAuthorize(Permissions.Users.Create)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto model)
     {
         if (!ModelState.IsValid)
@@ -69,9 +68,10 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Update a user (admin only)
+    /// Update a user
     /// </summary>
     [HttpPut("{id}")]
+    [PermissionAuthorize(Permissions.Users.Edit)]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDto model)
     {
         // Allow partial updates - skipping model validation
@@ -84,9 +84,10 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a user (admin only)
+    /// Delete a user
     /// </summary>
     [HttpDelete("{id}")]
+    [PermissionAuthorize(Permissions.Users.Delete)]
     public async Task<IActionResult> DeleteUser(string id)
     {
         var response = await _userService.DeleteUserAsync(id);
@@ -101,6 +102,7 @@ public class UsersController : ControllerBase
     /// Admin reset password for a user - doesn't require old password
     /// </summary>
     [HttpPost("{id}/reset-password")]
+    [PermissionAuthorize(Permissions.Users.Edit)]
     public async Task<IActionResult> ResetPassword(string id, [FromBody] ResetPasswordDto model)
     {
         if (!ModelState.IsValid)
@@ -115,9 +117,10 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Update roles for a user (admin only)
+    /// Update roles for a user
     /// </summary>
     [HttpPut("{id}/roles")]
+    [PermissionAuthorize(Permissions.Users.Edit)]
     public async Task<IActionResult> UpdateUserRoles(string id, [FromBody] List<string> roles)
     {
         var response = await _userService.UpdateUserRolesAsync(id, roles);
@@ -129,9 +132,10 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Update claims for a user (admin only)
+    /// Update claims for a user
     /// </summary>
     [HttpPut("{id}/claims")]
+    [PermissionAuthorize(Permissions.Users.Edit)]
     public async Task<IActionResult> UpdateUserClaims(string id, [FromBody] List<ClaimDto> claims)
     {
         if (claims == null)
@@ -151,9 +155,6 @@ public class UsersController : ControllerBase
             var permissionClaims =
                 claims.Where(c => c.Type == CustomClaimTypes.Permission).Select(c => c.Value).ToList();
 
-            var departmentClaim = claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Department)?.Value;
-            var subscriptionClaim = claims.FirstOrDefault(c => c.Type == CustomClaimTypes.SubscriptionLevel)?.Value;
-
             // Handle permissions using specialized method
             if (permissionClaims.Any())
             {
@@ -171,31 +172,15 @@ public class UsersController : ControllerBase
                 // Then add the new ones
                 await _userClaimsService.AddPermissionClaimsAsync(id, permissionClaims);
             }
-
-            // Handle department claim using specialized method
-            if (!string.IsNullOrEmpty(departmentClaim))
-            {
-                await _userClaimsService.SetDepartmentAsync(id, departmentClaim);
-            }
-
-            // Handle subscription level claim using specialized method
-            if (!string.IsNullOrEmpty(subscriptionClaim))
-            {
-                await _userClaimsService.SetSubscriptionLevelAsync(id, subscriptionClaim);
-            }
-
+            
             // Handle all other claim types using general methods
             var otherClaims = claims.Where(c =>
-                c.Type != CustomClaimTypes.Permission &&
-                c.Type != CustomClaimTypes.Department &&
-                c.Type != CustomClaimTypes.SubscriptionLevel).ToList();
+                c.Type != CustomClaimTypes.Permission).ToList();
 
             // Remove existing claims of types that aren't in the specialized categories
             foreach (var claim in existingClaims)
             {
-                if (claim.Type != CustomClaimTypes.Permission &&
-                    claim.Type != CustomClaimTypes.Department &&
-                    claim.Type != CustomClaimTypes.SubscriptionLevel)
+                if (claim.Type != CustomClaimTypes.Permission)
                 {
                     await _userClaimsService.RemoveClaimAsync(id, claim.Type, claim.Value);
                 }
