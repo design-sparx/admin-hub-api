@@ -45,7 +45,7 @@ public class IdentitySeeder
             // Get password from configuration
             var adminPassword = _configuration["AdminUser:Password"];
             
-            var result = await _userManager.CreateAsync(adminUser, adminPassword);
+            var result = await _userManager.CreateAsync(adminUser, adminPassword ?? "Admin123!");
             
             if (result.Succeeded)
             {
