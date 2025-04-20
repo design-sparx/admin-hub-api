@@ -20,10 +20,10 @@ public class AuthController : ControllerBase
     private readonly ITokenBlacklistRepository _tokenBlacklistRepository;
 
     public AuthController(
-        UserManager<ApplicationUser> userManager, 
+        UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<IdentityRole> roleManager,
-        ITokenService tokenService, 
+        ITokenService tokenService,
         IOptions<JwtSettings> jwtSettings,
         ITokenBlacklistRepository tokenBlacklistRepository)
     {
@@ -91,7 +91,8 @@ public class AuthController : ControllerBase
         var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
-            return BadRequest(new { 
+            return BadRequest(new
+            {
                 message = "User creation failed",
                 errors = result.Errors.Select(e => e.Description)
             });
@@ -114,7 +115,7 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
 
         var user = await _userManager.FindByEmailAsync(request.Email);
-        
+
         // Don't reveal that the user does not exist
         if (user == null)
             return Ok(new { message = "If your email is registered, you will receive a password reset link" });
@@ -123,10 +124,11 @@ public class AuthController : ControllerBase
 
         // In a real app, you would send an email with the token
         // For testing purposes, we'll return the token
-        return Ok(new { 
+        return Ok(new
+        {
             message = "If your email is registered, you will receive a password reset link",
-            userId = user.Id,  // Include for testing only
-            token = token      // Include for testing only
+            userId = user.Id, // Include for testing only
+            token = token // Include for testing only
         });
     }
 
@@ -140,14 +142,15 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
 
         var user = await _userManager.FindByIdAsync(request.UserId);
-        
+
         if (user == null)
             return BadRequest(new { message = "Invalid user ID" });
 
         var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
         if (!result.Succeeded)
-            return BadRequest(new { 
+            return BadRequest(new
+            {
                 message = "Password reset failed",
                 errors = result.Errors.Select(e => e.Description)
             });
@@ -166,26 +169,26 @@ public class AuthController : ControllerBase
 
         // Extract token ID (jti claim)
         var tokenId = _tokenService.ExtractTokenId(request.Token);
-    
+
         if (string.IsNullOrEmpty(tokenId))
             return BadRequest(new { message = "Invalid token" });
-        
+
         // Check if token is blacklisted
         if (await _tokenBlacklistRepository.IsTokenBlacklistedAsync(tokenId))
             return Unauthorized(new { message = "Token has been revoked" });
 
         var principal = _tokenService.ValidateToken(request.Token);
-    
+
         if (principal == null)
             return Unauthorized(new { message = "Invalid token" });
 
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    
+
         if (string.IsNullOrEmpty(userId))
             return Unauthorized(new { message = "Invalid token" });
 
         var user = await _userManager.FindByIdAsync(userId);
-    
+
         if (user == null)
             return Unauthorized(new { message = "User not found" });
 
@@ -204,7 +207,7 @@ public class AuthController : ControllerBase
             Roles = roles
         });
     }
-    
+
     /// <summary>
     /// Logout with username and password
     /// </summary>
@@ -213,29 +216,29 @@ public class AuthController : ControllerBase
     {
         // Get the current token from the Authorization header
         var authorizationHeader = Request.Headers["Authorization"].ToString();
-    
+
         if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
         {
             return BadRequest(new { message = "Invalid token format" });
         }
-    
+
         // Extract token
         var token = authorizationHeader.Substring("Bearer ".Length).Trim();
-    
+
         // Get token ID (jti claim)
         var tokenId = _tokenService.ExtractTokenId(token);
-    
+
         if (string.IsNullOrEmpty(tokenId))
         {
             return BadRequest(new { message = "Invalid token" });
         }
-    
+
         // Get token expiration time
         var expiryTime = _tokenService.GetTokenExpirationTime(token);
-    
+
         // Add token to blacklist using the repository
         await _tokenBlacklistRepository.BlacklistTokenAsync(tokenId, expiryTime);
-    
+
         return Ok(new { message = "Logged out successfully" });
     }
 }
