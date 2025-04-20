@@ -17,19 +17,22 @@ public class AuthController : ControllerBase
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ITokenService _tokenService;
     private readonly JwtSettings _jwtSettings;
+    private readonly ITokenBlacklistRepository _tokenBlacklistRepository;
 
     public AuthController(
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager,
         RoleManager<IdentityRole> roleManager,
         ITokenService tokenService, 
-        IOptions<JwtSettings> jwtSettings)
+        IOptions<JwtSettings> jwtSettings,
+        ITokenBlacklistRepository tokenBlacklistRepository)
     {
         _userManager = userManager;
         _signinManager = signInManager;
         _roleManager = roleManager;
         _tokenService = tokenService;
         _jwtSettings = jwtSettings.Value;
+        _tokenBlacklistRepository = tokenBlacklistRepository;
     }
 
     /// <summary>
@@ -161,23 +164,37 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(request.Token))
             return BadRequest(new { message = "Token is required" });
 
-        var principal = _tokenService.ValidateToken(request.Token);
+        // Extract token ID (jti claim)
+        var tokenId = _tokenService.ExtractTokenId(request.Token);
+    
+        if (string.IsNullOrEmpty(tokenId))
+            return BadRequest(new { message = "Invalid token" });
         
+        // Check if token is blacklisted
+        if (await _tokenBlacklistRepository.IsTokenBlacklistedAsync(tokenId))
+            return Unauthorized(new { message = "Token has been revoked" });
+
+        var principal = _tokenService.ValidateToken(request.Token);
+    
         if (principal == null)
             return Unauthorized(new { message = "Invalid token" });
 
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+    
         if (string.IsNullOrEmpty(userId))
             return Unauthorized(new { message = "Invalid token" });
 
         var user = await _userManager.FindByIdAsync(userId);
-        
+    
         if (user == null)
             return Unauthorized(new { message = "User not found" });
 
         var roles = await _userManager.GetRolesAsync(user);
         var newToken = await _tokenService.GenerateJwtTokenAsync(user, roles);
+
+        // Blacklist the old token
+        var expiryTime = _tokenService.GetTokenExpirationTime(request.Token);
+        await _tokenBlacklistRepository.BlacklistTokenAsync(tokenId, expiryTime);
 
         return Ok(new AuthResponseDto
         {
@@ -186,5 +203,39 @@ public class AuthController : ControllerBase
             Username = user.UserName,
             Roles = roles
         });
+    }
+    
+    /// <summary>
+    /// Logout with username and password
+    /// </summary>
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] AuthRequestDto request)
+    {
+        // Get the current token from the Authorization header
+        var authorizationHeader = Request.Headers["Authorization"].ToString();
+    
+        if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+        {
+            return BadRequest(new { message = "Invalid token format" });
+        }
+    
+        // Extract token
+        var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+    
+        // Get token ID (jti claim)
+        var tokenId = _tokenService.ExtractTokenId(token);
+    
+        if (string.IsNullOrEmpty(tokenId))
+        {
+            return BadRequest(new { message = "Invalid token" });
+        }
+    
+        // Get token expiration time
+        var expiryTime = _tokenService.GetTokenExpirationTime(token);
+    
+        // Add token to blacklist using the repository
+        await _tokenBlacklistRepository.BlacklistTokenAsync(tokenId, expiryTime);
+    
+        return Ok(new { message = "Logged out successfully" });
     }
 }

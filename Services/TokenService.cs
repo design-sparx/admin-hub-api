@@ -13,11 +13,16 @@ public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ITokenBlacklistRepository _tokenBlacklistRepository;
 
-    public TokenService(IOptions<JwtSettings> jwtSettings, UserManager<ApplicationUser> userManager)
+    public TokenService(
+        IOptions<JwtSettings> jwtSettings,
+        UserManager<ApplicationUser> userManager,
+        ITokenBlacklistRepository tokenBlacklistRepository)
     {
         _jwtSettings = jwtSettings.Value;
         _userManager = userManager;
+        _tokenBlacklistRepository = tokenBlacklistRepository;
     }
 
     public async Task<string> GenerateJwtTokenAsync(ApplicationUser user, IList<string> roles)
@@ -25,11 +30,16 @@ public class TokenService : ITokenService
         // Get user claims from UserManager
         var userClaims = await _userManager.GetClaimsAsync(user);
         
+        // Generate a unique token ID
+        var tokenId = Guid.NewGuid().ToString();
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Email, user.Email),
+            // Add a unique identifier for this token
+            new Claim(JwtRegisteredClaimNames.Jti, tokenId),
         };
 
         // Add role claims
@@ -37,7 +47,7 @@ public class TokenService : ITokenService
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
-        
+
         // Add custom claims from user
         claims.AddRange(userClaims);
 
@@ -72,5 +82,46 @@ public class TokenService : ITokenService
         };
         
         return tokenHandler.ValidateToken(token, validationParameters, out _);
+    }
+    
+    public async Task<ClaimsPrincipal> ValidateTokenAsync(string token)
+    {
+        // Extract token ID
+        var tokenId = ExtractTokenId(token);
+        
+        // Check if token is blacklisted
+        if (!string.IsNullOrEmpty(tokenId) && await _tokenBlacklistRepository.IsTokenBlacklistedAsync(tokenId))
+        {
+            return null;
+        }
+        
+        // Perform normal token validation
+        return ValidateToken(token);
+    }
+    
+    public DateTime GetTokenExpirationTime(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        
+        if (tokenHandler.CanReadToken(token))
+        {
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            return jwtToken.ValidTo;
+        }
+        
+        return DateTime.MinValue;
+    }
+    
+    public string ExtractTokenId(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        
+        if (tokenHandler.CanReadToken(token))
+        {
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            return jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
+        }
+        
+        return null;
     }
 }
