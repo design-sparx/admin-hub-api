@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Login with username and password
+    /// Login with email and password
     /// </summary>
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
@@ -44,15 +44,15 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var user = await _userManager.FindByNameAsync(request.Username);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
-            return Unauthorized(new { message = "Username or password is incorrect" });
+            return Unauthorized(new { message = "Email or password is incorrect" });
 
         var result = await _signinManager.CheckPasswordSignInAsync(user, request.Password, false);
 
         if (!result.Succeeded)
-            return Unauthorized(new { message = "Username or password is incorrect" });
+            return Unauthorized(new { message = "Email or password is incorrect" });
 
         var userRoles = await _userManager.GetRolesAsync(user);
         var token = await _tokenService.GenerateJwtTokenAsync(user, userRoles);
@@ -61,8 +61,13 @@ public class AuthController : ControllerBase
         {
             Token = token,
             Expiration = DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
-            Username = user.UserName,
-            Roles = userRoles
+            User = new UserDto
+            {
+                Username = user.UserName,
+                UserId = user.Id,
+                Email = user.Email
+            },
+            Roles = userRoles,
         });
     }
 
@@ -203,7 +208,12 @@ public class AuthController : ControllerBase
         {
             Token = newToken,
             Expiration = DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
-            Username = user.UserName,
+            User = new UserDto
+            {
+                Username = user.UserName,
+                UserId = user.Id,
+                Email = user.Email
+            },
             Roles = roles
         });
     }

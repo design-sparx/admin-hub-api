@@ -2,7 +2,7 @@
 using AdminHubApi.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace AdminHubApi.Extenstions;
+namespace AdminHubApi.Extensions;
 
 public static class IdentityExtensions
 {

@@ -2,21 +2,31 @@
 
 namespace AdminHubApi.Constants;
 
-public class Permissions
+public static class Permissions
 {
-    // User management permissions
-    public const string ViewUsers = "Permissions.Users.View";
-    public const string CreateUsers = "Permissions.Users.Create";
-    public const string EditUsers = "Permissions.Users.Edit";
-    public const string DeleteUsers = "Permissions.Users.Delete";
+    public static class Users
+    {
+        public const string View = "Permissions.Users.View";
+        public const string Create = "Permissions.Users.Create";
+        public const string Edit = "Permissions.Users.Edit";
+        public const string Delete = "Permissions.Users.Delete";
+    }
 
-    // Example: Content management permissions
-    public const string ViewContent = "Permissions.Content.View";
-    public const string CreateContent = "Permissions.Content.Create";
-    public const string EditContent = "Permissions.Content.Edit";
-    public const string DeleteContent = "Permissions.Content.Delete";
-
-    // Add more permissions as needed for your application
+    public static class Roles
+    {
+        public const string View = "Permissions.Roles.View";
+        public const string Create = "Permissions.Roles.Create";
+        public const string Edit = "Permissions.Roles.Edit";
+        public const string Delete = "Permissions.Roles.Delete";
+    }
+    
+    public static class Projects
+    {
+        public const string View = "Permissions.Projects.View";
+        public const string Create = "Permissions.Projects.Create";
+        public const string Edit = "Permissions.Projects.Edit";
+        public const string Delete = "Permissions.Projects.Delete";
+    }
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()
