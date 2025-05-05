@@ -19,7 +19,7 @@ namespace AdminHubApi.Data.Seeders
             var adminUserName = configuration["AdminUser:UserName"] ?? "admin";
             var adminPassword = configuration["AdminUser:Password"] ?? "Admin@Password123!"; // Should be in secrets in production
 
-            // Check if admin user exists
+            // Check if an admin user exists
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
             if (adminUser == null)

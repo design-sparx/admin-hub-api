@@ -11,6 +11,11 @@ public class CreateProjectDto
 
     [StringLength(500)] public string Description { get; set; } = String.Empty;
     public ProjectStatus Status { get; set; } = ProjectStatus.Pending;
-    public DateTime? StartDate { get; set; }
+    
+    [Required]
+    public DateTime StartDate { get; set; }
     public DateTime? DueDate { get; set; }
+    
+    [Required]
+    public string OwnerId { get; set; }
 }

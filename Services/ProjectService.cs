@@ -1,8 +1,8 @@
 ﻿using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.Projects;
+using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
-using AdminHubApi.Repositories;
 
 namespace AdminHubApi.Services;
 
@@ -51,6 +51,9 @@ public class ProjectService : IProjectService
             Title = projectDto.Title,
             Description = projectDto.Description,
             Status = projectDto.Status,
+            OwnerId = projectDto.OwnerId,
+            StartDate = projectDto.StartDate,
+            DueDate = projectDto.DueDate,
         };
 
         await _projectRepository.CreateAsync(project);
@@ -90,7 +93,8 @@ public class ProjectService : IProjectService
     {
         var projects = await _projectRepository.GetProjectsByStatusAsync(status);
 
-        return new ApiResponse<IEnumerable<ProjectResponseDto>>{
+        return new ApiResponse<IEnumerable<ProjectResponseDto>>
+        {
             Succeeded = true,
             Data = projects.Select(MapToResponseDto),
             Message = "Projects retrieved",
@@ -110,6 +114,21 @@ public class ProjectService : IProjectService
             StartDate = project.StartDate,
             DueDate = project.DueDate,
             CompletedDate = project.CompletedDate,
+            OwnerId = project.OwnerId,
+            Owner = project.Owner != null
+                ? new UserDto
+                {
+                    Id = project.Owner.Id,
+                    UserName = project.Owner.UserName,
+                    Email = project.Owner.Email,
+                    PhoneNumber = project.Owner.PhoneNumber,
+                    EmailConfirmed = project.Owner.EmailConfirmed,
+                    PhoneNumberConfirmed = project.Owner.PhoneNumberConfirmed,
+                    TwoFactorEnabled = project.Owner.TwoFactorEnabled,
+                    LockoutEnabled = project.Owner.LockoutEnabled,
+                    LockoutEnd = project.Owner.LockoutEnd
+                }
+                : null
         };
     }
 }
