@@ -1,4 +1,6 @@
-﻿namespace AdminHubApi.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AdminHubApi.Entities;
 
 public enum ProjectStatus
 {
@@ -19,4 +21,7 @@ public class Project
     public DateTime? StartDate { get; set; }
     public DateTime? DueDate { get; set; }
     public DateTime? CompletedDate { get; set; }
+    public string OwnerId { get; set; }
+    [ForeignKey("OwnerId")]
+    public ApplicationUser Owner { get; set; }
 }

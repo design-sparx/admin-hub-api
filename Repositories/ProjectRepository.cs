@@ -16,25 +16,25 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IEnumerable<Project>> GetAllAsync()
     {
-        return await _dbContext.Projects.ToListAsync();
+        return await _dbContext.Projects.Include(p => p.Owner).ToListAsync();
     }
 
     public async Task<Project> GetByIdAsync(Guid id)
     {
-        return await _dbContext.Projects.FindAsync(id);
+        return await _dbContext.Projects.Include(p => p.Owner).FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task CreateAsync(Project project)
     {
         await _dbContext.Projects.AddAsync(project);
-        
+
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Project project)
     {
         _dbContext.Projects.Update(project);
-        
+
         await _dbContext.SaveChangesAsync();
     }
 
@@ -45,7 +45,7 @@ public class ProjectRepository : IProjectRepository
         if (projectToDelete != null)
         {
             _dbContext.Projects.Remove(projectToDelete);
-            
+
             await _dbContext.SaveChangesAsync();
         }
     }

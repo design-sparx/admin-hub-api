@@ -1,4 +1,5 @@
-﻿using AdminHubApi.Entities;
+﻿using AdminHubApi.Dtos.UserManagement;
+using AdminHubApi.Entities;
 
 namespace AdminHubApi.Dtos.Projects;
 
@@ -12,6 +13,8 @@ public class ProjectResponseDto
     public DateTime? StartDate { get; set; }
     public DateTime? DueDate { get; set; }
     public DateTime? CompletedDate { get; set; }
+    public string OwnerId { get; set; }
+    public UserDto Owner { get; set; }
     public string StatusText => Status.ToString();
     public int CompletionPercentage 
     { 

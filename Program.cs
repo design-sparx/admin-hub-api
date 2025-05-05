@@ -116,10 +116,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole(RoleSeeder.AdminRole));
-        
+
     options.AddPolicy("RequireManagerRole", policy =>
         policy.RequireRole(RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
-        
+
     options.AddPolicy("RequireUserRole", policy =>
         policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
 });
@@ -152,39 +152,40 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    
+
     try
     {
         logger.LogInformation("Applying database migrations...");
         db.Database.Migrate(); // This applies pending migrations automatically
         logger.LogInformation("Database migrations applied successfully");
-        
+
         // Check if we need to seed users and roles
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        
+
         // Check if any roles exist
         if (!await roleManager.Roles.AnyAsync())
         {
             logger.LogInformation("No roles found. Seeding roles...");
             await RoleSeeder.SeedRolesAsync(app.Services);
         }
-        
+
         // Check if any users exist
         if (!await userManager.Users.AnyAsync())
         {
             logger.LogInformation("No users found. Seeding users...");
-            
+
             // Add seeders
             await AdminUserSeeder.SeedAdminUserAsync(app.Services);
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
         }
-        
+
         logger.LogInformation("Database seeding completed successfully");
     }
     catch (Exception ex)
     {
         logger.LogError(ex, "An error occurred while migrating or seeding the database");
+
         throw; // Rethrow to stop application startup if database setup fails
     }
 }
