@@ -1,4 +1,5 @@
-﻿using AdminHubApi.Dtos.ApiResponse;
+﻿using AdminHubApi.Constants;
+using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
@@ -9,10 +10,12 @@ namespace AdminHubApi.Services;
 public class ProjectService : IProjectService
 {
     private readonly IProjectRepository _projectRepository;
-
-    public ProjectService(IProjectRepository projectRepository)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    
+    public ProjectService(IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor)
     {
         _projectRepository = projectRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ApiResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()

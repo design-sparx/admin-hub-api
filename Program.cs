@@ -140,6 +140,9 @@ builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>(
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
 
+// Custom Authorization Handler
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
