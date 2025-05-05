@@ -222,7 +222,7 @@ public class AuthController : ControllerBase
     /// Logout with username and password
     /// </summary>
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] AuthRequestDto request)
+    public async Task<IActionResult> Logout([FromBody] LogoutAuthRequestDto request)
     {
         // Get the current token from the Authorization header
         var authorizationHeader = Request.Headers["Authorization"].ToString();
