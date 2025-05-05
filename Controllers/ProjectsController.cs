@@ -1,4 +1,5 @@
 ﻿using AdminHubApi.Constants;
+using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
@@ -55,16 +56,30 @@ public class ProjectsController : ControllerBase
     [PermissionAuthorize(Permissions.Projects.Create)]
     public async Task<IActionResult> Create(CreateProjectDto projectDto)
     {
+        // Validate the input
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Succeeded = false,
+                Message = "Invalid project data",
+                Errors = new List<string>(ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToArray())
+            });
+        }
+    
         var createdProjectIdResponse = await _projectService.AddProjectAsync(projectDto);
-        
+    
         if (!createdProjectIdResponse.Succeeded)
         {
             return BadRequest(createdProjectIdResponse);
         }
-        
+    
         var createdProjectId = createdProjectIdResponse.Data;
         var createdProjectResponse = await _projectService.GetProjectByIdAsync(createdProjectId);
-        
+    
         return createdProjectResponse.Succeeded 
             ? CreatedAtAction(nameof(GetById), new { id = createdProjectId }, createdProjectResponse) 
             : BadRequest(createdProjectResponse);

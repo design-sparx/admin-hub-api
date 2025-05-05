@@ -27,8 +27,4 @@
       <_ContentIncludedByDefault Remove="AdminHubApi\Properties\launchSettings.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Mapper\" />
-    </ItemGroup>
-
 </Project>
