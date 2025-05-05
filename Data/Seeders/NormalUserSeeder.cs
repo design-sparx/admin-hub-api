@@ -40,13 +40,15 @@ namespace AdminHubApi.Data.Seeders
                 {
                     logger.LogInformation($"Demo user created successfully");
 
-                    // Add to user role
+                    // Add to the user role
                     await userManager.AddToRoleAsync(demoUser, RoleSeeder.UserRole);
 
                     // Add all user permissions
                     var userPermissions = new List<Claim>
                     {
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
                     };
 
                     await userManager.AddClaimsAsync(demoUser, userPermissions);
