@@ -178,7 +178,13 @@ using (var scope = app.Services.CreateScope())
             // Add seeders
             await AdminUserSeeder.SeedAdminUserAsync(app.Services);
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
+            await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
+        
+        // Always update permissions to ensure new permissions are added
+        logger.LogInformation("Updating role permissions...");
+        await PermissionUpdateSeeder.UpdateRolePermissionsAsync(app.Services);
+        logger.LogInformation("Role permissions updated successfully");
 
         logger.LogInformation("Database seeding completed successfully");
     }

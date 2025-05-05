@@ -1,12 +1,15 @@
-﻿using AdminHubApi.Dtos.Projects;
+﻿using AdminHubApi.Constants;
+using AdminHubApi.Dtos.Projects;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers;
 
 [ApiController]
 [Route("/api/projects")]
+[PermissionAuthorize(Permissions.Projects.View)]
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectService _projectService;
@@ -49,6 +52,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
+    [PermissionAuthorize(Permissions.Projects.Create)]
     public async Task<IActionResult> Create(CreateProjectDto projectDto)
     {
         var createdProjectIdResponse = await _projectService.AddProjectAsync(projectDto);
@@ -67,6 +71,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [PermissionAuthorize(Permissions.Projects.Edit)]
     public async Task<IActionResult> Update(Guid id, ProjectResponseDto projectDto)
     {
         try
@@ -82,6 +87,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [PermissionAuthorize(Permissions.Projects.Delete)]
     public async Task<IActionResult> Delete(Guid id)
     {
         try

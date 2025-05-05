@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿
+using System.Security.Claims;
 using AdminHubApi.Constants;
 using Microsoft.AspNetCore.Identity;
 
@@ -31,7 +32,11 @@ namespace AdminHubApi.Data.Seeders
                     Permissions.Roles.View,
                     Permissions.Roles.Create,
                     Permissions.Roles.Edit,
-                    Permissions.Roles.Delete
+                    Permissions.Roles.Delete,
+                    Permissions.Projects.View,
+                    Permissions.Projects.Create,
+                    Permissions.Projects.Edit,
+                    Permissions.Projects.Delete
                     // Add other admin permissions
                 }
             },
@@ -41,7 +46,11 @@ namespace AdminHubApi.Data.Seeders
                     Permissions.Users.View,
                     Permissions.Users.Create,
                     Permissions.Users.Edit,
-                    Permissions.Roles.View
+                    Permissions.Roles.View,
+                    Permissions.Projects.View,
+                    Permissions.Projects.Create,
+                    Permissions.Projects.Edit,
+                    Permissions.Projects.Delete
                     // Add other manager permissions
                 }
             },
@@ -50,6 +59,7 @@ namespace AdminHubApi.Data.Seeders
                 {
                     Permissions.Users.View,
                     Permissions.Users.Edit,
+                    Permissions.Projects.View
                 }
             }
         };

@@ -40,7 +40,7 @@ namespace AdminHubApi.Data.Seeders
                 {
                     logger.LogInformation($"Demo user created successfully");
 
-                    // Add to Admin role
+                    // Add to user role
                     await userManager.AddToRoleAsync(demoUser, RoleSeeder.UserRole);
 
                     // Add all user permissions
@@ -61,7 +61,7 @@ namespace AdminHubApi.Data.Seeders
             {
                 logger.LogInformation("Demo user already exists");
                 
-                // Ensure demo user is in User role
+                // Ensure demo user is in user role
                 if (!await userManager.IsInRoleAsync(demoUser, RoleSeeder.UserRole))
                 {
                     await userManager.AddToRoleAsync(demoUser, RoleSeeder.UserRole);
