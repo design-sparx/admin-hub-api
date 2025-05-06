@@ -102,7 +102,7 @@ builder.Services.AddAuthentication(options =>
 
             OnMessageReceived = context =>
             {
-                // Extract token from query string from WebSocket connections if needed
+                // Extract token from a query string from WebSocket connections if needed
                 return Task.CompletedTask;
             }
         };
@@ -136,6 +136,7 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
