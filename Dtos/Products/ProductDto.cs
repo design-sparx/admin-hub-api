@@ -1,6 +1,6 @@
 ﻿using AdminHubApi.Entities;
 
-namespace AdminHubApi.Dtos.Product;
+namespace AdminHubApi.Dtos.Products;
 
 public class ProductDto
 {
@@ -17,5 +17,7 @@ public class ProductDto
     public string OwnerId { get; set; }
     public Guid? CategoryId { get; set; }
     public string CategoryName { get; set; }
+    public ProductCategory Category { get; set; }
     public DateTime? LastUpdated { get; set; }
+    public string StatusText => Status.ToString();
 }

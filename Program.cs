@@ -133,6 +133,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 // Project service
 builder.Services.AddScoped<IProjectService, ProjectService>();
 
+// Product service
+builder.Services.AddScoped<IProductService, ProductService>();
+
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

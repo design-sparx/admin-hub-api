@@ -35,17 +35,17 @@ public class Product
     
     public ProductStatus Status { get; set; } = ProductStatus.Draft;
     
-    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     public string OwnerId { get; set; }
     
     [ForeignKey("OwnerId")]
     public ApplicationUser Owner { get; set; }
     
-    public Guid? CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
     
     [ForeignKey("CategoryId")]
     public ProductCategory Category { get; set; }
     
-    public DateTime? LastUpdated { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

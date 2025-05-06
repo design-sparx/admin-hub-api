@@ -1,8 +1,8 @@
 ﻿using AdminHubApi.Entities;
 
-namespace AdminHubApi.Dtos.Product;
+namespace AdminHubApi.Dtos.Products;
 
-public class UpdateProductDto
+public class CreateProductDto
 {
     public string Title { get; set; }
     public string Description { get; set; }
@@ -10,7 +10,6 @@ public class UpdateProductDto
     public int QuantityInStock { get; set; }
     public string SKU { get; set; }
     public string ImageUrl { get; set; }
-    public bool IsActive { get; set; }
-    public ProductStatus Status { get; set; }
-    public Guid? CategoryId { get; set; }
+    public ProductStatus Status { get; set; } = ProductStatus.Draft;
+    public Guid CategoryId { get; set; }
 }
