@@ -7,7 +7,7 @@ namespace AdminHubApi.Security
     // This class dynamically creates authorization policies for permissions
     public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {
-        public const string PERMISSION_POLICY_PREFIX = "Permission:";
+        public const string PermissionPolicyPrefix = "Permission:";
         
         public PermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options) 
             : base(options)
@@ -17,10 +17,10 @@ namespace AdminHubApi.Security
         public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
             // First check if this is a permission policy
-            if (policyName.StartsWith(PERMISSION_POLICY_PREFIX, StringComparison.OrdinalIgnoreCase))
+            if (policyName.StartsWith(PermissionPolicyPrefix, StringComparison.OrdinalIgnoreCase))
             {
                 // Extract the permission from the policy name
-                var permission = policyName.Substring(PERMISSION_POLICY_PREFIX.Length);
+                var permission = policyName.Substring(PermissionPolicyPrefix.Length);
                 
                 // Create a policy requiring the permission claim
                 var policy = new AuthorizationPolicyBuilder()

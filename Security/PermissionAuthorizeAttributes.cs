@@ -8,7 +8,7 @@ namespace AdminHubApi.Security
         public PermissionAuthorizeAttribute(string permission)
         {
             // Create a policy name with the permission prefix
-            Policy = $"{PermissionAuthorizationPolicyProvider.PERMISSION_POLICY_PREFIX}{permission}";
+            Policy = $"{PermissionAuthorizationPolicyProvider.PermissionPolicyPrefix}{permission}";
         }
     }
 }

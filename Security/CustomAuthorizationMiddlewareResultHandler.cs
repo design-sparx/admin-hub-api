@@ -92,7 +92,13 @@ namespace AdminHubApi.Security
         private static async Task WriteJsonResponseAsync<T>(HttpContext context, ApiResponse<T> response)
         {
             context.Response.ContentType = "application/json";
-            await JsonSerializer.SerializeAsync(context.Response.Body, response);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            await JsonSerializer.SerializeAsync(context.Response.Body, response, options);
         }
     }
 }
