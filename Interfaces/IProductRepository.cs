@@ -12,5 +12,4 @@ public interface IProductRepository
     Task<IEnumerable<Product>> GetProductsByStatusAsync(ProductStatus status);
     Task<IEnumerable<Product>> GetProductsByCategoryAsync(Guid categoryId);
     Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId);
-
 }

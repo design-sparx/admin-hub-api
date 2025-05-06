@@ -10,12 +10,10 @@ namespace AdminHubApi.Services;
 public class ProjectService : IProjectService
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public ProjectService(IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor)
+    public ProjectService(IProjectRepository projectRepository)
     {
         _projectRepository = projectRepository;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ApiResponse<IEnumerable<ProjectResponseDto>>> GetAllProjectsAsync()

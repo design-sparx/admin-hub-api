@@ -1,4 +1,4 @@
-﻿using AdminHubApi.Dtos.Product;
+﻿using AdminHubApi.Dtos.Products;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,40 +10,39 @@ namespace AdminHubApi.Controllers;
 [Route("/api/products")]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IProductService _productService;
     private readonly ILogger<ProductsController> _logger;
 
-    public ProductsController(IProductRepository productRepository, ILogger<ProductsController> logger)
+    public ProductsController(IProductService productService, ILogger<ProductsController> logger)
     {
-        _productRepository = productRepository;
+        _productService = productService;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetAllProducts()
     {
-        var products = await _productRepository.GetAllAsync();
-        var productDtos = products.Select(MapToDto);
+        var products = await _productService.GetAllAsync();
 
-        return Ok(productDtos);
+        return Ok(products);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetProductById(Guid id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await _productService.GetByIdAsync(id);
 
         if (product == null)
         {
             return NotFound();
         }
 
-        return Ok(MapToDto(product));
+        return Ok(product);
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductDto createProductDto)
+    public async Task<ActionResult> CreateProduct(CreateProductDto createProductDto)
     {
         var product = new Product
         {
@@ -59,21 +58,41 @@ public class ProductsController : ControllerBase
             OwnerId = User.FindFirst("sub")?.Value ?? User.Identity.Name
         };
 
-        await _productRepository.CreateAsync(product);
+        var result = await _productService.CreateAsync(product);
 
-        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, MapToDto(product));
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, result);
     }
 
     [HttpPut("{id}")]
     [Authorize]
     public async Task<IActionResult> UpdateProduct(Guid id, UpdateProductDto updateProductDto)
     {
-        var product = await _productRepository.GetByIdAsync(id);
-
-        if (product == null)
+        var productResponse = await _productService.GetByIdAsync(id);
+    
+        if (!productResponse.Succeeded)
         {
-            return NotFound();
+            return NotFound(productResponse);
         }
+
+        var product = new Product
+        {
+            Id = id,
+            Title = updateProductDto.Title,
+            Description = updateProductDto.Description,
+            Price = updateProductDto.Price,
+            QuantityInStock = updateProductDto.QuantityInStock,
+            SKU = updateProductDto.SKU,
+            ImageUrl = updateProductDto.ImageUrl,
+            IsActive = updateProductDto.IsActive,
+            Status = updateProductDto.Status,
+            CategoryId = updateProductDto.CategoryId,
+            OwnerId = productResponse.Data.OwnerId
+        };
 
         // Check if the current user is the owner or has admin rights
         var currentUserId = User.FindFirst("sub")?.Value ?? User.Identity.Name;
@@ -83,18 +102,7 @@ public class ProductsController : ControllerBase
             return Forbid();
         }
 
-        // Update the product properties
-        product.Title = updateProductDto.Title;
-        product.Description = updateProductDto.Description;
-        product.Price = updateProductDto.Price;
-        product.QuantityInStock = updateProductDto.QuantityInStock;
-        product.SKU = updateProductDto.SKU;
-        product.ImageUrl = updateProductDto.ImageUrl;
-        product.IsActive = updateProductDto.IsActive;
-        product.Status = updateProductDto.Status;
-        product.CategoryId = updateProductDto.CategoryId;
-
-        await _productRepository.UpdateAsync(product);
+        await _productService.UpdateAsync(product);
 
         return NoContent();
     }
@@ -103,71 +111,47 @@ public class ProductsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
-
-        if (product == null)
+        var productResponse = await _productService.GetByIdAsync(id);
+    
+        if (!productResponse.Succeeded)
         {
-            return NotFound();
+            return NotFound(productResponse);
         }
 
         // Check if the current user is the owner or has admin rights
         var currentUserId = User.FindFirst("sub")?.Value ?? User.Identity.Name;
 
-        if (product.OwnerId != currentUserId && !User.IsInRole("Admin"))
+        if (productResponse.Data.OwnerId != currentUserId && !User.IsInRole("Admin"))
         {
             return Forbid();
         }
 
-        await _productRepository.DeleteAsync(id);
+        await _productService.DeleteAsync(id);
 
         return NoContent();
     }
 
     [HttpGet("status/{status}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByStatus(ProductStatus status)
+    public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProductsByStatus(ProductStatus status)
     {
-        var products = await _productRepository.GetProductsByStatusAsync(status);
-        var productDtos = products.Select(MapToDto);
+        var products = await _productService.GetProductsByStatusAsync(status);
 
-        return Ok(productDtos);
+        return Ok(products);
     }
 
     [HttpGet("category/{categoryId}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(Guid categoryId)
+    public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProductsByCategory(Guid categoryId)
     {
-        var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-        var productDtos = products.Select(MapToDto);
+        var products = await _productService.GetProductsByCategoryAsync(categoryId);
 
-        return Ok(productDtos);
+        return Ok(products);
     }
 
     [HttpGet("owner/{ownerId}")]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByOwner(string ownerId)
     {
-        var products = await _productRepository.GetProductsByOwnerAsync(ownerId);
-        var productDtos = products.Select(MapToDto);
+        var products = await _productService.GetProductsByOwnerAsync(ownerId);
 
-        return Ok(productDtos);
-    }
-
-    private static ProductDto MapToDto(Product product)
-    {
-        return new ProductDto
-        {
-            Id = product.Id,
-            Title = product.Title,
-            Description = product.Description,
-            Price = product.Price,
-            QuantityInStock = product.QuantityInStock,
-            SKU = product.SKU,
-            ImageUrl = product.ImageUrl,
-            IsActive = product.IsActive,
-            Status = product.Status,
-            CreatedDate = product.CreatedDate,
-            OwnerId = product.OwnerId,
-            CategoryId = product.CategoryId,
-            CategoryName = product.Category?.Name,
-            LastUpdated = product.LastUpdated
-        };
+        return Ok(products);
     }
 }
