@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.ProductCategory;
+using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
 
@@ -55,22 +56,29 @@ public class ProductCategoryService : IProductCategoryService
         };
     }
 
-    public async Task UpdateAsync(ProductCategory productCategory)
+    public async Task UpdateAsync(ProductCategoryResponseDto productCategoryResponseDto)
     {
-        var existingProductCategory = await _productCategoryRepository.GetByIdAsync(productCategory.Id);
-        
-        if (existingProductCategory == null) throw new KeyNotFoundException($"Product category with id: {productCategory.Id} was not found");
-        
+        var productCategory = await _productCategoryRepository.GetByIdAsync(productCategoryResponseDto.Id);
+
+        if (productCategory == null)
+            throw new KeyNotFoundException($"Product category with id: {productCategoryResponseDto.Id} was not found");
+
+        productCategory.Title = productCategoryResponseDto.Title;
+        productCategory.Description = productCategoryResponseDto.Description;
+        productCategory.ModifiedById = productCategoryResponseDto.ModifiedById;
+        productCategory.Modified = productCategoryResponseDto.Modified;
+
         await _productCategoryRepository.UpdateAsync(productCategory);
     }
 
-    public Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        var existingProductCategory = _productCategoryRepository.GetByIdAsync(id);
-        
-        if (existingProductCategory == null) throw new KeyNotFoundException($"Product category with id: {id} was not found");
-        
-        return _productCategoryRepository.DeleteAsync(id);
+        var productCategory = await _productCategoryRepository.GetByIdAsync(id);
+
+        if (productCategory == null)
+            throw new KeyNotFoundException($"Product category with id: {id} was not found");
+
+        await _productCategoryRepository.DeleteAsync(id);
     }
 
     private static ProductCategoryResponseDto MapToResponseDto(ProductCategory productCategory)
@@ -80,8 +88,39 @@ public class ProductCategoryService : IProductCategoryService
             Id = productCategory.Id,
             Title = productCategory.Title,
             Description = productCategory.Description,
-            CreatedAt = productCategory.CreatedAt,
-            UpdatedAt = productCategory.UpdatedAt,
+            Created = productCategory.Created,
+            Modified = productCategory.Modified,
+            CreatedById = productCategory.CreatedById,
+            ModifiedById = productCategory.ModifiedById,
+            CreatedBy = productCategory.CreatedBy != null
+                ? new UserDto
+                {
+                    Id = productCategory.CreatedBy.Id,
+                    UserName = productCategory.CreatedBy.UserName,
+                    Email = productCategory.CreatedBy.Email,
+                    PhoneNumber = productCategory.CreatedBy.PhoneNumber,
+                    EmailConfirmed = productCategory.CreatedBy.EmailConfirmed,
+                    PhoneNumberConfirmed = productCategory.CreatedBy.PhoneNumberConfirmed,
+                    TwoFactorEnabled = productCategory.CreatedBy.TwoFactorEnabled,
+                    LockoutEnabled = productCategory.CreatedBy.LockoutEnabled,
+                    LockoutEnd = productCategory.CreatedBy.LockoutEnd
+                }
+                : null,
+            ModifiedBy = productCategory.ModifiedBy != null
+                ? new UserDto
+                {
+                    Id = productCategory.ModifiedBy.Id,
+                    UserName = productCategory.ModifiedBy.UserName,
+                    Email = productCategory.ModifiedBy.Email,
+                    PhoneNumber = productCategory.ModifiedBy.PhoneNumber,
+                    EmailConfirmed = productCategory.ModifiedBy.EmailConfirmed,
+                    PhoneNumberConfirmed = productCategory.ModifiedBy.PhoneNumberConfirmed,
+                    TwoFactorEnabled = productCategory.ModifiedBy.TwoFactorEnabled,
+                    LockoutEnabled = productCategory.ModifiedBy.LockoutEnabled,
+                    LockoutEnd = productCategory.ModifiedBy.LockoutEnd
+                }
+                : null,
+            ProductCount = productCategory.Products?.Count ?? 0
         };
     }
 }
