@@ -102,7 +102,7 @@ builder.Services.AddAuthentication(options =>
 
             OnMessageReceived = context =>
             {
-                // Extract token from query string from WebSocket connections if needed
+                // Extract token from a query string from WebSocket connections if needed
                 return Task.CompletedTask;
             }
         };
@@ -124,18 +124,18 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
 });
 
-// Add Claims
+// Services
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
-
-// User service
 builder.Services.AddScoped<IUserService, UserService>();
-
-// Project service
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();

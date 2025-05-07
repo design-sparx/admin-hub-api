@@ -27,6 +27,22 @@ public static class Permissions
         public const string Edit = "Permissions.Projects.Edit";
         public const string Delete = "Permissions.Projects.Delete";
     }
+    
+    public static class Products
+    {
+        public const string View = "Permissions.Products.View";
+        public const string Create = "Permissions.Products.Create";
+        public const string Edit = "Permissions.Products.Edit";
+        public const string Delete = "Permissions.Products.Delete";
+    }
+    
+    public static class ProductCategories
+    {
+        public const string View = "Permissions.ProductCategories.View";
+        public const string Create = "Permissions.ProductCategories.Create";
+        public const string Edit = "Permissions.ProductCategories.Edit";
+        public const string Delete = "Permissions.ProductCategories.Delete";
+    }
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()
