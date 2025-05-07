@@ -49,7 +49,11 @@ public class ProductCategoriesController : ControllerBase
         {
             Id = Guid.NewGuid(),
             Title = productCategoryDto.Title,
-            Description = productCategoryDto.Description,
+            Description = productCategoryDto.Description ?? string.Empty,
+            CreatedById = productCategoryDto.CreatedById,
+            ModifiedById = productCategoryDto.CreatedById,
+            Created = DateTime.UtcNow,
+            Modified = DateTime.UtcNow
         };
 
         var result = await _productCategoryService.CreateAsync(productCategory);
@@ -67,20 +71,21 @@ public class ProductCategoriesController : ControllerBase
     {
         var productCategoryResponse = await _productCategoryService.GetByIdAsync(id);
 
-        if (!productCategoryResponse.Succeeded)
+        if (productCategoryResponse == null)
         {
-            return NotFound(productCategoryResponse);
+            return NotFound();
         }
 
-        var productCategory = new ProductCategory
-        {
-            Id = id,
-            Title = updateProductCategoryDto.Description
-        };
+        // Update the existing entity instead of creating a new one
+        var existingCategory = productCategoryResponse.Data;
+        existingCategory.Title = updateProductCategoryDto.Title;
+        existingCategory.Description = updateProductCategoryDto.Description ?? string.Empty;
+        existingCategory.ModifiedById = updateProductCategoryDto.ModifiedById;
+        existingCategory.Modified = DateTime.UtcNow;
 
-        await _productCategoryService.UpdateAsync(productCategory);
+        await _productCategoryService.UpdateAsync(existingCategory);
 
-        return NoContent();
+        return Ok(existingCategory);
     }
 
     [HttpDelete("{id}")]
@@ -88,9 +93,9 @@ public class ProductCategoriesController : ControllerBase
     {
         var productCategoryResponse = await _productCategoryService.GetByIdAsync(id);
 
-        if (!productCategoryResponse.Succeeded)
+        if (productCategoryResponse == null)
         {
-            return NotFound(productCategoryResponse);
+            return NotFound();
         }
 
         await _productCategoryService.DeleteAsync(id);

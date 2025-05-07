@@ -9,11 +9,14 @@ namespace AdminHubApi.Entities
 
         [Required] [MaxLength(100)] public string Title { get; set; }
 
-        [MaxLength(255)]
-        public string Description { get; set; } = String.Empty;
+        [MaxLength(255)] public string Description { get; set; } = String.Empty;
 
         public ICollection<Product> Products { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; }
+        public DateTime Created { get; set; } = DateTime.UtcNow;
+        public DateTime Modified { get; set; }
+        public string CreatedById { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
+        public string ModifiedById { get; set; }
+        public ApplicationUser ModifiedBy { get; set; }
     }
 }
