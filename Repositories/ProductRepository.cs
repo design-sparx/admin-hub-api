@@ -18,7 +18,8 @@ public class ProductRepository : IProductRepository
     {
         return await _dbContext.Products
             .Include(p => p.Category)
-            .Include(p => p.Owner)
+            .Include(p => p.CreatedBy)
+            .Include(p => p.ModifiedBy)
             .ToListAsync();
 
     }
@@ -27,15 +28,16 @@ public class ProductRepository : IProductRepository
     {
         return await _dbContext.Products
             .Include(p => p.Category)
-            .Include(p => p.Owner)
+            .Include(p => p.CreatedBy)
+            .Include(p => p.ModifiedBy)
             .FirstOrDefaultAsync(p => p.Id == id);
 
     }
 
     public async Task CreateAsync(Product product)
     {
-        product.CreatedAt = DateTime.UtcNow;
-        product.UpdatedAt = DateTime.UtcNow;
+        product.Created = DateTime.UtcNow;
+        product.Modified = DateTime.UtcNow;
         
         await _dbContext.Products.AddAsync(product);
         await _dbContext.SaveChangesAsync();
@@ -44,7 +46,7 @@ public class ProductRepository : IProductRepository
 
     public async Task UpdateAsync(Product product)
     {
-        product.UpdatedAt = DateTime.UtcNow;
+        product.Modified = DateTime.UtcNow;
         
         _dbContext.Products.Update(product);
         await _dbContext.SaveChangesAsync();
@@ -66,7 +68,8 @@ public class ProductRepository : IProductRepository
     {
         return await _dbContext.Products
             .Include(p => p.Category)
-            .Include(p => p.Owner)
+            .Include(p => p.CreatedBy)
+            .Include(p => p.ModifiedBy)
             .Where(p => p.Status == status)
             .ToListAsync();
 
@@ -76,18 +79,20 @@ public class ProductRepository : IProductRepository
     {
         return await _dbContext.Products
             .Include(p => p.Category)
-            .Include(p => p.Owner)
+            .Include(p => p.CreatedBy)
+            .Include(p => p.ModifiedBy)
             .Where(p => p.CategoryId == categoryId)
             .ToListAsync();
 
     }
 
-    public async Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId)
+    public async Task<IEnumerable<Product>> GetProductsByCreatedByAsync(string createdById)
     {
         return await _dbContext.Products
             .Include(p => p.Category)
-            .Include(p => p.Owner)
-            .Where(p => p.OwnerId == ownerId)
+            .Include(p => p.CreatedBy)
+            .Include(p => p.ModifiedBy)
+            .Where(p => p.CreatedById == createdById)
             .ToListAsync();
 
     }

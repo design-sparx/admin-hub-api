@@ -1,6 +1,8 @@
 ﻿
 using AdminHubApi.Dtos.ApiResponse;
+using AdminHubApi.Dtos.ProductCategory;
 using AdminHubApi.Dtos.Products;
+using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
 
@@ -56,14 +58,26 @@ namespace AdminHubApi.Services
             };
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(ProductResponseDto productResponseDto)
         {
-            var existingProduct = await _productRepository.GetByIdAsync(product.Id);
+            var existingProduct = await _productRepository.GetByIdAsync(productResponseDto.Id);
 
             if (existingProduct == null) 
-                throw new KeyNotFoundException($"Product with id: {product.Id} was not found");
+                throw new KeyNotFoundException($"Product with id: {productResponseDto.Id} was not found");
+            
+            existingProduct.Title = productResponseDto.Title;
+            existingProduct.Description = productResponseDto.Description;
+            existingProduct.Price = productResponseDto.Price;
+            existingProduct.QuantityInStock = productResponseDto.QuantityInStock;
+            existingProduct.SKU = productResponseDto.SKU;
+            existingProduct.ImageUrl = productResponseDto.ImageUrl;
+            existingProduct.IsActive = productResponseDto.IsActive;
+            existingProduct.Status = productResponseDto.Status;
+            existingProduct.CategoryId = productResponseDto.CategoryId;
+            existingProduct.ModifiedById = productResponseDto.ModifiedById;
+            existingProduct.Modified = productResponseDto.Modified;
 
-            await _productRepository.UpdateAsync(product);
+            await _productRepository.UpdateAsync(existingProduct);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -84,7 +98,7 @@ namespace AdminHubApi.Services
             {
                 Succeeded = true,
                 Data = products.Select(MapToResponseDto),
-                Message = "Products retrieved by status",
+                Message = $"Products retrieved by status - {status}",
                 Errors = []
             };
         }
@@ -97,20 +111,20 @@ namespace AdminHubApi.Services
             {
                 Succeeded = true,
                 Data = products.Select(MapToResponseDto),
-                Message = "Products retrieved by category",
+                Message = $"Products retrieved by category - {categoryId}",
                 Errors = []
             };
         }
 
-        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetProductsByOwnerAsync(string ownerId)
+        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetProductsByCreatedByAsync(string createdById)
         {
-            var products = await _productRepository.GetProductsByOwnerAsync(ownerId);
+            var products = await _productRepository.GetProductsByCreatedByAsync(createdById);
 
             return new ApiResponse<IEnumerable<ProductResponseDto>>
             {
                 Succeeded = true,
                 Data = products.Select(MapToResponseDto),
-                Message = "Products retrieved by owner",
+                Message = $"Products retrieved by creator - {createdById}",
                 Errors = []
             };
         }
@@ -129,10 +143,51 @@ namespace AdminHubApi.Services
                 ImageUrl = product.ImageUrl,
                 Status = product.Status,
                 IsActive = product.IsActive,
-                CreatedAt = product.CreatedAt,
-                UpdatedAt = product.UpdatedAt,
                 CategoryId = product.CategoryId,
-                OwnerId = product.OwnerId,
+                CategoryName = product.Category.Title,
+                Category = product.Category != null ?
+                    new ProductCategoryResponseDto
+                    {
+                        Id = product.Category.Id,
+                        Title = product.Category.Title,
+                        Description = product.Category.Description,
+                        CreatedById = product.Category.CreatedById,
+                        ModifiedById = product.Category.ModifiedById,
+                        Created = product.Category.Created,
+                        Modified = product.Category.Modified,
+                    } : null,
+                Created = product.Created,
+                Modified = product.Modified,
+                CreatedById = product.CreatedById,
+                ModifiedById = product.ModifiedById,
+                CreatedBy = product.CreatedBy != null
+                    ? new UserDto
+                    {
+                        Id = product.CreatedBy.Id,
+                        UserName = product.CreatedBy.UserName,
+                        Email = product.CreatedBy.Email,
+                        PhoneNumber = product.CreatedBy.PhoneNumber,
+                        EmailConfirmed = product.CreatedBy.EmailConfirmed,
+                        PhoneNumberConfirmed = product.CreatedBy.PhoneNumberConfirmed,
+                        TwoFactorEnabled = product.CreatedBy.TwoFactorEnabled,
+                        LockoutEnabled = product.CreatedBy.LockoutEnabled,
+                        LockoutEnd = product.CreatedBy.LockoutEnd
+                    }
+                    : null,
+                ModifiedBy = product.ModifiedBy != null
+                    ? new UserDto
+                    {
+                        Id = product.ModifiedBy.Id,
+                        UserName = product.ModifiedBy.UserName,
+                        Email = product.ModifiedBy.Email,
+                        PhoneNumber = product.ModifiedBy.PhoneNumber,
+                        EmailConfirmed = product.ModifiedBy.EmailConfirmed,
+                        PhoneNumberConfirmed = product.ModifiedBy.PhoneNumberConfirmed,
+                        TwoFactorEnabled = product.ModifiedBy.TwoFactorEnabled,
+                        LockoutEnabled = product.ModifiedBy.LockoutEnabled,
+                        LockoutEnd = product.ModifiedBy.LockoutEnd
+                    }
+                    : null,
             };
         }
     }

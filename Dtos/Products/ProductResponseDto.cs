@@ -1,4 +1,5 @@
-﻿using AdminHubApi.Dtos.Auth;
+﻿using AdminHubApi.Dtos.ProductCategory;
+using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
 
 namespace AdminHubApi.Dtos.Products;
@@ -14,11 +15,13 @@ public class ProductResponseDto
     public string ImageUrl { get; set; }
     public bool IsActive { get; set; }
     public ProductStatus Status { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public UserDto Owner { get; set; }
-    public string OwnerId { get; set; }
-    public Entities.ProductCategory Category { get; set; }
+    public ProductCategoryResponseDto Category { get; set; }
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime Modified { get; set; }
+    public string CreatedById { get; set; }
+    public UserDto CreatedBy { get; set; }
+    public string ModifiedById { get; set; }
+    public UserDto ModifiedBy { get; set; }
 }

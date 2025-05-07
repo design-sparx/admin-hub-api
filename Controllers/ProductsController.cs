@@ -41,7 +41,6 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<ActionResult> CreateProduct(CreateProductDto createProductDto)
     {
         var product = new Product
@@ -55,7 +54,9 @@ public class ProductsController : ControllerBase
             ImageUrl = createProductDto.ImageUrl,
             Status = createProductDto.Status,
             CategoryId = createProductDto.CategoryId,
-            OwnerId = User.FindFirst("sub")?.Value ?? User.Identity.Name
+            CreatedById = createProductDto.CreatedById,
+            Created = DateTime.UtcNow,
+            Modified = DateTime.UtcNow
         };
 
         var result = await _productService.CreateAsync(product);
@@ -78,33 +79,16 @@ public class ProductsController : ControllerBase
         {
             return NotFound(productResponse);
         }
+        
+        var existingProduct = productResponse.Data;
+        existingProduct.Title = updateProductDto.Title;
+        existingProduct.Description = updateProductDto.Description ?? string.Empty;
+        existingProduct.ModifiedById = updateProductDto.ModifiedById;
+        existingProduct.Modified = DateTime.UtcNow;
 
-        var product = new Product
-        {
-            Id = id,
-            Title = updateProductDto.Title,
-            Description = updateProductDto.Description,
-            Price = updateProductDto.Price,
-            QuantityInStock = updateProductDto.QuantityInStock,
-            SKU = updateProductDto.SKU,
-            ImageUrl = updateProductDto.ImageUrl,
-            IsActive = updateProductDto.IsActive,
-            Status = updateProductDto.Status,
-            CategoryId = updateProductDto.CategoryId,
-            OwnerId = productResponse.Data.OwnerId
-        };
-
-        // Check if the current user is the owner or has admin rights
-        var currentUserId = User.FindFirst("sub")?.Value ?? User.Identity.Name;
-
-        if (product.OwnerId != currentUserId && !User.IsInRole("Admin"))
-        {
-            return Forbid();
-        }
-
-        await _productService.UpdateAsync(product);
-
-        return NoContent();
+        await _productService.UpdateAsync(existingProduct);
+        
+        return Ok(existingProduct);
     }
 
     [HttpDelete("{id}")]
@@ -116,14 +100,6 @@ public class ProductsController : ControllerBase
         if (!productResponse.Succeeded)
         {
             return NotFound(productResponse);
-        }
-
-        // Check if the current user is the owner or has admin rights
-        var currentUserId = User.FindFirst("sub")?.Value ?? User.Identity.Name;
-
-        if (productResponse.Data.OwnerId != currentUserId && !User.IsInRole("Admin"))
-        {
-            return Forbid();
         }
 
         await _productService.DeleteAsync(id);
@@ -147,10 +123,10 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("owner/{ownerId}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByOwner(string ownerId)
+    [HttpGet("created-by/{createdById}")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCreatedBy(string createdById)
     {
-        var products = await _productService.GetProductsByOwnerAsync(ownerId);
+        var products = await _productService.GetProductsByCreatedByAsync(createdById);
 
         return Ok(products);
     }

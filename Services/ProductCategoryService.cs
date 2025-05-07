@@ -58,17 +58,17 @@ public class ProductCategoryService : IProductCategoryService
 
     public async Task UpdateAsync(ProductCategoryResponseDto productCategoryResponseDto)
     {
-        var productCategory = await _productCategoryRepository.GetByIdAsync(productCategoryResponseDto.Id);
+        var existingProductCategory = await _productCategoryRepository.GetByIdAsync(productCategoryResponseDto.Id);
 
-        if (productCategory == null)
+        if (existingProductCategory == null)
             throw new KeyNotFoundException($"Product category with id: {productCategoryResponseDto.Id} was not found");
 
-        productCategory.Title = productCategoryResponseDto.Title;
-        productCategory.Description = productCategoryResponseDto.Description;
-        productCategory.ModifiedById = productCategoryResponseDto.ModifiedById;
-        productCategory.Modified = productCategoryResponseDto.Modified;
+        existingProductCategory.Title = productCategoryResponseDto.Title;
+        existingProductCategory.Description = productCategoryResponseDto.Description;
+        existingProductCategory.ModifiedById = productCategoryResponseDto.ModifiedById;
+        existingProductCategory.Modified = productCategoryResponseDto.Modified;
 
-        await _productCategoryRepository.UpdateAsync(productCategory);
+        await _productCategoryRepository.UpdateAsync(existingProductCategory);
     }
 
     public async Task DeleteAsync(Guid id)

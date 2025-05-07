@@ -1,4 +1,5 @@
-﻿using AdminHubApi.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using AdminHubApi.Entities;
 
 namespace AdminHubApi.Dtos.Products;
 
@@ -13,4 +14,6 @@ public class UpdateProductDto
     public bool IsActive { get; set; }
     public ProductStatus Status { get; set; }
     public Guid CategoryId { get; set; }
+    [Required] 
+    public string ModifiedById { get; set; }
 }
