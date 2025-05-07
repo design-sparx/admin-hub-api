@@ -12,19 +12,18 @@ namespace AdminHubApi.Data.Seeders
         public readonly static string ManagerRole = "Manager";
 
         // Define all application roles
-        public readonly static string[] ApplicationRoles = new[]
-        {
+        private readonly static string[] ApplicationRoles =
+        [
             AdminRole,
             UserRole,
             ManagerRole
-        };
+        ];
 
         // Define role permissions
-        private readonly static Dictionary<string, string[]> RolePermissions = new()
+        private readonly static Dictionary<string, string[]> RolePermissions = new Dictionary<string, string[]>
         {
             {
-                AdminRole, new[]
-                {
+                AdminRole, [
                     Permissions.Users.View,
                     Permissions.Users.Create,
                     Permissions.Users.Edit,
@@ -36,13 +35,19 @@ namespace AdminHubApi.Data.Seeders
                     Permissions.Projects.View,
                     Permissions.Projects.Create,
                     Permissions.Projects.Edit,
-                    Permissions.Projects.Delete
-                    // Add other admin permissions
-                }
+                    Permissions.Projects.Delete,
+                    Permissions.Products.View,
+                    Permissions.Products.Create,
+                    Permissions.Products.Edit,
+                    Permissions.Products.Delete,
+                    Permissions.ProductCategories.View,
+                    Permissions.ProductCategories.Create,
+                    Permissions.ProductCategories.Edit,
+                    Permissions.ProductCategories.Delete
+                ]
             },
             {
-                ManagerRole, new[]
-                {
+                ManagerRole, [
                     Permissions.Users.View,
                     Permissions.Users.Create,
                     Permissions.Users.Edit,
@@ -50,17 +55,31 @@ namespace AdminHubApi.Data.Seeders
                     Permissions.Projects.View,
                     Permissions.Projects.Create,
                     Permissions.Projects.Edit,
-                    Permissions.Projects.Delete
-                    // Add other manager permissions
-                }
+                    Permissions.Projects.Delete,
+                    Permissions.Products.View,
+                    Permissions.Products.Create,
+                    Permissions.Products.Edit,
+                    Permissions.Products.Delete,
+                    Permissions.ProductCategories.View,
+                    Permissions.ProductCategories.Create,
+                    Permissions.ProductCategories.Edit,
+                    Permissions.ProductCategories.Delete
+                ]
             },
             {
-                UserRole, new[]
-                {
+                UserRole, [
                     Permissions.Users.View,
                     Permissions.Users.Edit,
-                    Permissions.Projects.View
-                }
+                    Permissions.Projects.View,
+                    Permissions.Products.View,
+                    Permissions.Products.Create,
+                    Permissions.Products.Edit,
+                    Permissions.Products.Delete,
+                    Permissions.ProductCategories.View,
+                    Permissions.ProductCategories.Create,
+                    Permissions.ProductCategories.Edit,
+                    Permissions.ProductCategories.Delete
+                ]
             }
         };
 
