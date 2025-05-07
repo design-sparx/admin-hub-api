@@ -17,7 +17,7 @@ public class ProductResponseDto
     public DateTime CreatedAt { get; set; }
     public UserDto Owner { get; set; }
     public string OwnerId { get; set; }
-    public ProductCategory Category { get; set; }
+    public Entities.ProductCategory Category { get; set; }
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; }
     public DateTime? UpdatedAt { get; set; }

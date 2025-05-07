@@ -14,6 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
     
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductCategory> ProductCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

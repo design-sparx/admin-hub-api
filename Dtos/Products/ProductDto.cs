@@ -17,7 +17,7 @@ public class ProductDto
     public string OwnerId { get; set; }
     public Guid? CategoryId { get; set; }
     public string CategoryName { get; set; }
-    public ProductCategory Category { get; set; }
+    public Entities.ProductCategory Category { get; set; }
     public DateTime? LastUpdated { get; set; }
     public string StatusText => Status.ToString();
 }
