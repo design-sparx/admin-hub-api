@@ -33,7 +33,7 @@ public class OrdersController : ControllerBase
             return BadRequest(response);
         }
 
-        return Ok(response.Data);
+        return Ok(response);
     }
 
     [HttpGet("{id}")]
@@ -46,7 +46,7 @@ public class OrdersController : ControllerBase
             return NotFound(response);
         }
 
-        return Ok(response.Data);
+        return Ok(response);
     }
 
     [HttpPost]
@@ -87,7 +87,7 @@ public class OrdersController : ControllerBase
             return BadRequest(response);
         }
 
-        return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, response.Data);
+        return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, response);
     }
 
     [HttpPut("{id}")]
@@ -101,49 +101,20 @@ public class OrdersController : ControllerBase
             return NotFound(orderResponse);
         }
 
-        var order = await _orderService.GetByIdAsync(id);
+        var existingOrder = orderResponse.Data;
+        existingOrder.CustomerName = updateOrderDto.CustomerName;
+        existingOrder.CustomerEmail = updateOrderDto.CustomerEmail;
+        existingOrder.CustomerEmail = updateOrderDto.CustomerEmail;
+        existingOrder.Status = updateOrderDto.Status;
+        existingOrder.ShippingAddress = updateOrderDto.ShippingAddress;
+        existingOrder.BillingAddress = updateOrderDto.BillingAddress;
+        existingOrder.PaymentMethod = updateOrderDto.PaymentMethod;
+        existingOrder.ModifiedById = updateOrderDto.ModifiedById;
+        existingOrder.Modified = DateTime.UtcNow;
 
-        if (!order.Succeeded)
-        {
-            return NotFound(order);
-        }
+        await _orderService.UpdateAsync(existingOrder);
 
-        var existingOrder = await _orderService.GetByIdAsync(id);
-
-        if (!existingOrder.Succeeded)
-        {
-            return NotFound(existingOrder);
-        }
-
-        var orderEntity = new Order
-        {
-            Id = id,
-            
-            // Update customer information
-            CustomerName = updateOrderDto.CustomerName,
-            CustomerEmail = updateOrderDto.CustomerEmail,
-            CustomerPhone = updateOrderDto.CustomerPhone,
-            
-            OrderDate = existingOrder.Data.OrderDate,
-            TotalAmount = existingOrder.Data.TotalAmount,
-            Status = updateOrderDto.Status,
-            ShippingAddress = updateOrderDto.ShippingAddress ?? existingOrder.Data.ShippingAddress,
-            BillingAddress = updateOrderDto.BillingAddress ?? existingOrder.Data.BillingAddress,
-            PaymentMethod = updateOrderDto.PaymentMethod ?? existingOrder.Data.PaymentMethod,
-            Created = existingOrder.Data.Created,
-            CreatedById = existingOrder.Data.CreatedById,
-            Modified = DateTime.UtcNow,
-            ModifiedById = updateOrderDto.ModifiedById
-        };
-
-        var updateResponse = await _orderService.UpdateAsync(orderEntity);
-
-        if (!updateResponse.Succeeded)
-        {
-            return BadRequest(updateResponse);
-        }
-
-        return Ok(updateResponse.Data);
+        return Ok(existingOrder);
     }
 
     [HttpDelete("{id}")]
@@ -177,7 +148,7 @@ public class OrdersController : ControllerBase
             return BadRequest(response);
         }
 
-        return Ok(response.Data);
+        return Ok(response);
     }
 
     [HttpGet("status/{status}")]
@@ -190,7 +161,7 @@ public class OrdersController : ControllerBase
             return BadRequest(response);
         }
 
-        return Ok(response.Data);
+        return Ok(response);
     }
     
     [HttpGet("customer-info")]
@@ -210,6 +181,6 @@ public class OrdersController : ControllerBase
             return BadRequest(response);
         }
     
-        return Ok(response.Data);
+        return Ok(response);
     }
 }
