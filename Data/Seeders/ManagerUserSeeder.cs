@@ -15,7 +15,7 @@ namespace AdminHubApi.Data.Seeders
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
             // Get manager user details from configuration
-            var managerEmail = configuration["ManagerUser:Email"] ?? "manager@example.com";
+            var managerEmail = configuration["ManagerUser:Email"] ?? "manager@adminhub.com";
             var managerUserName = configuration["ManagerUser:UserName"] ?? "manager_user";
             var managerPassword = configuration["ManagerUser:Password"] ?? "Manager@Pass1";
 
@@ -49,11 +49,25 @@ namespace AdminHubApi.Data.Seeders
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
+                        
                         new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
+                        
                         new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
                         new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
                         new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
                         new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
                     };
 
                     await userManager.AddClaimsAsync(managerUser, userPermissions);
@@ -68,10 +82,10 @@ namespace AdminHubApi.Data.Seeders
             {
                 logger.LogInformation("Manager user already exists");
 
-                // Ensure manager is in the manager role
-                if (!await userManager.IsInRoleAsync(managerUser, RoleSeeder.UserRole))
+                // Ensure a manager is in the manager role
+                if (!await userManager.IsInRoleAsync(managerUser, RoleSeeder.ManagerRole))
                 {
-                    await userManager.AddToRoleAsync(managerUser, RoleSeeder.UserRole);
+                    await userManager.AddToRoleAsync(managerUser, RoleSeeder.ManagerRole);
                     logger.LogInformation("Added existing manager user to manager role");
                 }
             }

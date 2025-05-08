@@ -144,7 +144,7 @@ builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddHostedService<TokenCleanupService>();
 
 // Custom Authorization Handler
-// builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -187,14 +187,15 @@ using (var scope = app.Services.CreateScope())
             await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
         
-        // Always update roles to ensure new permissions are added
-        logger.LogInformation("Seeding roles...");
-        await RoleSeeder.SeedRolesAsync(app.Services);
-        
         // Always update permissions to ensure new permissions are added
         logger.LogInformation("Updating role permissions...");
         await PermissionUpdateSeeder.UpdateRolePermissionsAsync(app.Services);
         logger.LogInformation("Role permissions updated successfully");
+        
+        logger.LogInformation("Updating user permissions...");
+        await UserPermissionUpdateSeeder.UpdateUserPermissionsAsync(app.Services);
+        logger.LogInformation("User permissions updated successfully");
+
 
         logger.LogInformation("Database seeding completed successfully");
     }
