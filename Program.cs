@@ -130,18 +130,21 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
 
 // Custom Authorization Handler
-builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+// builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -159,7 +162,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         logger.LogInformation("Applying database migrations...");
-        db.Database.Migrate(); // This applies pending migrations automatically
+        db.Database.Migrate(); // This applies to pending migrations automatically
         logger.LogInformation("Database migrations applied successfully");
 
         // Check if we need to seed users and roles
@@ -183,6 +186,10 @@ using (var scope = app.Services.CreateScope())
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
             await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
+        
+        // Always update roles to ensure new permissions are added
+        logger.LogInformation("Seeding roles...");
+        await RoleSeeder.SeedRolesAsync(app.Services);
         
         // Always update permissions to ensure new permissions are added
         logger.LogInformation("Updating role permissions...");
