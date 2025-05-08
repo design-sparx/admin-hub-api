@@ -1,6 +1,8 @@
-﻿using AdminHubApi.Dtos.Products;
+﻿using AdminHubApi.Constants;
+using AdminHubApi.Dtos.Products;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +10,7 @@ namespace AdminHubApi.Controllers;
 
 [ApiController]
 [Route("/api/products")]
+[PermissionAuthorize(Permissions.Products.View)]
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -41,6 +44,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
+    [PermissionAuthorize(Permissions.Products.Create)]
     public async Task<ActionResult> CreateProduct(CreateProductDto createProductDto)
     {
         var product = new Product
@@ -70,7 +74,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize]
+    [PermissionAuthorize(Permissions.Products.Edit)]
     public async Task<IActionResult> UpdateProduct(Guid id, UpdateProductDto updateProductDto)
     {
         var productResponse = await _productService.GetByIdAsync(id);
@@ -92,7 +96,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize]
+    [PermissionAuthorize(Permissions.Products.Delete)]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
         var productResponse = await _productService.GetByIdAsync(id);

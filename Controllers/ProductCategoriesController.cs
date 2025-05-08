@@ -1,6 +1,8 @@
-﻿using AdminHubApi.Dtos.ProductCategory;
+﻿using AdminHubApi.Constants;
+using AdminHubApi.Dtos.ProductCategory;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +10,7 @@ namespace AdminHubApi.Controllers;
 
 [ApiController]
 [Route("api/product-categories")]
-[Authorize]
+[PermissionAuthorize(Permissions.ProductCategories.View)]
 public class ProductCategoriesController : ControllerBase
 {
     private readonly IProductCategoryService _productCategoryService;
@@ -43,6 +45,7 @@ public class ProductCategoriesController : ControllerBase
     }
 
     [HttpPost]
+    [PermissionAuthorize(Permissions.ProductCategories.Create)]
     public async Task<ActionResult<ProductCategory>> CreateCategory(CreateProductCategoryDto productCategoryDto)
     {
         var productCategory = new ProductCategory
@@ -67,6 +70,7 @@ public class ProductCategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [PermissionAuthorize(Permissions.ProductCategories.Edit)]
     public async Task<IActionResult> UpdateCategory(Guid id, UpdateProductCategoryDto updateProductCategoryDto)
     {
         var productCategoryResponse = await _productCategoryService.GetByIdAsync(id);
@@ -89,6 +93,7 @@ public class ProductCategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [PermissionAuthorize(Permissions.ProductCategories.Delete)]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         var productCategoryResponse = await _productCategoryService.GetByIdAsync(id);
