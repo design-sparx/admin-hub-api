@@ -10,11 +10,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     { }
     
     public DbSet<Project> Projects { get; set; }
-    
     public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
-    
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

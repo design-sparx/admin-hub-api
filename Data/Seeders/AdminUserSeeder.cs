@@ -15,7 +15,7 @@ namespace AdminHubApi.Data.Seeders
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
             // Get admin user details from configuration
-            var adminEmail = configuration["AdminUser:Email"] ?? "admin@example.com";
+            var adminEmail = configuration["AdminUser:Email"] ?? "admin@adminhub.com";
             var adminUserName = configuration["AdminUser:UserName"] ?? "admin";
             var adminPassword = configuration["AdminUser:Password"] ?? "Admin@Password123!"; // Should be in secrets in production
 
@@ -40,7 +40,7 @@ namespace AdminHubApi.Data.Seeders
                 {
                     logger.LogInformation($"Admin user created successfully");
                     
-                    // Add to Admin role
+                    // Add to the Admin role
                     await userManager.AddToRoleAsync(adminUser, RoleSeeder.AdminRole);
                     
                     // Add all admin permissions
@@ -50,10 +50,31 @@ namespace AdminHubApi.Data.Seeders
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete),
+                        
                         new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
                         new Claim(CustomClaimTypes.Permission, Permissions.Roles.Create),
                         new Claim(CustomClaimTypes.Permission, Permissions.Roles.Edit),
                         new Claim(CustomClaimTypes.Permission, Permissions.Roles.Delete),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Delete),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Delete),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Delete),
                     };
                     
                     await userManager.AddClaimsAsync(adminUser, adminPermissions);

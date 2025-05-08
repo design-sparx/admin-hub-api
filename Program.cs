@@ -130,12 +130,15 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 // Repository
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
@@ -159,7 +162,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         logger.LogInformation("Applying database migrations...");
-        db.Database.Migrate(); // This applies pending migrations automatically
+        db.Database.Migrate(); // This applies to pending migrations automatically
         logger.LogInformation("Database migrations applied successfully");
 
         // Check if we need to seed users and roles
@@ -188,6 +191,11 @@ using (var scope = app.Services.CreateScope())
         logger.LogInformation("Updating role permissions...");
         await PermissionUpdateSeeder.UpdateRolePermissionsAsync(app.Services);
         logger.LogInformation("Role permissions updated successfully");
+        
+        logger.LogInformation("Updating user permissions...");
+        await UserPermissionUpdateSeeder.UpdateUserPermissionsAsync(app.Services);
+        logger.LogInformation("User permissions updated successfully");
+
 
         logger.LogInformation("Database seeding completed successfully");
     }

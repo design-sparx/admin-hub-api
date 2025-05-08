@@ -18,28 +18,85 @@ namespace AdminHubApi.Data.Seeders
             var projectPermissions = new Dictionary<string, string[]>
             {
                 {
-                    RoleSeeder.AdminRole, new[]
-                    {
+                    RoleSeeder.AdminRole, [
+                        Permissions.Users.View,
+                        Permissions.Users.Create,
+                        Permissions.Users.Edit,
+                        Permissions.Users.Delete,
+
+                        Permissions.Roles.View,
+                        Permissions.Roles.Create,
+                        Permissions.Roles.Edit,
+                        Permissions.Roles.Delete,
+
                         Permissions.Projects.View,
                         Permissions.Projects.Create,
                         Permissions.Projects.Edit,
-                        Permissions.Projects.Delete
-                    }
+                        Permissions.Projects.Delete,
+
+                        Permissions.Products.View,
+                        Permissions.Products.Create,
+                        Permissions.Products.Edit,
+                        Permissions.Products.Delete,
+
+                        Permissions.ProductCategories.View,
+                        Permissions.ProductCategories.Create,
+                        Permissions.ProductCategories.Edit,
+                        Permissions.ProductCategories.Delete,
+
+                        Permissions.Orders.View,
+                        Permissions.Orders.Create,
+                        Permissions.Orders.Edit,
+                        Permissions.Orders.Delete,
+                    ]
                 },
                 {
-                    RoleSeeder.ManagerRole, new[]
-                    {
+                    RoleSeeder.ManagerRole, [
+                        Permissions.Users.View,
+                        Permissions.Users.Create,
+                        Permissions.Users.Edit,
+
+                        Permissions.Roles.View,
+
                         Permissions.Projects.View,
                         Permissions.Projects.Create,
                         Permissions.Projects.Edit,
-                        Permissions.Projects.Delete
-                    }
+                        Permissions.Projects.Delete,
+
+                        Permissions.Products.View,
+                        Permissions.Products.Create,
+                        Permissions.Products.Edit,
+
+                        Permissions.ProductCategories.View,
+                        Permissions.ProductCategories.Create,
+                        Permissions.ProductCategories.Edit,
+
+                        Permissions.Orders.View,
+                        Permissions.Orders.Create,
+                        Permissions.Orders.Edit,
+                    ]
                 },
                 {
-                    RoleSeeder.UserRole, new[]
-                    {
-                        Permissions.Projects.View
-                    }
+                    RoleSeeder.UserRole, [
+                        Permissions.Users.View,
+                        Permissions.Users.Edit,
+
+                        Permissions.Roles.View,
+
+                        Permissions.Projects.View,
+
+                        Permissions.Products.View,
+                        Permissions.Products.Create,
+                        Permissions.Products.Edit,
+
+                        Permissions.ProductCategories.View,
+                        Permissions.ProductCategories.Create,
+                        Permissions.ProductCategories.Edit,
+
+                        Permissions.Orders.View,
+                        Permissions.Orders.Create,
+                        Permissions.Orders.Edit,
+                    ]
                 }
             };
 

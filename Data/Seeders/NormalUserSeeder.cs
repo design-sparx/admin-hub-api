@@ -15,7 +15,7 @@ namespace AdminHubApi.Data.Seeders
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
             // Get admin user details from configuration
-            var demoEmail = configuration["DemoUser:Email"] ?? "demo@example.com";
+            var demoEmail = configuration["DemoUser:Email"] ?? "demo@adminhub.com";
             var demoUserName = configuration["DemoUser:UserName"] ?? "demo_user"; 
             var demoPassword = configuration["DemoUser:Password"] ?? "Demo@Pass1";
 
@@ -48,7 +48,22 @@ namespace AdminHubApi.Data.Seeders
                     {
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
                         new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
+                        
                         new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
                     };
 
                     await userManager.AddClaimsAsync(demoUser, userPermissions);
