@@ -40,7 +40,8 @@ public class OrderService : IOrderService
             return new ApiResponse<IEnumerable<OrderResponseDto>>
             {
                 Succeeded = true,
-                Data = orderResponseDtos
+                Data = orderResponseDtos,
+                Message = "Orders retrieved",
             };
         }
         catch (Exception ex)
@@ -220,28 +221,42 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<ApiResponse<OrderResponseDto>> UpdateAsync(Order order)
+    public async Task<ApiResponse<OrderResponseDto>> UpdateAsync(OrderResponseDto orderResponseDto)
     {
         try
         {
-            await _orderRepository.UpdateAsync(order);
+            var existingOrder = await _orderRepository.GetByIdAsync(orderResponseDto.Id);
 
-            var updatedOrder = await _orderRepository.GetByIdAsync(order.Id);
+            if (existingOrder == null) 
+                throw new KeyNotFoundException($"Order with id: {orderResponseDto.Id} was not found");
+            
+            existingOrder.CustomerName = orderResponseDto.CustomerName;
+            existingOrder.CustomerEmail = orderResponseDto.CustomerEmail;
+            existingOrder.CustomerEmail = orderResponseDto.CustomerEmail;
+            existingOrder.Status = orderResponseDto.Status;
+            existingOrder.ShippingAddress = orderResponseDto.ShippingAddress;
+            existingOrder.BillingAddress = orderResponseDto.BillingAddress;
+            existingOrder.PaymentMethod = orderResponseDto.PaymentMethod;
+            existingOrder.ModifiedById = orderResponseDto.ModifiedById;
+            existingOrder.Modified = orderResponseDto.Modified;
 
+            await _orderRepository.UpdateAsync(existingOrder);
+            
             return new ApiResponse<OrderResponseDto>
             {
                 Succeeded = true,
-                Data = MapToOrderResponseDto(updatedOrder!)
+                Data = MapToOrderResponseDto(existingOrder!),
+                Message = "Updated order successfully"
             };
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating order {Id}", order.Id);
+            _logger.LogError(ex, "Error updating order {Id}", orderResponseDto.Id);
 
             return new ApiResponse<OrderResponseDto>
             {
                 Succeeded = false,
-                Message = $"Error updating order {order.Id}",
+                Message = $"Error updating order {orderResponseDto.Id}",
                 Errors = new List<string> { ex.Message }
             };
         }

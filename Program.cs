@@ -6,6 +6,7 @@ using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
 using AdminHubApi.Repositories;
 using AdminHubApi.Security;
+using AdminHubApi.Security.Permissions;
 using AdminHubApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -143,7 +144,10 @@ builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
 
-// Custom Authorization Handler
+// Add permission message service
+builder.Services.AddSingleton<IPermissionMessageService, PermissionMessageService>();
+
+// Register the custom authorization handler
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -186,12 +190,12 @@ using (var scope = app.Services.CreateScope())
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
             await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
-        
+
         // Always update permissions to ensure new permissions are added
         logger.LogInformation("Updating role permissions...");
         await PermissionUpdateSeeder.UpdateRolePermissionsAsync(app.Services);
         logger.LogInformation("Role permissions updated successfully");
-        
+
         logger.LogInformation("Updating user permissions...");
         await UserPermissionUpdateSeeder.UpdateUserPermissionsAsync(app.Services);
         logger.LogInformation("User permissions updated successfully");
