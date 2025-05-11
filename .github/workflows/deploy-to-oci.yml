@@ -50,9 +50,9 @@ jobs:
 
       - name: Deploy to Container Instances
         run: |
-          oci container-instances create-container-instance \
+          oci container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
             --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
             --shape ${{ secrets.OCI_SHAPE }} \
             --display-name my-app \
-            --container-config '[{"image":"${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_REPOSITORY }}:${{ github.sha }}"}]'
+            --containers '[{"image":"${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_REPOSITORY }}:${{ github.sha }}"}]'
