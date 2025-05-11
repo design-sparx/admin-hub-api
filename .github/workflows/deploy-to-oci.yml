@@ -53,11 +53,8 @@ jobs:
 
       - name: Deploy to Container Instances
         run: |
-          # Check if OCI CLI is in PATH
-          which oci || echo "OCI CLI not found in PATH"
-          
-          # Deploy to container instances
-          oci container-instances container-instance create \
+          # Use the full path to the OCI CLI executable
+          /home/runner/bin/oci container-instances container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
             --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
             --shape ${{ secrets.OCI_SHAPE }} \
