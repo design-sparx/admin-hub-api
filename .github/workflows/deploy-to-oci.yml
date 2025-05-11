@@ -1,8 +1,9 @@
-﻿name: Deploy to Oracle Cloud Infrastructure
+﻿name: Deploy to Oracle Cloud Container Instance
 
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -10,44 +11,49 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Oracle Cloud Infrastructure Registry
-        uses: docker/login-action@v2
+      - name: Set up OCI CLI
+        uses: oracle-actions/setup-oci-cli@v1
         with:
-          registry: ${{ secrets.OCI_REGISTRY }}
-          username: ${{ secrets.OCI_USERNAME }}
-          password: ${{ secrets.OCI_AUTH_TOKEN }}
+          user-id: ${{ secrets.OCI_USER_OCID }}
+          fingerprint: ${{ secrets.OCI_FINGERPRINT }}
+          private-key: ${{ secrets.OCI_PRIVATE_KEY }}
+          tenancy-id: ${{ secrets.OCI_TENANCY_OCID }}
+          region: ${{ secrets.OCI_REGION }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/adminhubapi:${{ github.sha }}
-
-      - name: Install OCI CLI
+      - name: Login to Oracle Cloud Container Registry
         run: |
-          curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
-          chmod +x install.sh
-          ./install.sh --accept-all-defaults
-          echo "$HOME/lib/oracle-cli/bin" >> $GITHUB_PATH
+          oci artifacts container repository login --username ${{ secrets.OCI_USER_OCID }} --password-stdin <<< "${{ secrets.OCI_AUTH_TOKEN }}" --region ${{ secrets.OCI_REGION }} --registry ${{ secrets.OCI_REGISTRY }}
 
-      - name: Configure OCI CLI
+      - name: Build and Push Docker Image
         run: |
-          mkdir -p ~/.oci
-          echo "${{ secrets.OCI_CONFIG }}" > ~/.oci/config
-          echo "${{ secrets.OCI_KEY }}" > ~/.oci/key.pem
-          chmod 600 ~/.oci/key.pem
+          # Get timestamp for unique tag
+          timestamp=$(date +%Y%m%d%H%M%S)
+          
+          # Build the Docker image
+          docker build -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:$timestamp -t ${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:latest .
+          
+          # Push the Docker image
+          docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:$timestamp
+          docker push ${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:latest
+          
+          # Save the image tag for later use
+          echo "IMAGE_TAG=$timestamp" >> $GITHUB_ENV
 
-      - name: Deploy to OCI Container Instance
+      - name: Deploy to Oracle Cloud Container Instance
         run: |
+          # Create or update container instance
           oci container-instances container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
             --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
-            --shape ${{ secrets.OCI_SHAPE }} \
-            --container-restart-policy ALWAYS \
-            --containers '[{"image":"${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/adminhubapi:${{ github.sha }}","displayName":"adminhubapi"}]'
+            --display-name "admin-hub-api" \
+            --shape "VM.Standard.E2.1.Micro" \
+            --shape-config '{"ocpus": 1, "memoryInGBs": 1}' \
+            --vnics '[{"subnetId": "${{ secrets.OCI_SUBNET_ID }}", "displayName": "primary-vnic"}]' \
+            --containers '[{
+              "displayName": "admin-hub-api",
+              "imageUrl": "${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}",
+              "isResourcePrincipalDisabled": true
+            }]' \
+            --wait-for-state SUCCEEDED
