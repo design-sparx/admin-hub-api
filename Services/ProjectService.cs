@@ -63,7 +63,7 @@ public class ProjectService : IProjectService
         {
             Succeeded = true,
             Data = project.Id,
-            Message = "Projects retrieved",
+            Message = "Project created",
             Errors = []
         };
     }

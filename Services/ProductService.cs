@@ -53,7 +53,7 @@ namespace AdminHubApi.Services
             {
                 Succeeded = true,
                 Data = product.Id,
-                Message = "Projects retrieved",
+                Message = "Product created",
                 Errors = []
             };
         }

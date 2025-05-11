@@ -64,6 +64,10 @@ namespace AdminHubApi.Data.Seeders
                         new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
                         new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
                         new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
+                        
+                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
                     };
 
                     await userManager.AddClaimsAsync(demoUser, userPermissions);

@@ -48,6 +48,11 @@ namespace AdminHubApi.Data.Seeders
                         Permissions.Orders.Create,
                         Permissions.Orders.Edit,
                         Permissions.Orders.Delete,
+
+                        Permissions.Invoices.View,
+                        Permissions.Invoices.Create,
+                        Permissions.Invoices.Edit,
+                        Permissions.Invoices.Delete,
                     ]
                 },
                 {
@@ -74,6 +79,10 @@ namespace AdminHubApi.Data.Seeders
                         Permissions.Orders.View,
                         Permissions.Orders.Create,
                         Permissions.Orders.Edit,
+
+                        Permissions.Invoices.View,
+                        Permissions.Invoices.Create,
+                        Permissions.Invoices.Edit,
                     ]
                 },
                 {
@@ -96,6 +105,10 @@ namespace AdminHubApi.Data.Seeders
                         Permissions.Orders.View,
                         Permissions.Orders.Create,
                         Permissions.Orders.Edit,
+
+                        Permissions.Invoices.View,
+                        Permissions.Invoices.Create,
+                        Permissions.Invoices.Edit,
                     ]
                 }
             };
