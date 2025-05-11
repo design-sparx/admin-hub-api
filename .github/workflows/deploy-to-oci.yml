@@ -39,13 +39,20 @@ jobs:
           push: true
           tags: ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_REPOSITORY }}:${{ github.sha }}
 
+      - name: Set up OCI CLI
+        run: |
+          pip install oci-cli
+          mkdir -p ~/.oci
+          echo "${{ secrets.OCI_CONFIG }}" > ~/.oci/config
+          echo "${{ secrets.OCI_KEY }}" > ~/.oci/key.pem
+          chmod 600 ~/.oci/key.pem
+          chmod 600 ~/.oci/config
+
       - name: Deploy to Container Instances
-        uses: oracle-actions/run-oci-cli-command@v1
-        with:
-          command: container-instances create-container-instance
-          args: |
-            --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} 
-            --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} 
-            --shape ${{ secrets.OCI_SHAPE }} 
-            --display-name my-app 
+        run: |
+          oci container-instances create-container-instance \
+            --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
+            --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
+            --shape ${{ secrets.OCI_SHAPE }} \
+            --display-name my-app \
             --container-config '[{"image":"${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_REPOSITORY }}:${{ github.sha }}"}]'
