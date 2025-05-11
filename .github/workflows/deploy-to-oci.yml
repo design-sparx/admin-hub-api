@@ -1,0 +1,53 @@
+﻿name: Deploy to Oracle Cloud Infrastructure
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Oracle Cloud Infrastructure Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.OCI_REGISTRY }}
+          username: ${{ secrets.OCI_USERNAME }}
+          password: ${{ secrets.OCI_AUTH_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/adminhubapi:${{ github.sha }}
+
+      - name: Install OCI CLI
+        run: |
+          curl -L -O https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh
+          chmod +x install.sh
+          ./install.sh --accept-all-defaults
+          echo "$HOME/lib/oracle-cli/bin" >> $GITHUB_PATH
+
+      - name: Configure OCI CLI
+        run: |
+          mkdir -p ~/.oci
+          echo "${{ secrets.OCI_CONFIG }}" > ~/.oci/config
+          echo "${{ secrets.OCI_KEY }}" > ~/.oci/key.pem
+          chmod 600 ~/.oci/key.pem
+
+      - name: Deploy to OCI Container Instance
+        run: |
+          oci container-instances create \
+            --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
+            --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
+            --shape ${{ secrets.OCI_SHAPE }} \
+            --container-restart-policy ALWAYS \
+            --containers '[{"image":"${{ secrets.OCI_REGISTRY }}/${{ secrets.OCI_NAMESPACE }}/adminhubapi:${{ github.sha }}","displayName":"adminhubapi"}]'
