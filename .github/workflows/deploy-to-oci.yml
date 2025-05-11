@@ -11,14 +11,14 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up OCI CLI
-        uses: oracle-actions/setup-oci-cli@v1
+        uses: oracle-actions/configure-oci-credentials@v1
         with:
-          user-id: ${{ secrets.OCI_USER_OCID }}
+          key-id: ${{ secrets.OCI_USER_OCID }}
           fingerprint: ${{ secrets.OCI_FINGERPRINT }}
-          private-key: ${{ secrets.OCI_PRIVATE_KEY }}
+          key-content: ${{ secrets.OCI_PRIVATE_KEY }}
           tenancy-id: ${{ secrets.OCI_TENANCY_OCID }}
           region: ${{ secrets.OCI_REGION }}
 
@@ -50,7 +50,7 @@ jobs:
             --display-name "admin-hub-api" \
             --shape "VM.Standard.E2.1.Micro" \
             --shape-config '{"ocpus": 1, "memoryInGBs": 1}' \
-            --vnics '[{"subnetId": "${{ secrets.OCI_SUBNET_ID }}", "displayName": "primary-vnic"}]' \
+            --vnics '[{"subnetId": "${{ secrets.OCI_SUBNET_ID }}", "displayName": "primary-vnic"}]'
             --containers '[{
               "displayName": "admin-hub-api",
               "imageUrl": "${{ secrets.OCI_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}",
