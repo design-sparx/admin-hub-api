@@ -45,7 +45,7 @@ jobs:
 
       - name: Deploy to OCI Container Instance
         run: |
-          oci container-instances create \
+          oci container-instances container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
             --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
             --shape ${{ secrets.OCI_SHAPE }} \
