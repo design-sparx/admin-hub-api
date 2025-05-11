@@ -16,12 +16,12 @@ public class InvoiceItem
     [Required] public decimal TotalPrice { get; set; }
 
     // Foreign key for a related product (optional)
-    public int? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     [ForeignKey("ProductId")] public Product Product { get; set; }
 
     // Foreign key for invoice
-    public int InvoiceId { get; set; }
+    public Guid InvoiceId { get; set; }
 
     [ForeignKey("InvoiceId")] public Invoice Invoice { get; set; }
     public DateTime Created { get; set; }

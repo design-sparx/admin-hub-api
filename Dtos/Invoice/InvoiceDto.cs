@@ -14,7 +14,7 @@ public class InvoiceDto
     public decimal PaidAmount { get; set; }
     public InvoiceStatus Status { get; set; }
     public string Notes { get; set; }
-    public string? OrderId { get; set; }
+    public Guid OrderId { get; set; } = Guid.Empty;
     public string UserId { get; set; }
     public string UserName { get; set; }
     public List<InvoiceItemDto> Items { get; set; } = new List<InvoiceItemDto>();

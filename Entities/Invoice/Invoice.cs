@@ -33,7 +33,7 @@ public class Invoice
     public string Notes { get; set; }
 
     // Foreign key for related order
-    public string OrderId { get; set; }
+    public Guid OrderId { get; set; }
 
     [ForeignKey("OrderId")] public Order Order { get; set; }
 
