@@ -41,7 +41,9 @@ jobs:
 
       - name: Set up OCI CLI
         run: |
-          bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
+          curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh -o install.sh
+          bash install.sh --accept-all-defaults
+          export PATH=$HOME/bin:$PATH
           mkdir -p ~/.oci
           echo "${{ secrets.OCI_CONFIG }}" > ~/.oci/config
           echo "${{ secrets.OCI_KEY }}" > ~/.oci/key.pem
@@ -50,6 +52,7 @@ jobs:
 
       - name: Deploy to Container Instances
         run: |
+          export PATH=$HOME/bin:$PATH
           oci container-instance --help \
           oci container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
