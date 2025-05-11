@@ -9,7 +9,7 @@ public class CreateInvoiceDto
     public DateTime IssueDate { get; set; }
     public DateTime DueDate { get; set; }
     public string Notes { get; set; }
-    public string? OrderId { get; set; }
+    public Guid OrderId { get; set; } = Guid.Empty;
     public string UserId { get; set; }
     public decimal PaidAmount { get; set; }
     public InvoiceStatus Status { get; set; }

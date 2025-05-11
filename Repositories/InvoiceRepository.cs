@@ -44,7 +44,7 @@ public class InvoiceRepository : IInvoiceRepository
         return await _dbContext.Invoices
             .Include(p => p.CreatedBy)
             .Include(p => p.ModifiedBy)
-            .Where(p => p.OrderId == orderId)
+            .Where(p => p.OrderId == Guid.Parse(orderId))
             .ToListAsync();
     }
 
