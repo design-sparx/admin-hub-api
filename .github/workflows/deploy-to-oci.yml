@@ -48,10 +48,15 @@ jobs:
           echo "${{ secrets.OCI_KEY }}" > ~/.oci/key.pem
           chmod 600 ~/.oci/key.pem
           chmod 600 ~/.oci/config
+          echo "export PATH=$PATH:$HOME/bin" >> $GITHUB_ENV
+          source $HOME/.bashrc
 
       - name: Deploy to Container Instances
         run: |
-          oci container-instance --help \
+          # Check if OCI CLI is in PATH
+          which oci || echo "OCI CLI not found in PATH"
+          
+          # Deploy to container instances
           oci container-instances container-instance create \
             --compartment-id ${{ secrets.OCI_COMPARTMENT_ID }} \
             --availability-domain ${{ secrets.OCI_AVAILABILITY_DOMAIN }} \
