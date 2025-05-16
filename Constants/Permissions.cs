@@ -51,6 +51,14 @@ public static class Permissions
         public const string Edit = "Permissions.Orders.Edit";
         public const string Delete = "Permissions.Orders.Delete";
     }
+    
+    public static class Invoices
+    {
+        public const string View = "Permissions.Invoices.View";
+        public const string Create = "Permissions.Invoices.Create";
+        public const string Edit = "Permissions.Invoices.Edit";
+        public const string Delete = "Permissions.Invoices.Delete";
+    }
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()
