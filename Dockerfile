@@ -19,10 +19,10 @@ WORKDIR /app
 COPY --from=build /app ./
 
 # Configure environment variables
-ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Expose port that Cloud Run will use
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "AdminHubApi.dll"]
