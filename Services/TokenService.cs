@@ -124,4 +124,23 @@ public class TokenService : ITokenService
         
         return null;
     }
+    
+    public ClaimsPrincipal ValidateTokenForRefresh(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = false, // This is the key change - don't validate lifetime for refresh
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = _jwtSettings.Issuer,
+            ValidAudience = _jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+        };
+    
+        return tokenHandler.ValidateToken(token, validationParameters, out _);
+    }
 }

@@ -10,4 +10,5 @@ public interface ITokenService
     ClaimsPrincipal ValidateToken(string token);
     DateTime GetTokenExpirationTime(string token);
     string ExtractTokenId(string token);
+    ClaimsPrincipal ValidateTokenForRefresh(string token);
 }

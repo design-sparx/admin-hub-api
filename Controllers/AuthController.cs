@@ -172,17 +172,17 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(request.Token))
             return BadRequest(new { message = "Token is required" });
 
-        // Extract token ID (jti claim)
+        // Extract the token ID (jti claim)
         var tokenId = _tokenService.ExtractTokenId(request.Token);
 
         if (string.IsNullOrEmpty(tokenId))
             return BadRequest(new { message = "Invalid token" });
 
-        // Check if token is blacklisted
+        // Check if the token is blacklisted
         if (await _tokenBlacklistRepository.IsTokenBlacklistedAsync(tokenId))
             return Unauthorized(new { message = "Token has been revoked" });
 
-        var principal = _tokenService.ValidateToken(request.Token);
+        var principal = _tokenService.ValidateTokenForRefresh(request.Token);
 
         if (principal == null)
             return Unauthorized(new { message = "Invalid token" });
