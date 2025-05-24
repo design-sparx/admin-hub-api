@@ -6,11 +6,11 @@ namespace AdminHubApi.Interfaces;
 
 public interface IInvoiceService
 {
-    Task<ApiResponse<IEnumerable<InvoiceDto>>> GetAllAsync();
-    Task<ApiResponse<InvoiceDto>> GetByIdAsync(Guid id);
-    Task<ApiResponse<IEnumerable<InvoiceDto>>> GetByUserIdAsync(string userId);
-    Task<ApiResponse<IEnumerable<InvoiceDto>>> GetByOrderIdAsync(string orderId);
-    Task<ApiResponse<InvoiceDto>> CreateAsync(Invoice invoice);
-    Task<ApiResponse<InvoiceDto>> UpdateAsync(InvoiceDto invoice);
+    Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetAllAsync();
+    Task<ApiResponse<InvoiceResponseDto>> GetByIdAsync(Guid id);
+    Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetByUserIdAsync(string userId);
+    Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetByOrderIdAsync(string orderId);
+    Task<ApiResponse<InvoiceResponseDto>> CreateAsync(Invoice invoice);
+    Task<ApiResponse<InvoiceResponseDto>> UpdateAsync(InvoiceResponseDto invoiceResponse);
     Task<ApiResponse<bool>> DeleteAsync(Guid id);
 }

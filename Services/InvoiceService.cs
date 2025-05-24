@@ -9,32 +9,49 @@ namespace AdminHubApi.Services;
 public class InvoiceService : IInvoiceService
 {
     private readonly IInvoiceRepository _invoiceRepository;
+    private readonly ILogger<InvoiceService> _logger;
 
-    public InvoiceService(IInvoiceRepository invoiceRepository)
+    public InvoiceService(IInvoiceRepository invoiceRepository, ILogger<InvoiceService> logger)
     {
         _invoiceRepository = invoiceRepository;
+        _logger = logger;
     }
 
-    public async Task<ApiResponse<IEnumerable<InvoiceDto>>> GetAllAsync()
+    public async Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetAllAsync()
     {
-        var invoices = await _invoiceRepository.GetAllAsync();
-
-        return new ApiResponse<IEnumerable<InvoiceDto>>
+        try
         {
-            Succeeded = true,
-            Data = invoices.Select(MapToResponseDto),
-            Message = "Invoices retrieved",
-            Errors = []
-        };
+            
+            var invoices = await _invoiceRepository.GetAllAsync();
+
+            return new ApiResponse<IEnumerable<InvoiceResponseDto>>
+            {
+                Succeeded = true,
+                Data = invoices.Select(MapToResponseDto),
+                Message = "Invoices retrieved",
+                Errors = []
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting all orders");
+
+            return new ApiResponse<IEnumerable<InvoiceResponseDto>>
+            {
+                Succeeded = false,
+                Message = "Error getting all invoices",
+                Errors = new List<string> { ex.Message }
+            };
+        }
     }
 
-    public async Task<ApiResponse<InvoiceDto>> GetByIdAsync(Guid id)
+    public async Task<ApiResponse<InvoiceResponseDto>> GetByIdAsync(Guid id)
     {
         var invoice = await _invoiceRepository.GetByIdAsync(id);
 
         if (invoice == null) throw new KeyNotFoundException($"Invoice with id: {id} was not found");
 
-        return new ApiResponse<InvoiceDto>
+        return new ApiResponse<InvoiceResponseDto>
         {
             Succeeded = true,
             Data = MapToResponseDto(invoice),
@@ -43,11 +60,11 @@ public class InvoiceService : IInvoiceService
         };
     }
 
-    public async Task<ApiResponse<IEnumerable<InvoiceDto>>> GetByUserIdAsync(string userId)
+    public async Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetByUserIdAsync(string userId)
     {
         var invoices = await _invoiceRepository.GetByUserIdAsync(userId);
 
-        return new ApiResponse<IEnumerable<InvoiceDto>>
+        return new ApiResponse<IEnumerable<InvoiceResponseDto>>
         {
             Succeeded = true,
             Data = invoices.Select(MapToResponseDto),
@@ -56,11 +73,11 @@ public class InvoiceService : IInvoiceService
         };
     }
 
-    public async Task<ApiResponse<IEnumerable<InvoiceDto>>> GetByOrderIdAsync(string orderId)
+    public async Task<ApiResponse<IEnumerable<InvoiceResponseDto>>> GetByOrderIdAsync(string orderId)
     {
         var invoices = await _invoiceRepository.GetByUserIdAsync(orderId);
 
-        return new ApiResponse<IEnumerable<InvoiceDto>>
+        return new ApiResponse<IEnumerable<InvoiceResponseDto>>
         {
             Succeeded = true,
             Data = invoices.Select(MapToResponseDto),
@@ -69,11 +86,11 @@ public class InvoiceService : IInvoiceService
         };
     }
 
-    public async Task<ApiResponse<InvoiceDto>> CreateAsync(Invoice invoice)
+    public async Task<ApiResponse<InvoiceResponseDto>> CreateAsync(Invoice invoice)
     {
         await _invoiceRepository.CreateAsync(invoice);
 
-        return new ApiResponse<InvoiceDto>
+        return new ApiResponse<InvoiceResponseDto>
         {
             Succeeded = true,
             Data = MapToResponseDto(invoice),
@@ -82,28 +99,28 @@ public class InvoiceService : IInvoiceService
         };
     }
 
-    public async Task<ApiResponse<InvoiceDto>> UpdateAsync(InvoiceDto invoice)
+    public async Task<ApiResponse<InvoiceResponseDto>> UpdateAsync(InvoiceResponseDto invoiceResponse)
     {
-        var existingInvoice = await _invoiceRepository.GetByIdAsync(invoice.Id);
+        var existingInvoice = await _invoiceRepository.GetByIdAsync(invoiceResponse.Id);
 
         if (existingInvoice == null) 
-            throw new KeyNotFoundException($"Invoice with id: {invoice.Id} was not found");
+            throw new KeyNotFoundException($"Invoice with id: {invoiceResponse.Id} was not found");
             
-        existingInvoice.InvoiceNumber = invoice.InvoiceNumber;
-        existingInvoice.IssueDate = invoice.IssueDate;
-        existingInvoice.OrderId = invoice.OrderId;
-        existingInvoice.Notes = invoice.Notes;
-        existingInvoice.DueDate = invoice.DueDate;
-        existingInvoice.PaidAmount = invoice.PaidAmount;
-        existingInvoice.Status = invoice.Status;
-        existingInvoice.ModifiedById = invoice.ModifiedById;
+        existingInvoice.InvoiceNumber = invoiceResponse.InvoiceNumber;
+        existingInvoice.IssueDate = invoiceResponse.IssueDate;
+        existingInvoice.OrderId = invoiceResponse.OrderId;
+        existingInvoice.Notes = invoiceResponse.Notes;
+        existingInvoice.DueDate = invoiceResponse.DueDate;
+        existingInvoice.PaidAmount = invoiceResponse.PaidAmount;
+        existingInvoice.Status = invoiceResponse.Status;
+        existingInvoice.ModifiedById = invoiceResponse.ModifiedById;
 
         await _invoiceRepository.UpdateAsync(existingInvoice);
         
-        return new ApiResponse<InvoiceDto>
+        return new ApiResponse<InvoiceResponseDto>
         {
             Succeeded = true,
-            Data = invoice,
+            Data = invoiceResponse,
             Message = "Invoice updated",
             Errors = []
         };
@@ -127,9 +144,9 @@ public class InvoiceService : IInvoiceService
         };
     }
 
-    private static InvoiceDto MapToResponseDto(Invoice invoice)
+    private static InvoiceResponseDto MapToResponseDto(Invoice invoice)
     {
-        return new InvoiceDto
+        return new InvoiceResponseDto
         {
             Id = invoice.Id,
             InvoiceNumber = invoice.InvoiceNumber,

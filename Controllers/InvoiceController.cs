@@ -24,9 +24,14 @@ public class InvoicesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAllInvoices()
     {
-        var invoices = await _invoiceService.GetAllAsync();
+        var response = await _invoiceService.GetAllAsync();
 
-        return Ok(invoices);
+        if (!response.Succeeded)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
     }
 
     [HttpGet("{id}")]

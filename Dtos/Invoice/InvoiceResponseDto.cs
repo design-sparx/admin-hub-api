@@ -4,7 +4,7 @@ using AdminHubApi.Entities.Invoice;
 
 namespace AdminHubApi.Dtos.Invoice;
 
-public class InvoiceDto
+public class InvoiceResponseDto
 {
     public Guid Id { get; set; }
     public string InvoiceNumber { get; set; }
