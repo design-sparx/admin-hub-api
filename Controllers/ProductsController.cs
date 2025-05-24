@@ -89,6 +89,11 @@ public class ProductsController : ControllerBase
         existingProduct.Description = updateProductDto.Description ?? string.Empty;
         existingProduct.ModifiedById = updateProductDto.ModifiedById;
         existingProduct.Modified = DateTime.UtcNow;
+        existingProduct.SKU = updateProductDto.SKU;
+        existingProduct.Status = updateProductDto.Status;
+        existingProduct.QuantityInStock = updateProductDto.QuantityInStock;
+        existingProduct.IsActive = updateProductDto.IsActive;
+        existingProduct.CategoryId = updateProductDto.CategoryId;
 
         await _productService.UpdateAsync(existingProduct);
         
