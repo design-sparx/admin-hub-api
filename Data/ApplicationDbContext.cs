@@ -30,5 +30,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.TokenId).IsUnique();
             entity.HasIndex(e => e.ExpiryDate); // For efficient cleanup queries
         });
+        
+        // Configure an Invoice-Order relationship as optional
+        builder.Entity<Invoice>()
+            .HasOne(i => i.Order)
+            .WithMany()
+            .HasForeignKey(i => i.OrderId)
+            .IsRequired(false); 
     }
 }

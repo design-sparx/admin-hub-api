@@ -3,6 +3,7 @@ using System;
 using AdminHubApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AdminHubApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524211021_MakeOrderIdFKColumnNullableInInvoiceTable")]
+    partial class MakeOrderIdFKColumnNullableInInvoiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,29 +122,11 @@ namespace AdminHubApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BillingAddress")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("text");
-
-                    b.Property<string>("CustomerAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CustomerEmail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CustomerName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CustomerPhone")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("DiscountAmount")
-                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
@@ -168,20 +153,8 @@ namespace AdminHubApi.Migrations
                     b.Property<decimal>("PaidAmount")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("PaymentTerms")
-                        .HasColumnType("text");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
-
-                    b.Property<decimal?>("Subtotal")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("TaxAmount")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("TaxRate")
-                        .HasColumnType("numeric");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");

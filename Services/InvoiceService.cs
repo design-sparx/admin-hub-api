@@ -1,5 +1,6 @@
 ﻿using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Dtos.Invoice;
+using AdminHubApi.Dtos.InvoiceItem;
 using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities.Invoice;
 using AdminHubApi.Interfaces;
@@ -21,7 +22,6 @@ public class InvoiceService : IInvoiceService
     {
         try
         {
-            
             var invoices = await _invoiceRepository.GetAllAsync();
 
             return new ApiResponse<IEnumerable<InvoiceResponseDto>>
@@ -103,9 +103,9 @@ public class InvoiceService : IInvoiceService
     {
         var existingInvoice = await _invoiceRepository.GetByIdAsync(invoiceResponse.Id);
 
-        if (existingInvoice == null) 
+        if (existingInvoice == null)
             throw new KeyNotFoundException($"Invoice with id: {invoiceResponse.Id} was not found");
-            
+
         existingInvoice.InvoiceNumber = invoiceResponse.InvoiceNumber;
         existingInvoice.IssueDate = invoiceResponse.IssueDate;
         existingInvoice.OrderId = invoiceResponse.OrderId;
@@ -116,7 +116,7 @@ public class InvoiceService : IInvoiceService
         existingInvoice.ModifiedById = invoiceResponse.ModifiedById;
 
         await _invoiceRepository.UpdateAsync(existingInvoice);
-        
+
         return new ApiResponse<InvoiceResponseDto>
         {
             Succeeded = true,
@@ -130,11 +130,11 @@ public class InvoiceService : IInvoiceService
     {
         var product = await _invoiceRepository.GetByIdAsync(id);
 
-        if (product == null) 
+        if (product == null)
             throw new KeyNotFoundException($"Invoice with id: {id} was not found");
 
         await _invoiceRepository.DeleteAsync(id);
-        
+
         return new ApiResponse<bool>
         {
             Succeeded = true,
@@ -152,12 +152,28 @@ public class InvoiceService : IInvoiceService
             InvoiceNumber = invoice.InvoiceNumber,
             IssueDate = invoice.IssueDate,
             DueDate = invoice.DueDate,
-            OrderId = invoice.OrderId,
+            OrderId = invoice.OrderId, // Now both are nullable
             PaidAmount = invoice.PaidAmount,
+            TotalAmount = invoice.TotalAmount,
             Notes = invoice.Notes,
             Status = invoice.Status,
+
+            // Customer fields
+            CustomerName = invoice.CustomerName,
+            CustomerEmail = invoice.CustomerEmail,
+            CustomerPhone = invoice.CustomerPhone,
+            CustomerAddress = invoice.CustomerAddress,
+            BillingAddress = invoice.BillingAddress,
+
+            // Pricing fields
+            Subtotal = invoice.Subtotal,
+            TaxRate = invoice.TaxRate,
+            TaxAmount = invoice.TaxAmount,
+            DiscountAmount = invoice.DiscountAmount,
+            PaymentTerms = invoice.PaymentTerms,
+
             Created = invoice.Created,
-            Modified = invoice.Modified,
+            CreatedById = invoice.CreatedById,
             CreatedBy = invoice.CreatedBy != null
                 ? new UserDto
                 {
@@ -172,6 +188,8 @@ public class InvoiceService : IInvoiceService
                     LockoutEnd = invoice.CreatedBy.LockoutEnd
                 }
                 : null,
+            Modified = invoice.Modified,
+            ModifiedById = invoice.ModifiedById,
             ModifiedBy = invoice.ModifiedBy != null
                 ? new UserDto
                 {
@@ -185,7 +203,20 @@ public class InvoiceService : IInvoiceService
                     LockoutEnabled = invoice.ModifiedBy.LockoutEnabled,
                     LockoutEnd = invoice.ModifiedBy.LockoutEnd
                 }
-                : null
+                : null,
+
+            // Map invoice items
+            Items = invoice.Items?.Select(item => new InvoiceItemResponseDto
+            {
+                Id = item.Id,
+                Description = item.Description,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice,
+                TotalPrice = item.TotalPrice,
+                ProductId = item.ProductId,
+                Created = item.Created,
+                Modified = item.Modified
+            }).ToList() ?? new List<InvoiceItemResponseDto>()
         };
     }
 }
