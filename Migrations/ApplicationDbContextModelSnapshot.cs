@@ -119,11 +119,29 @@ namespace AdminHubApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("BillingAddress")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("text");
+
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("DiscountAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
@@ -144,14 +162,26 @@ namespace AdminHubApi.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("PaidAmount")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("PaymentTerms")
+                        .HasColumnType("text");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<decimal?>("Subtotal")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("TaxAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("TaxRate")
+                        .HasColumnType("numeric");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
@@ -602,9 +632,7 @@ namespace AdminHubApi.Migrations
 
                     b.HasOne("AdminHubApi.Entities.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("AdminHubApi.Entities.ApplicationUser", "User")
                         .WithMany()
