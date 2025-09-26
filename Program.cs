@@ -4,10 +4,12 @@ using AdminHubApi.Data;
 using AdminHubApi.Data.Seeders;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Interfaces.Mantine;
 using AdminHubApi.Repositories;
 using AdminHubApi.Security;
 using AdminHubApi.Security.Permissions;
 using AdminHubApi.Services;
+using AdminHubApi.Services.Mantine;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -129,6 +131,10 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Mantine Dashboard Services
+builder.Services.AddScoped<IStatsService, StatsService>();
+builder.Services.AddScoped<ISalesService, SalesService>();
+
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
 
@@ -191,6 +197,10 @@ using (var scope = app.Services.CreateScope())
         await UserPermissionUpdateSeeder.UpdateUserPermissionsAsync(app.Services);
         logger.LogInformation("User permissions updated successfully");
 
+        // Seed Mantine dashboard data
+        logger.LogInformation("Seeding Mantine dashboard data...");
+        await MantineDataSeeder.SeedMantineDataAsync(app.Services);
+        logger.LogInformation("Mantine dashboard data seeded successfully");
 
         logger.LogInformation("Database seeding completed successfully");
     }
