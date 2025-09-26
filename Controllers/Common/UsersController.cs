@@ -4,10 +4,10 @@ using AdminHubApi.Interfaces;
 using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdminHubApi.Controllers;
+namespace AdminHubApi.Controllers.Common;
 
 [ApiController]
-[Route("api/users")]
+[Route("/api/v1/users")]
 // Apply authorization at the controller level
 [PermissionAuthorize(Permissions.Users.View)]
 public class UsersController : ControllerBase

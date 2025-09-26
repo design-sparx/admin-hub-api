@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace AdminHubApi.Controllers;
+namespace AdminHubApi.Controllers.Common;
 
 [ApiController]
-[Route("api/auth")]
+[Route("/api/v1/auth")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;

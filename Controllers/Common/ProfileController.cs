@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdminHubApi.Controllers;
+namespace AdminHubApi.Controllers.Common;
 
 [ApiController]
-[Route("api/profile")]
+[Route("/api/v1/profile")]
 [Authorize] // All profile endpoints require authentication
 public class ProfileController : ControllerBase
 {
@@ -143,7 +143,7 @@ public class ProfileController : ControllerBase
     /// <summary>
     /// Change the current user's password
     /// </summary>
-    [HttpPost("/api/profile/change-password")]
+    [HttpPost("/api/v1/profile/change-password")]
     [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto model)
     {

@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AdminHubApi.Controllers;
 using AdminHubApi.Data;
 using AdminHubApi.Data.Seeders;
 using AdminHubApi.Entities;
@@ -129,20 +128,9 @@ builder.Services.AddAuthorization(options =>
 // Services
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<InvoiceService, InvoiceService>();
 
 // Repository
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
