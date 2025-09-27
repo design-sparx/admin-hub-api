@@ -1,11 +1,14 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Mantine;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/kanban-tasks")]
     [Tags("Mantine - Kanban")]
+    [PermissionAuthorize(Permissions.Team.KanbanTasks)]
     public class KanbanTasksController : MantineBaseController
     {
         private readonly IKanbanTaskService _kanbanTaskService;

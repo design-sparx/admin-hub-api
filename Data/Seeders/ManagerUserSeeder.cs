@@ -40,38 +40,26 @@ namespace AdminHubApi.Data.Seeders
                 {
                     logger.LogInformation($"Manager user created successfully");
 
-                    // Add to a Manager role
-                    await userManager.AddToRoleAsync(managerUser, RoleSeeder.ManagerRole);
+                    // Add to a User role (our simplified RBAC only has Admin/User)
+                    await userManager.AddToRoleAsync(managerUser, RoleSeeder.UserRole);
 
-                    // Add all user permissions
+                    // Add user permissions (new RBAC only)
                     var userPermissions = new List<Claim>
                     {
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
+                        // Team permissions (collaborative access)
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Projects),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Orders),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.KanbanTasks),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Analytics),
+
+                        // User directory
+                        new Claim(CustomClaimTypes.Permission, Permissions.Users.ViewDirectory),
+
+                        // Personal permissions
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Profile),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Invoices),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Files),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Chats),
                     };
 
                     await userManager.AddClaimsAsync(managerUser, userPermissions);

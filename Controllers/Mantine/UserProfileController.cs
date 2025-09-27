@@ -1,11 +1,14 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Mantine;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/user-profile")]
     [Tags("Mantine - User Profile")]
+    [PermissionAuthorize(Permissions.Personal.Profile)]
     public class UserProfileController : MantineBaseController
     {
         private readonly IUserProfileService _userProfileService;

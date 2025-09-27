@@ -1,11 +1,14 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Mantine;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine")]
     [Tags("Mantine - Communication")]
+    [PermissionAuthorize(Permissions.Personal.Chats)]
     public class CommunicationController : MantineBaseController
     {
         private readonly ICommunicationService _communicationService;

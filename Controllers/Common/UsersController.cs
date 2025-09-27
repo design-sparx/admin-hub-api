@@ -9,7 +9,7 @@ namespace AdminHubApi.Controllers.Common;
 [ApiController]
 [Route("/api/v1/users")]
 // Apply authorization at the controller level
-[PermissionAuthorize(Permissions.Users.View)]
+[PermissionAuthorize(Permissions.Users.ViewDirectory)]
 [Tags("User Management")]
 public class UsersController : ControllerBase
 {
@@ -54,7 +54,7 @@ public class UsersController : ControllerBase
     /// Create a new user
     /// </summary>
     [HttpPost]
-    [PermissionAuthorize(Permissions.Users.Create)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto model)
     {
         if (!ModelState.IsValid)
@@ -72,7 +72,7 @@ public class UsersController : ControllerBase
     /// Update a user
     /// </summary>
     [HttpPut("{id}")]
-    [PermissionAuthorize(Permissions.Users.Edit)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDto model)
     {
         // Allow partial updates - skipping model validation
@@ -88,7 +88,7 @@ public class UsersController : ControllerBase
     /// Delete a user
     /// </summary>
     [HttpDelete("{id}")]
-    [PermissionAuthorize(Permissions.Users.Delete)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> DeleteUser(string id)
     {
         var response = await _userService.DeleteUserAsync(id);
@@ -103,7 +103,7 @@ public class UsersController : ControllerBase
     /// Admin reset password for a user - doesn't require old password
     /// </summary>
     [HttpPost("{id}/reset-password")]
-    [PermissionAuthorize(Permissions.Users.Edit)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> ResetPassword(string id, [FromBody] ResetPasswordDto model)
     {
         if (!ModelState.IsValid)
@@ -121,7 +121,7 @@ public class UsersController : ControllerBase
     /// Update roles for a user
     /// </summary>
     [HttpPut("{id}/roles")]
-    [PermissionAuthorize(Permissions.Users.Edit)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> UpdateUserRoles(string id, [FromBody] List<string> roles)
     {
         var response = await _userService.UpdateUserRolesAsync(id, roles);
@@ -136,7 +136,7 @@ public class UsersController : ControllerBase
     /// Update claims for a user
     /// </summary>
     [HttpPut("{id}/claims")]
-    [PermissionAuthorize(Permissions.Users.Edit)]
+    [PermissionAuthorize(Permissions.Admin.UserManagement)]
     public async Task<IActionResult> UpdateUserClaims(string id, [FromBody] List<ClaimDto> claims)
     {
         if (claims == null)

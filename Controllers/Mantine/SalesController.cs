@@ -1,11 +1,14 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Mantine;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/sales")]
     [Tags("Mantine - Sales")]
+    [PermissionAuthorize(Permissions.Team.Analytics)]
     public class SalesController : MantineBaseController
     {
         private readonly ISalesService _salesService;

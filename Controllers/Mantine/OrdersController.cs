@@ -1,11 +1,14 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Mantine;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/orders")]
     [Tags("Mantine - Orders")]
+    [PermissionAuthorize(Permissions.Team.Orders)]
     public class OrdersController : MantineBaseController
     {
         private readonly IOrderService _orderService;

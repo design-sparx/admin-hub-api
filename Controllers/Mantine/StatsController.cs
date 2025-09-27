@@ -1,10 +1,13 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Interfaces.Mantine;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/stats")]
     [Tags("Mantine - Analytics")]
+    [PermissionAuthorize(Permissions.Team.Analytics)]
     public class StatsController : MantineBaseController
     {
         private readonly IStatsService _statsService;

@@ -14,101 +14,47 @@ namespace AdminHubApi.Data.Seeders
 
             logger.LogInformation("Starting role permissions update process...");
 
-            // Project permissions to add
+            // Updated permissions based on new RBAC structure (no legacy)
             var projectPermissions = new Dictionary<string, string[]>
             {
                 {
                     RoleSeeder.AdminRole, [
-                        Permissions.Users.View,
-                        Permissions.Users.Create,
-                        Permissions.Users.Edit,
-                        Permissions.Users.Delete,
+                        // Admin permissions
+                        Permissions.Admin.UserManagement,
+                        Permissions.Admin.SystemSettings,
 
-                        Permissions.Roles.View,
-                        Permissions.Roles.Create,
-                        Permissions.Roles.Edit,
-                        Permissions.Roles.Delete,
+                        // Team permissions
+                        Permissions.Team.Projects,
+                        Permissions.Team.Orders,
+                        Permissions.Team.KanbanTasks,
+                        Permissions.Team.Analytics,
 
-                        Permissions.Projects.View,
-                        Permissions.Projects.Create,
-                        Permissions.Projects.Edit,
-                        Permissions.Projects.Delete,
+                        // User directory
+                        Permissions.Users.ViewDirectory,
 
-                        Permissions.Products.View,
-                        Permissions.Products.Create,
-                        Permissions.Products.Edit,
-                        Permissions.Products.Delete,
-
-                        Permissions.ProductCategories.View,
-                        Permissions.ProductCategories.Create,
-                        Permissions.ProductCategories.Edit,
-                        Permissions.ProductCategories.Delete,
-
-                        Permissions.Orders.View,
-                        Permissions.Orders.Create,
-                        Permissions.Orders.Edit,
-                        Permissions.Orders.Delete,
-
-                        Permissions.Invoices.View,
-                        Permissions.Invoices.Create,
-                        Permissions.Invoices.Edit,
-                        Permissions.Invoices.Delete,
-                    ]
-                },
-                {
-                    RoleSeeder.ManagerRole, [
-                        Permissions.Users.View,
-                        Permissions.Users.Create,
-                        Permissions.Users.Edit,
-
-                        Permissions.Roles.View,
-
-                        Permissions.Projects.View,
-                        Permissions.Projects.Create,
-                        Permissions.Projects.Edit,
-                        Permissions.Projects.Delete,
-
-                        Permissions.Products.View,
-                        Permissions.Products.Create,
-                        Permissions.Products.Edit,
-
-                        Permissions.ProductCategories.View,
-                        Permissions.ProductCategories.Create,
-                        Permissions.ProductCategories.Edit,
-
-                        Permissions.Orders.View,
-                        Permissions.Orders.Create,
-                        Permissions.Orders.Edit,
-
-                        Permissions.Invoices.View,
-                        Permissions.Invoices.Create,
-                        Permissions.Invoices.Edit,
+                        // Personal permissions (admin can access all)
+                        Permissions.Personal.Profile,
+                        Permissions.Personal.Invoices,
+                        Permissions.Personal.Files,
+                        Permissions.Personal.Chats,
                     ]
                 },
                 {
                     RoleSeeder.UserRole, [
-                        Permissions.Users.View,
-                        Permissions.Users.Edit,
+                        // Team permissions (collaborative access)
+                        Permissions.Team.Projects,
+                        Permissions.Team.Orders,
+                        Permissions.Team.KanbanTasks,
+                        Permissions.Team.Analytics,
 
-                        Permissions.Roles.View,
+                        // User directory
+                        Permissions.Users.ViewDirectory,
 
-                        Permissions.Projects.View,
-
-                        Permissions.Products.View,
-                        Permissions.Products.Create,
-                        Permissions.Products.Edit,
-
-                        Permissions.ProductCategories.View,
-                        Permissions.ProductCategories.Create,
-                        Permissions.ProductCategories.Edit,
-
-                        Permissions.Orders.View,
-                        Permissions.Orders.Create,
-                        Permissions.Orders.Edit,
-
-                        Permissions.Invoices.View,
-                        Permissions.Invoices.Create,
-                        Permissions.Invoices.Edit,
+                        // Personal permissions
+                        Permissions.Personal.Profile,
+                        Permissions.Personal.Invoices,
+                        Permissions.Personal.Files,
+                        Permissions.Personal.Chats,
                     ]
                 }
             };
