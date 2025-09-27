@@ -134,6 +134,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 // Mantine Dashboard Services
 builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
+builder.Services.AddScoped<ISystemConfigService, SystemConfigService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

@@ -59,7 +59,8 @@ namespace AdminHubApi.Services.Mantine
                     Code = c.Code,
                     Name = c.Name,
                     Continent = c.Continent,
-                    Population = c.Population
+                    Population = c.Population,
+                    IsActive = c.IsActive
                 }).ToList();
 
                 return new ApiResponse<List<CountryDto>>

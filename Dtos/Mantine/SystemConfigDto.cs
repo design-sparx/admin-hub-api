@@ -20,6 +20,9 @@ namespace AdminHubApi.Dtos.Mantine
         public string Name { get; set; } = string.Empty;
         public string Continent { get; set; } = string.Empty;
         public long? Population { get; set; }
+
+        [JsonPropertyName("is_active")]
+        public bool IsActive { get; set; }
     }
 
     public class TrafficDto

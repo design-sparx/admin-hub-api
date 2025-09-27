@@ -19,53 +19,6 @@ namespace AdminHubApi.Controllers.Mantine
             _systemConfigService = systemConfigService;
         }
 
-        /// <summary>
-        /// Get all supported languages
-        /// </summary>
-        [HttpGet("languages")]
-        public async Task<IActionResult> GetLanguages()
-        {
-            try
-            {
-                var languages = await _systemConfigService.GetLanguagesAsync();
-                return Ok(new
-                {
-                    success = true,
-                    data = languages.Data,
-                    message = "Languages retrieved successfully",
-                    timestamp = DateTime.UtcNow
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving languages");
-                return ErrorResponse("Failed to retrieve languages", 500);
-            }
-        }
-
-        /// <summary>
-        /// Get all countries
-        /// </summary>
-        [HttpGet("countries")]
-        public async Task<IActionResult> GetCountries()
-        {
-            try
-            {
-                var countries = await _systemConfigService.GetCountriesAsync();
-                return Ok(new
-                {
-                    success = true,
-                    data = countries.Data,
-                    message = "Countries retrieved successfully",
-                    timestamp = DateTime.UtcNow
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving countries");
-                return ErrorResponse("Failed to retrieve countries", 500);
-            }
-        }
 
         /// <summary>
         /// Get traffic analytics data

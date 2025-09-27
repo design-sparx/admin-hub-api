@@ -17,5 +17,7 @@ namespace AdminHubApi.Entities.Mantine
         public string Continent { get; set; } = string.Empty;
 
         public long? Population { get; set; }
+
+        public bool IsActive { get; set; } = false;
     }
 }
