@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
     /// Login with email and password
     /// </summary>
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
+    public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -76,7 +76,7 @@ public class AuthController : ControllerBase
     /// Register a new user
     /// </summary>
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
+    public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

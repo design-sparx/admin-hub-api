@@ -2,7 +2,7 @@
 
 namespace AdminHubApi.Dtos.Auth;
 
-public class RegisterRequestDto
+public class RegisterDto
 {
     [Required]
     [StringLength(50)]

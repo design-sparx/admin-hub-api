@@ -2,7 +2,7 @@
 
 namespace AdminHubApi.Dtos.Auth;
 
-public class AuthRequestDto
+public class LoginDto
 {
     [Required]
     [EmailAddress]
