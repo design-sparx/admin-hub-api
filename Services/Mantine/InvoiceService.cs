@@ -19,7 +19,7 @@ namespace AdminHubApi.Services.Mantine
             _logger = logger;
         }
 
-        public async Task<ApiResponse<List<InvoiceDto>>> GetAllAsync(InvoiceQueryParams queryParams)
+        public async Task<InvoiceListResponse> GetAllAsync(InvoiceQueryParams queryParams)
         {
             try
             {
@@ -92,8 +92,10 @@ namespace AdminHubApi.Services.Mantine
                     ClientCompany = i.ClientCompany
                 }).ToList();
 
-                return new ApiResponse<List<InvoiceDto>>
+                return new InvoiceListResponse
                 {
+                    Succeeded = true,
+                    Message = "Invoices retrieved successfully",
                     Data = invoicesDto,
                     Meta = new PaginationMeta
                     {
@@ -111,17 +113,18 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<InvoiceDto?> GetByIdAsync(string id)
+        public async Task<InvoiceResponse> GetByIdAsync(string id)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return null;
+                    return new InvoiceResponse { Succeeded = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
-                if (invoice == null) return null;
+                if (invoice == null)
+                    return new InvoiceResponse { Succeeded = false, Message = "Invoice not found" };
 
-                return new InvoiceDto
+                var invoiceDto = new InvoiceDto
                 {
                     Id = invoice.Id.ToString(),
                     FullName = invoice.FullName,
@@ -138,6 +141,13 @@ namespace AdminHubApi.Services.Mantine
                     ClientName = invoice.ClientName,
                     ClientCompany = invoice.ClientCompany
                 };
+
+                return new InvoiceResponse
+                {
+                    Succeeded = true,
+                    Message = "Invoice retrieved successfully",
+                    Data = invoiceDto
+                };
             }
             catch (Exception ex)
             {
@@ -146,7 +156,7 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<InvoiceDto> CreateAsync(InvoiceDto invoiceDto)
+        public async Task<InvoiceCreateResponse> CreateAsync(InvoiceDto invoiceDto)
         {
             try
             {
@@ -174,7 +184,12 @@ namespace AdminHubApi.Services.Mantine
                 await _context.SaveChangesAsync();
 
                 invoiceDto.Id = invoice.Id.ToString();
-                return invoiceDto;
+                return new InvoiceCreateResponse
+                {
+                    Succeeded = true,
+                    Message = "Invoice created successfully",
+                    Data = invoiceDto
+                };
             }
             catch (Exception ex)
             {
@@ -183,15 +198,16 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<InvoiceDto?> UpdateAsync(string id, InvoiceDto invoiceDto)
+        public async Task<InvoiceUpdateResponse> UpdateAsync(string id, InvoiceDto invoiceDto)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return null;
+                    return new InvoiceUpdateResponse { Succeeded = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
-                if (invoice == null) return null;
+                if (invoice == null)
+                    return new InvoiceUpdateResponse { Succeeded = false, Message = "Invoice not found" };
 
                 invoice.FullName = invoiceDto.FullName;
                 invoice.Email = invoiceDto.Email;
@@ -210,7 +226,12 @@ namespace AdminHubApi.Services.Mantine
 
                 await _context.SaveChangesAsync();
 
-                return invoiceDto;
+                return new InvoiceUpdateResponse
+                {
+                    Succeeded = true,
+                    Message = "Invoice updated successfully",
+                    Data = invoiceDto
+                };
             }
             catch (Exception ex)
             {
@@ -219,20 +240,26 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<InvoiceDeleteResponse> DeleteAsync(string id)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return false;
+                    return new InvoiceDeleteResponse { Succeeded = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
-                if (invoice == null) return false;
+                if (invoice == null)
+                    return new InvoiceDeleteResponse { Succeeded = false, Message = "Invoice not found" };
 
                 _context.Invoices.Remove(invoice);
                 await _context.SaveChangesAsync();
 
-                return true;
+                return new InvoiceDeleteResponse
+                {
+                    Succeeded = true,
+                    Message = "Invoice deleted successfully",
+                    Data = new { id }
+                };
             }
             catch (Exception ex)
             {

@@ -22,6 +22,30 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+
+// Configure CORS
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
+        else
+        {
+            // Fallback for development if no origins configured
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    });
+});
 
 // DB Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -127,6 +151,7 @@ builder.Services.AddAuthorization(options =>
 // Services
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 // Mantine Dashboard Services
 builder.Services.AddScoped<IStatsService, StatsService>();
@@ -221,6 +246,9 @@ app.MapScalarApiReference();
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+// Enable CORS
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

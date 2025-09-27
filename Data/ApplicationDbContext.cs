@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     { }
 
     public DbSet<BlacklistedToken> BlacklistedTokens { get; set; }
+    public DbSet<AuditLog> AuditLogs { get; set; }
 
     // Mantine Dashboard Entities
     public DbSet<DashboardStats> DashboardStats { get; set; }
@@ -146,6 +147,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Source);
             entity.HasIndex(e => e.Date);
+        });
+
+        // Configure AuditLog entity
+        builder.Entity<AuditLog>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.EntityName);
+            entity.HasIndex(e => e.EntityId);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.Action);
+            entity.HasIndex(e => e.Timestamp);
+
+            // Configure foreign key relationship
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

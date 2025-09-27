@@ -1,4 +1,5 @@
 using AdminHubApi.Enums.Mantine;
+using AdminHubApi.Dtos.ApiResponse;
 using System.Text.Json.Serialization;
 
 namespace AdminHubApi.Dtos.Mantine
@@ -60,5 +61,25 @@ namespace AdminHubApi.Dtos.Mantine
 
         [JsonPropertyName("sort_order")]
         public string SortOrder { get; set; } = "desc";
+    }
+
+    public class InvoiceResponse : ApiResponse<InvoiceDto>
+    {
+    }
+
+    public class InvoiceListResponse : ApiResponse<List<InvoiceDto>>
+    {
+    }
+
+    public class InvoiceCreateResponse : ApiResponse<InvoiceDto>
+    {
+    }
+
+    public class InvoiceUpdateResponse : ApiResponse<InvoiceDto>
+    {
+    }
+
+    public class InvoiceDeleteResponse : ApiResponse<object>
+    {
     }
 }
