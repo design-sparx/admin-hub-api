@@ -120,11 +120,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole(RoleSeeder.AdminRole));
 
-    options.AddPolicy("RequireManagerRole", policy =>
-        policy.RequireRole(RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
-
     options.AddPolicy("RequireUserRole", policy =>
-        policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
+        policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.AdminRole));
 });
 
 // Services
@@ -135,6 +132,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
 builder.Services.AddScoped<ISystemConfigService, SystemConfigService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IKanbanTaskService, KanbanTaskService>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddScoped<IFileManagementService, FileManagementService>();
+builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
@@ -186,7 +190,6 @@ using (var scope = app.Services.CreateScope())
             // Add seeders
             await AdminUserSeeder.SeedAdminUserAsync(app.Services);
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
-            await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
 
         // Always update permissions to ensure new permissions are added

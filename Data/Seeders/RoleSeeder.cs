@@ -9,7 +9,6 @@ namespace AdminHubApi.Data.Seeders
     {
         public readonly static string AdminRole = "Admin";
         public readonly static string UserRole = "User";
-        public readonly static string ManagerRole = "Manager";
 
         // Define all application roles (simplified RBAC: only Admin and User)
         private readonly static string[] ApplicationRoles =
