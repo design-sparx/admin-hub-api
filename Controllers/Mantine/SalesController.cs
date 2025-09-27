@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/sales")]
+    [Tags("Mantine - Sales")]
     public class SalesController : MantineBaseController
     {
         private readonly ISalesService _salesService;

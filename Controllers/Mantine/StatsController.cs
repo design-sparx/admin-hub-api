@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine/stats")]
+    [Tags("Mantine - Analytics")]
     public class StatsController : MantineBaseController
     {
         private readonly IStatsService _statsService;

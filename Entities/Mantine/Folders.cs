@@ -1,27 +1,24 @@
-using AdminHubApi.Enums.Mantine;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdminHubApi.Entities.Mantine
 {
-    public class Projects
+    public class Folders
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [MaxLength(500)]
+        [MaxLength(255)]
         public string Name { get; set; } = string.Empty;
 
-        public DateTime StartDate { get; set; }
+        [Required]
+        [MaxLength(1000)]
+        public string Path { get; set; } = string.Empty;
 
-        public DateTime EndDate { get; set; }
+        public Guid? ParentId { get; set; }
 
         [Required]
-        public ProjectState State { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        public string Assignee { get; set; } = string.Empty;
+        public Guid OwnerId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

@@ -10,6 +10,7 @@ namespace AdminHubApi.Controllers.Common;
 
 [ApiController]
 [Route("/api/v1/auth")]
+[Tags("Authentication")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;

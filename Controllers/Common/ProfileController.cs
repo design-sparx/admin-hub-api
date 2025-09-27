@@ -11,6 +11,7 @@ namespace AdminHubApi.Controllers.Common;
 [ApiController]
 [Route("/api/v1/profile")]
 [Authorize] // All profile endpoints require authentication
+[Tags("User Profile")]
 public class ProfileController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;

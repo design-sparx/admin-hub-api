@@ -10,6 +10,7 @@ namespace AdminHubApi.Controllers.Common;
 [Route("/api/v1/users")]
 // Apply authorization at the controller level
 [PermissionAuthorize(Permissions.Users.View)]
+[Tags("User Management")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;

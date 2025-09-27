@@ -1,5 +1,6 @@
 using AdminHubApi.Data;
 using AdminHubApi.Entities.Mantine;
+using AdminHubApi.Enums.Mantine;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminHubApi.Data.Seeders
@@ -53,11 +54,11 @@ namespace AdminHubApi.Data.Seeders
                 if (!await context.Orders.AnyAsync())
                 {
                     logger.LogInformation("Seeding orders data...");
-                    var orders = new List<Order>
+                    var orders = new List<Orders>
                     {
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Product = "Awesome Concrete Shoes",
                             Date = DateTime.UtcNow.AddDays(-2),
                             Total = 64.99m,
@@ -66,16 +67,16 @@ namespace AdminHubApi.Data.Seeders
                         },
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Product = "Practical Granite Mouse",
                             Date = DateTime.UtcNow.AddDays(-1),
                             Total = 32.50m,
                             Status = OrderStatus.Processing,
-                            PaymentMethod = PaymentMethod.PayPal
+                            PaymentMethod = PaymentMethod.Paypal
                         },
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Product = "Incredible Steel Shirt",
                             Date = DateTime.UtcNow.AddHours(-6),
                             Total = 89.99m,
@@ -93,11 +94,11 @@ namespace AdminHubApi.Data.Seeders
                 if (!await context.Projects.AnyAsync())
                 {
                     logger.LogInformation("Seeding projects data...");
-                    var projects = new List<Project>
+                    var projects = new List<Projects>
                     {
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Name = "Migration to React 18",
                             StartDate = DateTime.UtcNow.AddDays(-30),
                             EndDate = DateTime.UtcNow.AddDays(15),
@@ -106,7 +107,7 @@ namespace AdminHubApi.Data.Seeders
                         },
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Name = "Analytics Dashboard",
                             StartDate = DateTime.UtcNow.AddDays(-60),
                             EndDate = DateTime.UtcNow.AddDays(-10),
@@ -115,7 +116,7 @@ namespace AdminHubApi.Data.Seeders
                         },
                         new()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = Guid.NewGuid(),
                             Name = "API Documentation",
                             StartDate = DateTime.UtcNow.AddDays(5),
                             EndDate = DateTime.UtcNow.AddDays(35),

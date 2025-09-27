@@ -1,27 +1,23 @@
-using AdminHubApi.Enums.Mantine;
 using System.ComponentModel.DataAnnotations;
+using TaskStatus = AdminHubApi.Enums.Mantine.TaskStatus;
 
 namespace AdminHubApi.Entities.Mantine
 {
-    public class Projects
+    public class KanbanTasks
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(500)]
-        public string Name { get; set; } = string.Empty;
-
-        public DateTime StartDate { get; set; }
-
-        public DateTime EndDate { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
-        public ProjectState State { get; set; }
+        public TaskStatus Status { get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        public string Assignee { get; set; } = string.Empty;
+        public int Comments { get; set; } = 0;
+
+        public int Users { get; set; } = 0;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
