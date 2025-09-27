@@ -53,7 +53,20 @@ namespace AdminHubApi.Entities.Mantine
         [MaxLength(255)]
         public string ClientCompany { get; set; } = string.Empty;
 
+        [MaxLength(450)]
+        public string? CreatedById { get; set; }
+
+        [MaxLength(255)]
+        public string? CreatedByEmail { get; set; }
+
+        [MaxLength(255)]
+        public string? CreatedByName { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        // Navigation property
+        [ForeignKey(nameof(CreatedById))]
+        public ApplicationUser? CreatedBy { get; set; }
     }
 }

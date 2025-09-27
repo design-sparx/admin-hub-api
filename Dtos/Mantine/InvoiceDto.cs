@@ -36,6 +36,21 @@ namespace AdminHubApi.Dtos.Mantine
 
         [JsonPropertyName("client_company")]
         public string ClientCompany { get; set; } = string.Empty;
+
+        [JsonPropertyName("created_by_id")]
+        public string? CreatedById { get; set; }
+
+        [JsonPropertyName("created_by_email")]
+        public string? CreatedByEmail { get; set; }
+
+        [JsonPropertyName("created_by_name")]
+        public string? CreatedByName { get; set; }
+
+        [JsonPropertyName("created_at")]
+        public string CreatedAt { get; set; } = string.Empty;
+
+        [JsonPropertyName("updated_at")]
+        public string UpdatedAt { get; set; } = string.Empty;
     }
 
     public class InvoiceQueryParams
@@ -61,6 +76,9 @@ namespace AdminHubApi.Dtos.Mantine
 
         [JsonPropertyName("sort_order")]
         public string SortOrder { get; set; } = "desc";
+
+        [JsonPropertyName("created_by_id")]
+        public string? CreatedById { get; set; }
     }
 
     public class InvoiceResponse : ApiResponse<InvoiceDto>

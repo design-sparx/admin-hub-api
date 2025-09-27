@@ -122,6 +122,14 @@ namespace AdminHubApi.Data.Seeders
                 if (!await context.Invoices.AnyAsync())
                 {
                     logger.LogInformation("Seeding invoices data...");
+
+                    // Get the demo user for creator information
+                    var demoUser = await context.Users.FirstOrDefaultAsync(u => u.Email == "demo@adminhub.com");
+                    if (demoUser == null)
+                    {
+                        logger.LogWarning("Demo user not found. Invoices will be created without creator information.");
+                    }
+
                     var invoices = new List<Invoices>();
                     var fullNames = new[] { "John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson", "David Brown", "Emily Davis", "Chris Miller", "Lisa Garcia", "Tom Anderson", "Amy Taylor", "Robert Moore", "Maria Jackson", "Kevin Martin", "Jessica Lee", "Daniel Thompson", "Ashley White", "Ryan Harris", "Michelle Clark", "Steven Lewis", "Nicole Walker" };
                     var companies = new[] { "ABC Corp", "XYZ Ltd", "Tech Solutions", "Digital Agency", "Marketing Pro", "Design Studio", "Web Dev Co", "Software Inc", "Data Systems", "Cloud Services", "Mobile Apps", "E-commerce", "Consulting", "Analytics Co", "Security Firm", "Innovation Lab", "Startup Hub", "Enterprise", "SMB Solutions", "Global Tech" };
@@ -146,6 +154,10 @@ namespace AdminHubApi.Data.Seeders
                             ClientCountry = countries[i % countries.Length],
                             ClientName = companies[i],
                             ClientCompany = companies[i],
+                            // Creator information using demo user
+                            CreatedById = demoUser?.Id ?? "demo-user-fallback",
+                            CreatedByEmail = demoUser?.Email ?? "demo@adminhub.com",
+                            CreatedByName = demoUser?.UserName ?? "Demo User",
                             CreatedAt = DateTime.UtcNow.AddDays(-(i + 5)),
                             UpdatedAt = DateTime.UtcNow.AddDays(-(i % 3))
                         });

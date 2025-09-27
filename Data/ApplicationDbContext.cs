@@ -79,6 +79,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Status);
             entity.HasIndex(e => e.IssueDate);
             entity.HasIndex(e => e.Amount);
+            entity.HasIndex(e => e.CreatedById);
+
+            // Configure foreign key relationship for CreatedBy
+            entity.HasOne(e => e.CreatedBy)
+                  .WithMany()
+                  .HasForeignKey(e => e.CreatedById)
+                  .IsRequired(false)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
         builder.Entity<KanbanTasks>(entity =>

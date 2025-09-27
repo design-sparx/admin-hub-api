@@ -5,6 +5,7 @@ using AdminHubApi.Entities.Mantine;
 using AdminHubApi.Enums.Mantine;
 using AdminHubApi.Interfaces.Mantine;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AdminHubApi.Services.Mantine
 {
@@ -12,11 +13,13 @@ namespace AdminHubApi.Services.Mantine
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<InvoiceService> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public InvoiceService(ApplicationDbContext context, ILogger<InvoiceService> logger)
+        public InvoiceService(ApplicationDbContext context, ILogger<InvoiceService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<InvoiceListResponse> GetAllAsync(InvoiceQueryParams queryParams)
@@ -49,6 +52,11 @@ namespace AdminHubApi.Services.Mantine
                 if (queryParams.IssueDateTo.HasValue)
                 {
                     query = query.Where(i => i.IssueDate <= queryParams.IssueDateTo.Value);
+                }
+
+                if (!string.IsNullOrEmpty(queryParams.CreatedById))
+                {
+                    query = query.Where(i => i.CreatedById == queryParams.CreatedById);
                 }
 
                 // Apply sorting
@@ -89,7 +97,12 @@ namespace AdminHubApi.Services.Mantine
                     ClientAddress = i.ClientAddress,
                     ClientCountry = i.ClientCountry,
                     ClientName = i.ClientName,
-                    ClientCompany = i.ClientCompany
+                    ClientCompany = i.ClientCompany,
+                    CreatedById = i.CreatedById,
+                    CreatedByEmail = i.CreatedByEmail,
+                    CreatedByName = i.CreatedByName,
+                    CreatedAt = i.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                    UpdatedAt = i.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss")
                 }).ToList();
 
                 return new InvoiceListResponse
@@ -139,7 +152,12 @@ namespace AdminHubApi.Services.Mantine
                     ClientAddress = invoice.ClientAddress,
                     ClientCountry = invoice.ClientCountry,
                     ClientName = invoice.ClientName,
-                    ClientCompany = invoice.ClientCompany
+                    ClientCompany = invoice.ClientCompany,
+                    CreatedById = invoice.CreatedById,
+                    CreatedByEmail = invoice.CreatedByEmail,
+                    CreatedByName = invoice.CreatedByName,
+                    CreatedAt = invoice.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                    UpdatedAt = invoice.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss")
                 };
 
                 return new InvoiceResponse
@@ -160,6 +178,13 @@ namespace AdminHubApi.Services.Mantine
         {
             try
             {
+                // Get current user information
+                var httpContext = _httpContextAccessor.HttpContext;
+                var userId = httpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "anonymous";
+                var userEmail = httpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+                var userName = httpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ??
+                              httpContext?.User?.FindFirst("name")?.Value;
+
                 var invoice = new Invoices
                 {
                     Id = Guid.NewGuid(),
@@ -176,6 +201,9 @@ namespace AdminHubApi.Services.Mantine
                     ClientCountry = invoiceDto.ClientCountry,
                     ClientName = invoiceDto.ClientName,
                     ClientCompany = invoiceDto.ClientCompany,
+                    CreatedById = userId == "anonymous" ? null : userId,
+                    CreatedByEmail = userEmail,
+                    CreatedByName = userName,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
@@ -183,7 +211,14 @@ namespace AdminHubApi.Services.Mantine
                 _context.Invoices.Add(invoice);
                 await _context.SaveChangesAsync();
 
+                // Update DTO with creator information and timestamps
                 invoiceDto.Id = invoice.Id.ToString();
+                invoiceDto.CreatedById = invoice.CreatedById;
+                invoiceDto.CreatedByEmail = invoice.CreatedByEmail;
+                invoiceDto.CreatedByName = invoice.CreatedByName;
+                invoiceDto.CreatedAt = invoice.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                invoiceDto.UpdatedAt = invoice.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+
                 return new InvoiceCreateResponse
                 {
                     Succeeded = true,
@@ -225,6 +260,13 @@ namespace AdminHubApi.Services.Mantine
                 invoice.UpdatedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
+
+                // Update DTO with creator information and timestamps
+                invoiceDto.CreatedById = invoice.CreatedById;
+                invoiceDto.CreatedByEmail = invoice.CreatedByEmail;
+                invoiceDto.CreatedByName = invoice.CreatedByName;
+                invoiceDto.CreatedAt = invoice.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                invoiceDto.UpdatedAt = invoice.UpdatedAt.ToString("yyyy-MM-dd HH:mm:ss");
 
                 return new InvoiceUpdateResponse
                 {
