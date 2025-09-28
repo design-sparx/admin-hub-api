@@ -8,7 +8,7 @@ namespace AdminHubApi.Controllers.Mantine
 {
     [Route("/api/v1/mantine")]
     [Tags("Mantine - System Configuration")]
-    [PermissionAuthorize(Permissions.Admin.SystemSettings)]
+    [PermissionAuthorize(Permissions.Team.Analytics)]
     public class SystemConfigController : MantineBaseController
     {
         private readonly ISystemConfigService _systemConfigService;

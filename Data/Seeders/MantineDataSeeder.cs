@@ -522,6 +522,38 @@ namespace AdminHubApi.Data.Seeders
                     logger.LogInformation($"Countries data seeded successfully - {countries.Count} countries added");
                 }
 
+                // Seed Traffic Data (20 rows)
+                if (!await context.Traffic.AnyAsync())
+                {
+                    logger.LogInformation("Seeding traffic data...");
+                    var traffic = new List<Traffic>();
+                    var sources = new[] { "Google", "Facebook", "Direct", "Instagram", "LinkedIn", "Twitter", "Reddit", "YouTube", "Pinterest", "TikTok", "Email Campaign", "Affiliate", "Referral", "Bing", "Yahoo", "DuckDuckGo", "Newsletter", "Organic Search", "Paid Ads", "Social Media" };
+
+                    for (int i = 0; i < 20; i++)
+                    {
+                        // Generate realistic traffic metrics
+                        var visitors = 1000 + (i * 150) + new Random().Next(-200, 300);
+                        var pageviews = visitors + (int)(visitors * (1.2 + (i * 0.1))); // 1.2-3.2 pages per visitor
+                        var bounceRate = 25.0m + (i * 2.5m) + (decimal)(new Random().NextDouble() * 10 - 5); // 25-75% bounce rate
+                        var sessionDuration = 45.0m + (i * 8.5m) + (decimal)(new Random().NextDouble() * 30 - 15); // 45-215 seconds
+
+                        traffic.Add(new Traffic
+                        {
+                            Id = Guid.NewGuid(),
+                            Source = sources[i],
+                            Visitors = Math.Max(visitors, 100), // Ensure minimum 100 visitors
+                            Pageviews = Math.Max(pageviews, 120), // Ensure minimum 120 pageviews
+                            BounceRate = Math.Max(Math.Min(bounceRate, 95.0m), 10.0m), // Keep between 10-95%
+                            AvgSessionDuration = Math.Max(sessionDuration, 15.0m), // Minimum 15 seconds
+                            Date = DateTime.UtcNow.AddDays(-(i + 1)) // Spread over last 20 days
+                        });
+                    }
+
+                    context.Traffic.AddRange(traffic);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Traffic data seeded successfully");
+                }
+
                 logger.LogInformation("Mantine data seeding completed successfully - All entities seeded with realistic data");
             }
             catch (Exception ex)
