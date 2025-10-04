@@ -158,8 +158,8 @@ namespace AdminHubApi.Services.Mantine
                 {
                     Id = Guid.NewGuid(),
                     Name = projectDto.Name,
-                    StartDate = DateTime.Parse(projectDto.StartDate),
-                    EndDate = DateTime.Parse(projectDto.EndDate),
+                    StartDate = DateTime.Parse(projectDto.StartDate).ToUniversalTime(),
+                    EndDate = DateTime.Parse(projectDto.EndDate).ToUniversalTime(),
                     State = projectDto.State,
                     Assignee = projectDto.Assignee,
                     CreatedAt = DateTime.UtcNow,
@@ -217,8 +217,8 @@ namespace AdminHubApi.Services.Mantine
                 }
 
                 project.Name = projectDto.Name;
-                project.StartDate = DateTime.Parse(projectDto.StartDate);
-                project.EndDate = DateTime.Parse(projectDto.EndDate);
+                project.StartDate = DateTime.Parse(projectDto.StartDate).ToUniversalTime();
+                project.EndDate = DateTime.Parse(projectDto.EndDate).ToUniversalTime();
                 project.State = projectDto.State;
                 project.Assignee = projectDto.Assignee;
                 project.UpdatedAt = DateTime.UtcNow;
