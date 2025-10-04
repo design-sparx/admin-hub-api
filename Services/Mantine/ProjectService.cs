@@ -19,7 +19,7 @@ namespace AdminHubApi.Services.Mantine
             _logger = logger;
         }
 
-        public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync(ProjectQueryParams queryParams)
+        public async Task<ProjectListResponse> GetAllAsync(ProjectQueryParams queryParams)
         {
             try
             {
@@ -82,9 +82,11 @@ namespace AdminHubApi.Services.Mantine
                     Assignee = p.Assignee
                 }).ToList();
 
-                return new ApiResponse<List<ProjectDto>>
+                return new ProjectListResponse
                 {
+                    Succeeded = true,
                     Data = projectsDto,
+                    Message = "Projects retrieved successfully",
                     Meta = new PaginationMeta
                     {
                         Page = queryParams.Page,
@@ -101,17 +103,30 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<ProjectDto?> GetByIdAsync(string id)
+        public async Task<ProjectResponse> GetByIdAsync(string id)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return null;
+                {
+                    return new ProjectResponse
+                    {
+                        Succeeded = false,
+                        Message = "Invalid project ID format"
+                    };
+                }
 
                 var project = await _context.Projects.FindAsync(guidId);
-                if (project == null) return null;
+                if (project == null)
+                {
+                    return new ProjectResponse
+                    {
+                        Succeeded = false,
+                        Message = "Project not found"
+                    };
+                }
 
-                return new ProjectDto
+                var projectDto = new ProjectDto
                 {
                     Id = project.Id.ToString(),
                     Name = project.Name,
@@ -119,6 +134,13 @@ namespace AdminHubApi.Services.Mantine
                     EndDate = project.EndDate.ToString("yyyy-MM-dd"),
                     State = project.State,
                     Assignee = project.Assignee
+                };
+
+                return new ProjectResponse
+                {
+                    Succeeded = true,
+                    Data = projectDto,
+                    Message = "Project retrieved successfully"
                 };
             }
             catch (Exception ex)
@@ -128,7 +150,7 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<ProjectDto> CreateAsync(ProjectDto projectDto)
+        public async Task<ProjectCreateResponse> CreateAsync(ProjectDto projectDto)
         {
             try
             {
@@ -147,8 +169,22 @@ namespace AdminHubApi.Services.Mantine
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync();
 
-                projectDto.Id = project.Id.ToString();
-                return projectDto;
+                var createdProjectDto = new ProjectDto
+                {
+                    Id = project.Id.ToString(),
+                    Name = project.Name,
+                    StartDate = project.StartDate.ToString("yyyy-MM-dd"),
+                    EndDate = project.EndDate.ToString("yyyy-MM-dd"),
+                    State = project.State,
+                    Assignee = project.Assignee
+                };
+
+                return new ProjectCreateResponse
+                {
+                    Succeeded = true,
+                    Data = createdProjectDto,
+                    Message = "Project created successfully"
+                };
             }
             catch (Exception ex)
             {
@@ -157,15 +193,28 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<ProjectDto?> UpdateAsync(string id, ProjectDto projectDto)
+        public async Task<ProjectUpdateResponse> UpdateAsync(string id, ProjectDto projectDto)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return null;
+                {
+                    return new ProjectUpdateResponse
+                    {
+                        Succeeded = false,
+                        Message = "Invalid project ID format"
+                    };
+                }
 
                 var project = await _context.Projects.FindAsync(guidId);
-                if (project == null) return null;
+                if (project == null)
+                {
+                    return new ProjectUpdateResponse
+                    {
+                        Succeeded = false,
+                        Message = "Project not found"
+                    };
+                }
 
                 project.Name = projectDto.Name;
                 project.StartDate = DateTime.Parse(projectDto.StartDate);
@@ -176,7 +225,22 @@ namespace AdminHubApi.Services.Mantine
 
                 await _context.SaveChangesAsync();
 
-                return projectDto;
+                var updatedProjectDto = new ProjectDto
+                {
+                    Id = project.Id.ToString(),
+                    Name = project.Name,
+                    StartDate = project.StartDate.ToString("yyyy-MM-dd"),
+                    EndDate = project.EndDate.ToString("yyyy-MM-dd"),
+                    State = project.State,
+                    Assignee = project.Assignee
+                };
+
+                return new ProjectUpdateResponse
+                {
+                    Succeeded = true,
+                    Data = updatedProjectDto,
+                    Message = "Project updated successfully"
+                };
             }
             catch (Exception ex)
             {
@@ -185,20 +249,37 @@ namespace AdminHubApi.Services.Mantine
             }
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<ProjectDeleteResponse> DeleteAsync(string id)
         {
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return false;
+                {
+                    return new ProjectDeleteResponse
+                    {
+                        Succeeded = false,
+                        Message = "Invalid project ID format"
+                    };
+                }
 
                 var project = await _context.Projects.FindAsync(guidId);
-                if (project == null) return false;
+                if (project == null)
+                {
+                    return new ProjectDeleteResponse
+                    {
+                        Succeeded = false,
+                        Message = "Project not found"
+                    };
+                }
 
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
 
-                return true;
+                return new ProjectDeleteResponse
+                {
+                    Succeeded = true,
+                    Message = "Project deleted successfully"
+                };
             }
             catch (Exception ex)
             {

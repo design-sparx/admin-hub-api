@@ -1,3 +1,4 @@
+using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Enums.Mantine;
 using System.Text.Json.Serialization;
 
@@ -28,5 +29,25 @@ namespace AdminHubApi.Dtos.Mantine
         public DateTime? StartDateTo { get; set; }
         public string SortBy { get; set; } = "startDate";
         public string SortOrder { get; set; } = "desc";
+    }
+
+    public class ProjectResponse : ApiResponse<ProjectDto>
+    {
+    }
+
+    public class ProjectListResponse : ApiResponse<List<ProjectDto>>
+    {
+    }
+
+    public class ProjectCreateResponse : ApiResponse<ProjectDto>
+    {
+    }
+
+    public class ProjectUpdateResponse : ApiResponse<ProjectDto>
+    {
+    }
+
+    public class ProjectDeleteResponse : ApiResponse<object>
+    {
     }
 }

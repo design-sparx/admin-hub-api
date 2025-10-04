@@ -23,19 +23,13 @@ namespace AdminHubApi.Controllers.Mantine
         /// Get all projects with pagination and filtering
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(ProjectListResponse), 200)]
         public async Task<IActionResult> GetAllProjects([FromQuery] ProjectQueryParams queryParams)
         {
             try
             {
-                var projects = await _projectService.GetAllAsync(queryParams);
-                return Ok(new
-                {
-                    success = true,
-                    data = projects.Data,
-                    message = "Projects retrieved successfully",
-                    timestamp = DateTime.UtcNow,
-                    meta = projects.Meta
-                });
+                var response = await _projectService.GetAllAsync(queryParams);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -48,15 +42,17 @@ namespace AdminHubApi.Controllers.Mantine
         /// Get project by ID
         /// </summary>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProjectResponse), 200)]
         public async Task<IActionResult> GetProjectById(string id)
         {
             try
             {
-                var project = await _projectService.GetByIdAsync(id);
-                if (project == null)
-                    return NotFound(new { success = false, message = "Project not found" });
+                var response = await _projectService.GetByIdAsync(id);
 
-                return SuccessResponse(project, "Project retrieved successfully");
+                if (!response.Succeeded)
+                    return NotFound(response);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -69,6 +65,7 @@ namespace AdminHubApi.Controllers.Mantine
         /// Create new project
         /// </summary>
         [HttpPost]
+        [ProducesResponseType(typeof(ProjectCreateResponse), 201)]
         public async Task<IActionResult> CreateProject([FromBody] ProjectDto projectDto)
         {
             try
@@ -76,8 +73,8 @@ namespace AdminHubApi.Controllers.Mantine
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var project = await _projectService.CreateAsync(projectDto);
-                return SuccessResponse(project, "Project created successfully");
+                var response = await _projectService.CreateAsync(projectDto);
+                return StatusCode(201, response);
             }
             catch (Exception ex)
             {
@@ -90,6 +87,7 @@ namespace AdminHubApi.Controllers.Mantine
         /// Update existing project
         /// </summary>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ProjectUpdateResponse), 200)]
         public async Task<IActionResult> UpdateProject(string id, [FromBody] ProjectDto projectDto)
         {
             try
@@ -97,11 +95,12 @@ namespace AdminHubApi.Controllers.Mantine
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var project = await _projectService.UpdateAsync(id, projectDto);
-                if (project == null)
-                    return NotFound(new { success = false, message = "Project not found" });
+                var response = await _projectService.UpdateAsync(id, projectDto);
 
-                return SuccessResponse(project, "Project updated successfully");
+                if (!response.Succeeded)
+                    return NotFound(response);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -114,15 +113,17 @@ namespace AdminHubApi.Controllers.Mantine
         /// Delete project
         /// </summary>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ProjectDeleteResponse), 200)]
         public async Task<IActionResult> DeleteProject(string id)
         {
             try
             {
-                var deleted = await _projectService.DeleteAsync(id);
-                if (!deleted)
-                    return NotFound(new { success = false, message = "Project not found" });
+                var response = await _projectService.DeleteAsync(id);
 
-                return SuccessResponse(new { }, "Project deleted successfully");
+                if (!response.Succeeded)
+                    return NotFound(response);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
