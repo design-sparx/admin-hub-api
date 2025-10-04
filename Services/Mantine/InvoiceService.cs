@@ -194,7 +194,7 @@ namespace AdminHubApi.Services.Mantine
                     Country = invoiceDto.Country,
                     Status = invoiceDto.Status,
                     Amount = invoiceDto.Amount,
-                    IssueDate = DateTime.Parse(invoiceDto.IssueDate),
+                    IssueDate = DateTime.Parse(invoiceDto.IssueDate).ToUniversalTime(),
                     Description = invoiceDto.Description,
                     ClientEmail = invoiceDto.ClientEmail,
                     ClientAddress = invoiceDto.ClientAddress,
@@ -250,7 +250,7 @@ namespace AdminHubApi.Services.Mantine
                 invoice.Country = invoiceDto.Country;
                 invoice.Status = invoiceDto.Status;
                 invoice.Amount = invoiceDto.Amount;
-                invoice.IssueDate = DateTime.Parse(invoiceDto.IssueDate);
+                invoice.IssueDate = DateTime.Parse(invoiceDto.IssueDate).ToUniversalTime();
                 invoice.Description = invoiceDto.Description;
                 invoice.ClientEmail = invoiceDto.ClientEmail;
                 invoice.ClientAddress = invoiceDto.ClientAddress;
