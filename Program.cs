@@ -152,6 +152,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // Mantine Dashboard Services
 builder.Services.AddScoped<IStatsService, StatsService>();
@@ -230,6 +231,11 @@ using (var scope = app.Services.CreateScope())
         logger.LogInformation("Seeding Mantine dashboard data...");
         await MantineDataSeeder.SeedMantineDataAsync(app.Services);
         logger.LogInformation("Mantine dashboard data seeded successfully");
+
+        // Seed Products
+        logger.LogInformation("Seeding products...");
+        await ProductSeeder.SeedProductsAsync(app.Services);
+        logger.LogInformation("Products seeded successfully");
 
         logger.LogInformation("Database seeding completed successfully");
     }
