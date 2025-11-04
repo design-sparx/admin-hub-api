@@ -194,8 +194,30 @@ using (var scope = app.Services.CreateScope())
     try
     {
         logger.LogInformation("Applying database migrations...");
-        db.Database.Migrate(); // This applies to pending migrations automatically
-        logger.LogInformation("Database migrations applied successfully");
+
+        // Check if database can be connected
+        if (await db.Database.CanConnectAsync())
+        {
+            logger.LogInformation("Database connection successful");
+
+            // Get pending migrations
+            var pendingMigrations = await db.Database.GetPendingMigrationsAsync();
+            if (pendingMigrations.Any())
+            {
+                logger.LogInformation($"Found {pendingMigrations.Count()} pending migrations. Applying...");
+                db.Database.Migrate();
+                logger.LogInformation("Database migrations applied successfully");
+            }
+            else
+            {
+                logger.LogInformation("Database is up to date. No pending migrations.");
+            }
+        }
+        else
+        {
+            logger.LogError("Cannot connect to database");
+            throw new Exception("Database connection failed");
+        }
 
         // Check if we need to seed users and roles
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
