@@ -1,0 +1,15 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+*.db
+*.db-shm
+*.db-wal
+appsettings.Development.json
+Dockerfile
+.dockerignore
+.git/
+.gitignore
+README.md
