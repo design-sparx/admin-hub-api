@@ -43,43 +43,27 @@ namespace AdminHubApi.Data.Seeders
                     // Add to the Admin role
                     await userManager.AddToRoleAsync(adminUser, RoleSeeder.AdminRole);
                     
-                    // Add all admin permissions
+                    // Add admin permissions (new RBAC only)
                     var adminPermissions = new List<Claim>
                     {
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Roles.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Products.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Orders.Delete),
-                        
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
-                        new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Delete),
+                        // Admin permissions
+                        new Claim(CustomClaimTypes.Permission, Permissions.Admin.UserManagement),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Admin.SystemSettings),
+
+                        // Team permissions
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Projects),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Orders),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.KanbanTasks),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Team.Analytics),
+
+                        // User directory
+                        new Claim(CustomClaimTypes.Permission, Permissions.Users.ViewDirectory),
+
+                        // Personal permissions (admin can access all)
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Profile),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Invoices),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Files),
+                        new Claim(CustomClaimTypes.Permission, Permissions.Personal.Chats),
                     };
                     
                     await userManager.AddClaimsAsync(adminUser, adminPermissions);

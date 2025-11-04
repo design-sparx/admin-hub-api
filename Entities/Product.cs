@@ -1,37 +1,54 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdminHubApi.Entities;
 
-public enum ProductStatus
-{
-    Draft,       // Initial creation, not ready for sale
-    Active,      // Available for purchase
-    OutOfStock,  // Temporarily unavailable due to no inventory
-    Discontinued,// No longer being produced/sold
-    Archived     // Hidden from the active catalog but kept for record
-}
-
 public class Product
 {
+    [Key]
     public Guid Id { get; set; }
+
     [Required]
-    [MaxLength(255)]
-    public string Title { get; set; }
+    [MaxLength(200)]
+    public string Name { get; set; }
+
+    [MaxLength(100)]
+    public string Sku { get; set; }
+
+    [MaxLength(1000)]
     public string Description { get; set; }
-    [Column(TypeName = "decimal(18,2)")]
+
+    [Required]
     public decimal Price { get; set; }
-    public int QuantityInStock { get; set; }
-    public string SKU { get; set; }
+
+    public decimal? CompareAtPrice { get; set; }
+
+    public decimal CostPrice { get; set; }
+
+    [Required]
+    public int StockQuantity { get; set; }
+
+    public int LowStockThreshold { get; set; }
+
+    [MaxLength(50)]
+    public string Category { get; set; }
+
+    [MaxLength(100)]
+    public string Brand { get; set; }
+
+    [MaxLength(500)]
     public string ImageUrl { get; set; }
+
+    public string Tags { get; set; }
+
     public bool IsActive { get; set; } = true;
-    public ProductStatus Status { get; set; } = ProductStatus.Draft;
-    public Guid CategoryId { get; set; }
-    public ProductCategory Category { get; set; }
-    public DateTime Created { get; set; } = DateTime.UtcNow;
-    public DateTime Modified { get; set; }
-    public string CreatedById { get; set; }
-    public ApplicationUser CreatedBy { get; set; }
-    public string ModifiedById { get; set; }
-    public ApplicationUser ModifiedBy { get; set; }
+
+    public bool IsFeatured { get; set; } = false;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
+
+    // Navigation property
+    public string CreatedBy { get; set; }
+    public ApplicationUser CreatedByUser { get; set; }
 }

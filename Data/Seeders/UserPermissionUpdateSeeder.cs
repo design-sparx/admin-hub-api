@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using AdminHubApi.Constants;
 using AdminHubApi.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +13,7 @@ namespace AdminHubApi.Data.Seeders
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<ApplicationUser>>();
 
-            logger.LogInformation("Starting user permissions update process...");
+            logger.LogInformation("Starting user permissions update process with new RBAC system...");
 
             // Update admin permissions
             var adminUser = await userManager.FindByEmailAsync("admin@adminhub.com");
@@ -21,139 +21,78 @@ namespace AdminHubApi.Data.Seeders
             {
                 var adminPermissions = new List<Claim>
                 {
-                    // List all the expected permissions for admin users
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Delete),
+                    // Admin permissions
+                    new Claim(CustomClaimTypes.Permission, Permissions.Admin.UserManagement),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Admin.SystemSettings),
+
+                    // Team permissions
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Projects),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Orders),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.KanbanTasks),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Analytics),
+
+                    // User directory
+                    new Claim(CustomClaimTypes.Permission, Permissions.Users.ViewDirectory),
+
+                    // Personal permissions (admin can access all)
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Profile),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Invoices),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Files),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Chats),
                 };
-                
-                await UpdateUserClaimsAsync(userManager, adminUser, adminPermissions, logger);
+
+                await UpdateUserPermissions(userManager, adminUser, adminPermissions, logger);
             }
 
-            // Update manager permissions
-            var managerUser = await userManager.FindByEmailAsync("manager@adminhub.com");
-            if (managerUser != null)
+            // Update user permissions for other users
+            var users = userManager.Users.Where(u => u.Email != "admin@adminhub.com").ToList();
+            foreach (var user in users)
             {
-                var managerPermissions = new List<Claim>
+                var userPermissions = new List<Claim>
                 {
-                    // List all the expected permissions for manager users
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Delete),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
+                    // Team permissions (collaborative access)
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Projects),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Orders),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.KanbanTasks),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Team.Analytics),
+
+                    // User directory
+                    new Claim(CustomClaimTypes.Permission, Permissions.Users.ViewDirectory),
+
+                    // Personal permissions
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Profile),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Invoices),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Files),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Personal.Chats),
                 };
-                
-                await UpdateUserClaimsAsync(userManager, managerUser, managerPermissions, logger);
+
+                await UpdateUserPermissions(userManager, user, userPermissions, logger);
             }
 
-            // Update normal user permissions
-            var normalUser = await userManager.FindByEmailAsync("demo@adminhub.com");
-            if (normalUser != null)
-            {
-                var normalUserPermissions = new List<Claim>
-                {
-                    // List all the expected permissions for normal users
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Roles.View),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Projects.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Products.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.ProductCategories.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Orders.Edit),
-                    
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.View),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Create),
-                    new Claim(CustomClaimTypes.Permission, Permissions.Invoices.Edit),
-                };
-                
-                await UpdateUserClaimsAsync(userManager, normalUser, normalUserPermissions, logger);
-            }
-
-            logger.LogInformation("User permissions update completed successfully");
+            logger.LogInformation("User permissions update process completed successfully");
         }
 
-        private static async Task UpdateUserClaimsAsync(
-            UserManager<ApplicationUser> userManager,
-            ApplicationUser user,
-            List<Claim> expectedClaims,
-            ILogger logger)
+        private static async Task UpdateUserPermissions(UserManager<ApplicationUser> userManager, ApplicationUser user, List<Claim> newPermissions, ILogger logger)
         {
-            var currentClaims = await userManager.GetClaimsAsync(user);
-            
-            // Find claims to add (those that exist in expected but not in current)
-            foreach (var claim in expectedClaims)
+            try
             {
-                if (!currentClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value))
+                // Remove all existing permission claims
+                var existingClaims = await userManager.GetClaimsAsync(user);
+                var permissionClaims = existingClaims.Where(c => c.Type == CustomClaimTypes.Permission).ToList();
+
+                if (permissionClaims.Any())
                 {
-                    logger.LogInformation($"Adding permission '{claim.Value}' to user '{user.UserName}'");
-                    await userManager.AddClaimAsync(user, claim);
+                    await userManager.RemoveClaimsAsync(user, permissionClaims);
                 }
+
+                // Add new permissions
+                await userManager.AddClaimsAsync(user, newPermissions);
+
+                logger.LogInformation($"Updated permissions for user: {user.Email}");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error updating permissions for user: {user.Email}");
             }
         }
     }

@@ -4,61 +4,37 @@ namespace AdminHubApi.Constants;
 
 public static class Permissions
 {
-    public static class Users
+    // Admin-only permissions (User Management)
+    public static class Admin
     {
-        public const string View = "Permissions.Users.View";
-        public const string Create = "Permissions.Users.Create";
-        public const string Edit = "Permissions.Users.Edit";
-        public const string Delete = "Permissions.Users.Delete";
+        public const string UserManagement = "Permissions.Admin.UserManagement";
+        public const string SystemSettings = "Permissions.Admin.SystemSettings";
     }
 
-    public static class Roles
+    // Shared team resources (all users can CRUD)
+    public static class Team
     {
-        public const string View = "Permissions.Roles.View";
-        public const string Create = "Permissions.Roles.Create";
-        public const string Edit = "Permissions.Roles.Edit";
-        public const string Delete = "Permissions.Roles.Delete";
+        public const string Projects = "Permissions.Team.Projects";
+        public const string Orders = "Permissions.Team.Orders";
+        public const string KanbanTasks = "Permissions.Team.KanbanTasks";
+        public const string Analytics = "Permissions.Team.Analytics";
     }
-    
-    public static class Projects
+
+    // User directory (basic user info visibility)
+    public static class Users
     {
-        public const string View = "Permissions.Projects.View";
-        public const string Create = "Permissions.Projects.Create";
-        public const string Edit = "Permissions.Projects.Edit";
-        public const string Delete = "Permissions.Projects.Delete";
+        public const string ViewDirectory = "Permissions.Users.ViewDirectory";
     }
-    
-    public static class Products
+
+    // Personal resources (users access only their own)
+    public static class Personal
     {
-        public const string View = "Permissions.Products.View";
-        public const string Create = "Permissions.Products.Create";
-        public const string Edit = "Permissions.Products.Edit";
-        public const string Delete = "Permissions.Products.Delete";
+        public const string Profile = "Permissions.Personal.Profile";
+        public const string Invoices = "Permissions.Personal.Invoices";
+        public const string Files = "Permissions.Personal.Files";
+        public const string Chats = "Permissions.Personal.Chats";
     }
-    
-    public static class ProductCategories
-    {
-        public const string View = "Permissions.ProductCategories.View";
-        public const string Create = "Permissions.ProductCategories.Create";
-        public const string Edit = "Permissions.ProductCategories.Edit";
-        public const string Delete = "Permissions.ProductCategories.Delete";
-    }
-    
-    public static class Orders
-    {
-        public const string View = "Permissions.Orders.View";
-        public const string Create = "Permissions.Orders.Create";
-        public const string Edit = "Permissions.Orders.Edit";
-        public const string Delete = "Permissions.Orders.Delete";
-    }
-    
-    public static class Invoices
-    {
-        public const string View = "Permissions.Invoices.View";
-        public const string Create = "Permissions.Invoices.Create";
-        public const string Edit = "Permissions.Invoices.Edit";
-        public const string Delete = "Permissions.Invoices.Delete";
-    }
+
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()

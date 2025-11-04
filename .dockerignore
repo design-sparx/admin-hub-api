@@ -1,20 +1,15 @@
-# Git
-.git
-.gitignore
-
-# Visual Studio / VS Code
-.vs/
-.vscode/
 bin/
 obj/
-out/
-
-# Node.js
-node_modules/
-npm-debug.log
-
-# Other
-**/*.log
-**/*.md
-**/*.pdb
-**/.DS_Store
+*.user
+*.suo
+.vs/
+.vscode/
+*.db
+*.db-shm
+*.db-wal
+appsettings.Development.json
+Dockerfile
+.dockerignore
+.git/
+.gitignore
+README.md

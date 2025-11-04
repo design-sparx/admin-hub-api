@@ -1,14 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AdminHubApi.Controllers;
 using AdminHubApi.Data;
 using AdminHubApi.Data.Seeders;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Interfaces.Mantine;
 using AdminHubApi.Repositories;
 using AdminHubApi.Security;
 using AdminHubApi.Security.Permissions;
 using AdminHubApi.Services;
+using AdminHubApi.Services.Mantine;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,30 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+
+// Configure CORS
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        if (allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
+        else
+        {
+            // Fallback for development if no origins configured
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    });
+});
 
 // DB Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -119,30 +144,30 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole(RoleSeeder.AdminRole));
 
-    options.AddPolicy("RequireManagerRole", policy =>
-        policy.RequireRole(RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
-
     options.AddPolicy("RequireUserRole", policy =>
-        policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.ManagerRole, RoleSeeder.AdminRole));
+        policy.RequireRole(RoleSeeder.UserRole, RoleSeeder.AdminRole));
 });
 
 // Services
 builder.Services.AddScoped<IUserClaimsService, UserClaimsService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+
+// Mantine Dashboard Services
+builder.Services.AddScoped<IStatsService, StatsService>();
+builder.Services.AddScoped<ISalesService, SalesService>();
+builder.Services.AddScoped<ISystemConfigService, SystemConfigService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<InvoiceService, InvoiceService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IKanbanTaskService, KanbanTaskService>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddScoped<IFileManagementService, FileManagementService>();
+builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 
 // Repository
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
 // Register token cleanup background service
 builder.Services.AddHostedService<TokenCleanupService>();
@@ -191,7 +216,6 @@ using (var scope = app.Services.CreateScope())
             // Add seeders
             await AdminUserSeeder.SeedAdminUserAsync(app.Services);
             await NormalUserSeeder.SeedNormalUserAsync(app.Services);
-            await ManagerUserSeeder.SeedManagerUserAsync(app.Services);
         }
 
         // Always update permissions to ensure new permissions are added
@@ -203,6 +227,15 @@ using (var scope = app.Services.CreateScope())
         await UserPermissionUpdateSeeder.UpdateUserPermissionsAsync(app.Services);
         logger.LogInformation("User permissions updated successfully");
 
+        // Seed Mantine dashboard data
+        logger.LogInformation("Seeding Mantine dashboard data...");
+        await MantineDataSeeder.SeedMantineDataAsync(app.Services);
+        logger.LogInformation("Mantine dashboard data seeded successfully");
+
+        // Seed Products
+        logger.LogInformation("Seeding products...");
+        await ProductSeeder.SeedProductsAsync(app.Services);
+        logger.LogInformation("Products seeded successfully");
 
         logger.LogInformation("Database seeding completed successfully");
     }
@@ -219,6 +252,9 @@ app.MapScalarApiReference();
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+// Enable CORS
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

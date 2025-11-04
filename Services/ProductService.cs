@@ -1,194 +1,185 @@
-﻿
-using AdminHubApi.Dtos.ApiResponse;
-using AdminHubApi.Dtos.ProductCategory;
+using AdminHubApi.Data;
 using AdminHubApi.Dtos.Products;
-using AdminHubApi.Dtos.UserManagement;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace AdminHubApi.Services
+namespace AdminHubApi.Services;
+
+public class ProductService : IProductService
 {
-    public class ProductService : IProductService
+    private readonly ApplicationDbContext _context;
+    private readonly IAuditService _auditService;
+
+    public ProductService(ApplicationDbContext context, IAuditService auditService)
     {
-        private readonly IProductRepository _productRepository;
+        _context = context;
+        _auditService = auditService;
+    }
 
-        public ProductService(IProductRepository productRepository)
+    public async Task<List<ProductDto>> GetAllProductsAsync()
+    {
+        var products = await _context.Products
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync();
+
+        return products.Select(MapToDto).ToList();
+    }
+
+    public async Task<ProductDto> GetProductByIdAsync(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+            return null;
+
+        return MapToDto(product);
+    }
+
+    public async Task<ProductDto> CreateProductAsync(CreateProductDto createDto, string userId)
+    {
+        var product = new Product
         {
-            _productRepository = productRepository;
-        }
+            Name = createDto.Name,
+            Sku = createDto.Sku,
+            Description = createDto.Description,
+            Price = createDto.Price,
+            CompareAtPrice = createDto.CompareAtPrice,
+            CostPrice = createDto.CostPrice,
+            StockQuantity = createDto.StockQuantity,
+            LowStockThreshold = createDto.LowStockThreshold,
+            Category = createDto.Category,
+            Brand = createDto.Brand,
+            ImageUrl = createDto.ImageUrl,
+            Tags = createDto.Tags != null ? string.Join(",", createDto.Tags) : null,
+            IsActive = createDto.IsActive,
+            IsFeatured = createDto.IsFeatured,
+            CreatedBy = userId,
+            CreatedAt = DateTime.UtcNow
+        };
 
-        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetAllAsync()
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync("Product", product.Id.ToString(), "Create", "/api/products", "POST");
+
+        return MapToDto(product);
+    }
+
+    public async Task<ProductDto> UpdateProductAsync(Guid id, UpdateProductDto updateDto)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+            return null;
+
+        product.Name = updateDto.Name;
+        product.Sku = updateDto.Sku;
+        product.Description = updateDto.Description;
+        product.Price = updateDto.Price;
+        product.CompareAtPrice = updateDto.CompareAtPrice;
+        product.CostPrice = updateDto.CostPrice;
+        product.StockQuantity = updateDto.StockQuantity;
+        product.LowStockThreshold = updateDto.LowStockThreshold;
+        product.Category = updateDto.Category;
+        product.Brand = updateDto.Brand;
+        product.ImageUrl = updateDto.ImageUrl;
+        product.Tags = updateDto.Tags != null ? string.Join(",", updateDto.Tags) : null;
+        product.IsActive = updateDto.IsActive;
+        product.IsFeatured = updateDto.IsFeatured;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync("Product", product.Id.ToString(), "Update", $"/api/products/{id}", "PUT");
+
+        return MapToDto(product);
+    }
+
+    public async Task<bool> DeleteProductAsync(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+            return false;
+
+        _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync("Product", id.ToString(), "Delete", $"/api/products/{id}", "DELETE");
+
+        return true;
+    }
+
+    public async Task<List<ProductDto>> GetProductsByCategoryAsync(string category)
+    {
+        var products = await _context.Products
+            .Where(p => p.Category == category)
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync();
+
+        return products.Select(MapToDto).ToList();
+    }
+
+    public async Task<List<ProductDto>> GetLowStockProductsAsync()
+    {
+        var products = await _context.Products
+            .Where(p => p.StockQuantity <= p.LowStockThreshold)
+            .OrderBy(p => p.StockQuantity)
+            .ToListAsync();
+
+        return products.Select(MapToDto).ToList();
+    }
+
+    public async Task<List<ProductDto>> GetFeaturedProductsAsync()
+    {
+        var products = await _context.Products
+            .Where(p => p.IsFeatured && p.IsActive)
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync();
+
+        return products.Select(MapToDto).ToList();
+    }
+
+    public async Task<bool> UpdateStockQuantityAsync(Guid id, int quantity)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+            return false;
+
+        product.StockQuantity = quantity;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync("Product", id.ToString(), "UpdateStock", $"/api/products/{id}/stock", "PATCH");
+
+        return true;
+    }
+
+    private ProductDto MapToDto(Product product)
+    {
+        return new ProductDto
         {
-            var products = await _productRepository.GetAllAsync();
-
-            return new ApiResponse<IEnumerable<ProductResponseDto>>
-            {
-                Succeeded = true,
-                Data = products.Select(MapToResponseDto),
-                Message = "Products retrieved",
-                Errors = []
-            };
-        }
-
-        public async Task<ApiResponse<ProductResponseDto>> GetByIdAsync(Guid id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-
-            if (product == null) throw new KeyNotFoundException($"Product with id: {id} was not found");
-
-            return new ApiResponse<ProductResponseDto>
-            {
-                Succeeded = true,
-                Data = MapToResponseDto(product),
-                Message = "Product retrieved",
-                Errors = []
-            };
-        }
-
-        public async Task<ApiResponse<Guid>> CreateAsync(Product product)
-        {
-            await _productRepository.CreateAsync(product);
-            
-            return new ApiResponse<Guid>
-            {
-                Succeeded = true,
-                Data = product.Id,
-                Message = "Product created",
-                Errors = []
-            };
-        }
-
-        public async Task UpdateAsync(ProductResponseDto productResponseDto)
-        {
-            var existingProduct = await _productRepository.GetByIdAsync(productResponseDto.Id);
-
-            if (existingProduct == null) 
-                throw new KeyNotFoundException($"Product with id: {productResponseDto.Id} was not found");
-            
-            existingProduct.Title = productResponseDto.Title;
-            existingProduct.Description = productResponseDto.Description;
-            existingProduct.Price = productResponseDto.Price;
-            existingProduct.QuantityInStock = productResponseDto.QuantityInStock;
-            existingProduct.SKU = productResponseDto.SKU;
-            existingProduct.ImageUrl = productResponseDto.ImageUrl;
-            existingProduct.IsActive = productResponseDto.IsActive;
-            existingProduct.Status = productResponseDto.Status;
-            existingProduct.CategoryId = productResponseDto.CategoryId;
-            existingProduct.ModifiedById = productResponseDto.ModifiedById;
-            existingProduct.Modified = productResponseDto.Modified;
-
-            await _productRepository.UpdateAsync(existingProduct);
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-
-            if (product == null) 
-                throw new KeyNotFoundException($"Product with id: {id} was not found");
-
-            await _productRepository.DeleteAsync(id);
-        }
-
-        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetProductsByStatusAsync(ProductStatus status)
-        {
-            var products = await _productRepository.GetProductsByStatusAsync(status);
-
-            return new ApiResponse<IEnumerable<ProductResponseDto>>
-            {
-                Succeeded = true,
-                Data = products.Select(MapToResponseDto),
-                Message = $"Products retrieved by status - {status}",
-                Errors = []
-            };
-        }
-
-        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetProductsByCategoryAsync(Guid categoryId)
-        {
-            var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-
-            return new ApiResponse<IEnumerable<ProductResponseDto>>
-            {
-                Succeeded = true,
-                Data = products.Select(MapToResponseDto),
-                Message = $"Products retrieved by category - {categoryId}",
-                Errors = []
-            };
-        }
-
-        public async Task<ApiResponse<IEnumerable<ProductResponseDto>>> GetProductsByCreatedByAsync(string createdById)
-        {
-            var products = await _productRepository.GetProductsByCreatedByAsync(createdById);
-
-            return new ApiResponse<IEnumerable<ProductResponseDto>>
-            {
-                Succeeded = true,
-                Data = products.Select(MapToResponseDto),
-                Message = $"Products retrieved by creator - {createdById}",
-                Errors = []
-            };
-        }
-
-        // Helper method to map Product entity to ProductResponseDto
-        private ProductResponseDto MapToResponseDto(Product product)
-        {
-            return new ProductResponseDto
-            {
-                Id = product.Id,
-                Title = product.Title,
-                Description = product.Description,
-                Price = product.Price,
-                QuantityInStock = product.QuantityInStock,
-                SKU = product.SKU,
-                ImageUrl = product.ImageUrl,
-                Status = product.Status,
-                IsActive = product.IsActive,
-                CategoryId = product.CategoryId,
-                CategoryName = product.Category.Title,
-                Category = product.Category != null ?
-                    new ProductCategoryResponseDto
-                    {
-                        Id = product.Category.Id,
-                        Title = product.Category.Title,
-                        Description = product.Category.Description,
-                        CreatedById = product.Category.CreatedById,
-                        ModifiedById = product.Category.ModifiedById,
-                        Created = product.Category.Created,
-                        Modified = product.Category.Modified,
-                    } : null,
-                Created = product.Created,
-                Modified = product.Modified,
-                CreatedById = product.CreatedById,
-                ModifiedById = product.ModifiedById,
-                CreatedBy = product.CreatedBy != null
-                    ? new UserDto
-                    {
-                        Id = product.CreatedBy.Id,
-                        UserName = product.CreatedBy.UserName,
-                        Email = product.CreatedBy.Email,
-                        PhoneNumber = product.CreatedBy.PhoneNumber,
-                        EmailConfirmed = product.CreatedBy.EmailConfirmed,
-                        PhoneNumberConfirmed = product.CreatedBy.PhoneNumberConfirmed,
-                        TwoFactorEnabled = product.CreatedBy.TwoFactorEnabled,
-                        LockoutEnabled = product.CreatedBy.LockoutEnabled,
-                        LockoutEnd = product.CreatedBy.LockoutEnd
-                    }
-                    : null,
-                ModifiedBy = product.ModifiedBy != null
-                    ? new UserDto
-                    {
-                        Id = product.ModifiedBy.Id,
-                        UserName = product.ModifiedBy.UserName,
-                        Email = product.ModifiedBy.Email,
-                        PhoneNumber = product.ModifiedBy.PhoneNumber,
-                        EmailConfirmed = product.ModifiedBy.EmailConfirmed,
-                        PhoneNumberConfirmed = product.ModifiedBy.PhoneNumberConfirmed,
-                        TwoFactorEnabled = product.ModifiedBy.TwoFactorEnabled,
-                        LockoutEnabled = product.ModifiedBy.LockoutEnabled,
-                        LockoutEnd = product.ModifiedBy.LockoutEnd
-                    }
-                    : null,
-            };
-        }
+            Id = product.Id,
+            Name = product.Name,
+            Sku = product.Sku,
+            Description = product.Description,
+            Price = product.Price,
+            CompareAtPrice = product.CompareAtPrice,
+            CostPrice = product.CostPrice,
+            StockQuantity = product.StockQuantity,
+            LowStockThreshold = product.LowStockThreshold,
+            Category = product.Category,
+            Brand = product.Brand,
+            ImageUrl = product.ImageUrl,
+            Tags = !string.IsNullOrEmpty(product.Tags) ? product.Tags.Split(',').ToList() : new List<string>(),
+            IsActive = product.IsActive,
+            IsFeatured = product.IsFeatured,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt,
+            CreatedBy = product.CreatedBy
+        };
     }
 }

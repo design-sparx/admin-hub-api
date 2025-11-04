@@ -15,56 +15,8 @@ public class PermissionMessageService : IPermissionMessageService
         {
             new()
             {
-                Resource = "projects",
-                Prefix = "/api/projects",
-                Permissions = new Dictionary<string, HttpMethodPermissions>
-                {
-                    ["*"] = new HttpMethodPermissions
-                    {
-                        Get = "You do not have sufficient permissions to view projects.",
-                        Post = "You do not have sufficient permissions to create a project.",
-                        Put = "You do not have sufficient permissions to edit a project.",
-                        Delete = "You do not have sufficient permissions to delete a project.",
-                        Default = "You do not have sufficient permissions to perform this action on projects."
-                    }
-                }
-            },
-            new()
-            {
-                Resource = "products",
-                Prefix = "/api/products",
-                Permissions = new Dictionary<string, HttpMethodPermissions>
-                {
-                    ["*"] = new HttpMethodPermissions
-                    {
-                        Get = "You do not have sufficient permissions to view products.",
-                        Post = "You do not have sufficient permissions to create a product.",
-                        Put = "You do not have sufficient permissions to edit a product.",
-                        Delete = "You do not have sufficient permissions to delete a product.",
-                        Default = "You do not have sufficient permissions to perform this action on products."
-                    }
-                }
-            },
-            new()
-            {
-                Resource = "product-categories",
-                Prefix = "/api/product-categories",
-                Permissions = new Dictionary<string, HttpMethodPermissions>
-                {
-                    ["*"] = new HttpMethodPermissions
-                    {
-                        Get = "You do not have sufficient permissions to view product categories.",
-                        Post = "You do not have sufficient permissions to create a product category.",
-                        Put = "You do not have sufficient permissions to edit a product category.",
-                        Delete = "You do not have sufficient permissions to delete a product category.",
-                        Default = "You do not have sufficient permissions to perform this action on product categories."
-                    }
-                }
-            },
-            new()
-            {
                 Resource = "users",
-                Prefix = "/api/users",
+                Prefix = "/api/v1/users",
                 Permissions = new Dictionary<string, HttpMethodPermissions>
                 {
                     ["*"] = new HttpMethodPermissions
@@ -79,21 +31,37 @@ public class PermissionMessageService : IPermissionMessageService
             },
             new()
             {
-                Resource = "orders",
-                Prefix = "/api/orders",
+                Resource = "auth",
+                Prefix = "/api/v1/auth",
                 Permissions = new Dictionary<string, HttpMethodPermissions>
                 {
                     ["*"] = new HttpMethodPermissions
                     {
-                        Get = "You do not have sufficient permissions to view orders.",
-                        Post = "You do not have sufficient permissions to create an order.",
-                        Put = "You do not have sufficient permissions to modify an order.",
-                        Delete = "You do not have sufficient permissions to cancel an order.",
-                        Default = "You do not have sufficient permissions to perform this action on orders."
+                        Get = "You do not have sufficient permissions to access authentication.",
+                        Post = "You do not have sufficient permissions to perform authentication.",
+                        Put = "You do not have sufficient permissions to modify authentication.",
+                        Delete = "You do not have sufficient permissions to perform this authentication action.",
+                        Default = "You do not have sufficient permissions to perform this authentication action."
+                    }
+                }
+            },
+            new()
+            {
+                Resource = "profile",
+                Prefix = "/api/v1/profile",
+                Permissions = new Dictionary<string, HttpMethodPermissions>
+                {
+                    ["*"] = new HttpMethodPermissions
+                    {
+                        Get = "You do not have sufficient permissions to view profile information.",
+                        Post = "You do not have sufficient permissions to modify profile.",
+                        Put = "You do not have sufficient permissions to update profile.",
+                        Delete = "You do not have sufficient permissions to delete profile data.",
+                        Default = "You do not have sufficient permissions to perform this profile action."
                     }
                 }
             }
-            // Add more resources as needed
+            // Add more resources as needed for new endpoints
         };
     }
 
