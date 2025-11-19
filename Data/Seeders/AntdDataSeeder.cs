@@ -533,6 +533,50 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd auction creators data seeded successfully");
                 }
+
+                // Seed Antd Bidding Top Sellers (10 rows)
+                if (!await context.AntdBiddingTopSellers.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd bidding top sellers data...");
+                    var topSellers = new List<AntdBiddingTopSeller>
+                    {
+                        new AntdBiddingTopSeller { Title = "Cosmic Dreams", Artist = "Garnette Meneo", Volume = 3413, Status = 54, OwnersCount = 49762, Description = "A stunning cosmic landscape with vibrant colors.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-180), Edition = 608, Price = 786529.23m, Owner = "Ellyn Fyall", Collection = "Abstract", Verified = false },
+                        new AntdBiddingTopSeller { Title = "Ocean Waves", Artist = "Lazare Bonhill", Volume = 1972, Status = 45, OwnersCount = 12407, Description = "Mesmerizing ocean waves in digital art.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-300), Edition = 929, Price = 376868.39m, Owner = "Cathe Yitzhak", Collection = "Animals", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Neon City", Artist = "Marcus Chen", Volume = 4521, Status = 78, OwnersCount = 85342, Description = "Futuristic cityscape with neon lights.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-120), Edition = 150, Price = 1234567.89m, Owner = "John Smith", Collection = "Sci-Fi", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Forest Spirit", Artist = "Sofia Rodriguez", Volume = 2876, Status = 62, OwnersCount = 34521, Description = "Mystical forest spirit artwork.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-90), Edition = 500, Price = 456789.12m, Owner = "Emma Wilson", Collection = "Fantasy", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Digital Dreams", Artist = "Yuki Tanaka", Volume = 5234, Status = 89, OwnersCount = 98765, Description = "Abstract digital dreamscape.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-60), Edition = 200, Price = 987654.32m, Owner = "David Kim", Collection = "Abstract", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Mountain Peak", Artist = "Oliver Smith", Volume = 1543, Status = 34, OwnersCount = 23456, Description = "Majestic mountain peak at sunset.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-150), Edition = 750, Price = 234567.89m, Owner = "Lisa Anderson", Collection = "Nature", Verified = false },
+                        new AntdBiddingTopSeller { Title = "Pixel Art Hero", Artist = "Emma Johnson", Volume = 3987, Status = 71, OwnersCount = 67890, Description = "Retro pixel art hero character.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-45), Edition = 100, Price = 567890.12m, Owner = "James Brown", Collection = "Gaming", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Abstract Flow", Artist = "Lucas Mueller", Volume = 2345, Status = 56, OwnersCount = 45678, Description = "Flowing abstract patterns.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-200), Edition = 300, Price = 345678.90m, Owner = "Maria Garcia", Collection = "Abstract", Verified = false },
+                        new AntdBiddingTopSeller { Title = "Cyber Punk", Artist = "Aria Kim", Volume = 4123, Status = 83, OwnersCount = 78901, Description = "Cyberpunk character design.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-30), Edition = 250, Price = 789012.34m, Owner = "Alex Thompson", Collection = "Sci-Fi", Verified = true },
+                        new AntdBiddingTopSeller { Title = "Golden Sunset", Artist = "Carlos Santos", Volume = 1876, Status = 48, OwnersCount = 34567, Description = "Beautiful golden sunset over the ocean.", ImageUrl = "", CreationDate = DateTime.UtcNow.AddDays(-250), Edition = 450, Price = 456123.78m, Owner = "Sarah Lee", Collection = "Nature", Verified = false }
+                    };
+                    context.AntdBiddingTopSellers.AddRange(topSellers);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd bidding top sellers data seeded successfully");
+                }
+
+                // Seed Antd Bidding Transactions (10 rows)
+                if (!await context.AntdBiddingTransactions.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd bidding transactions data...");
+                    var transactions = new List<AntdBiddingTransaction>
+                    {
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-30), Seller = "kbellamy0", Buyer = "rhalpen0", PurchasePrice = 694.08m, SalePrice = 426.64m, Profit = -267.44m, Quantity = 89, ShippingAddress = "530 Linden Drive", State = "", Country = "Albania", TransactionType = "transfer" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-25), Seller = "wdunseith1", Buyer = "ctondeur1", PurchasePrice = 605.77m, SalePrice = 204.8m, Profit = -400.97m, Quantity = 79, ShippingAddress = "202 Raven Park", State = "", Country = "China", TransactionType = "refund" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-20), Seller = "jsmith", Buyer = "mwilson", PurchasePrice = 1500.00m, SalePrice = 2300.00m, Profit = 800.00m, Quantity = 5, ShippingAddress = "123 Main St", State = "NY", Country = "USA", TransactionType = "sale" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-15), Seller = "erodriguez", Buyer = "dkim", PurchasePrice = 850.00m, SalePrice = 1200.00m, Profit = 350.00m, Quantity = 12, ShippingAddress = "456 Oak Ave", State = "CA", Country = "USA", TransactionType = "sale" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-10), Seller = "ytanaka", Buyer = "osmith", PurchasePrice = 2000.00m, SalePrice = 3500.00m, Profit = 1500.00m, Quantity = 3, ShippingAddress = "789 Pine Rd", State = "", Country = "Japan", TransactionType = "sale" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-8), Seller = "ejohnson", Buyer = "lmueller", PurchasePrice = 450.00m, SalePrice = 380.00m, Profit = -70.00m, Quantity = 25, ShippingAddress = "321 Elm St", State = "NSW", Country = "Australia", TransactionType = "refund" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-5), Seller = "akim", Buyer = "csantos", PurchasePrice = 1800.00m, SalePrice = 2500.00m, Profit = 700.00m, Quantity = 8, ShippingAddress = "654 Maple Dr", State = "", Country = "South Korea", TransactionType = "sale" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-3), Seller = "mchen", Buyer = "slee", PurchasePrice = 3200.00m, SalePrice = 4100.00m, Profit = 900.00m, Quantity = 2, ShippingAddress = "987 Cedar Ln", State = "", Country = "UK", TransactionType = "sale" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-2), Seller = "jbrown", Buyer = "mgarcia", PurchasePrice = 750.00m, SalePrice = 750.00m, Profit = 0.00m, Quantity = 15, ShippingAddress = "147 Birch Way", State = "", Country = "Germany", TransactionType = "transfer" },
+                        new AntdBiddingTransaction { Image = "", ProductId = Guid.NewGuid().ToString(), TransactionDate = DateTime.UtcNow.AddDays(-1), Seller = "athompson", Buyer = "rsingleton", PurchasePrice = 1100.00m, SalePrice = 1650.00m, Profit = 550.00m, Quantity = 10, ShippingAddress = "258 Walnut Blvd", State = "", Country = "Brazil", TransactionType = "sale" }
+                    };
+                    context.AntdBiddingTransactions.AddRange(transactions);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd bidding transactions data seeded successfully");
+                }
             }
             catch (Exception ex)
             {

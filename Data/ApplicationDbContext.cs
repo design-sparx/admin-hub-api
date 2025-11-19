@@ -44,6 +44,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdScheduledPost> AntdScheduledPosts { get; set; }
     public DbSet<AntdLiveAuction> AntdLiveAuctions { get; set; }
     public DbSet<AntdAuctionCreator> AntdAuctionCreators { get; set; }
+    public DbSet<AntdBiddingTopSeller> AntdBiddingTopSellers { get; set; }
+    public DbSet<AntdBiddingTransaction> AntdBiddingTransactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -283,6 +285,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Email);
             entity.HasIndex(e => e.Country);
             entity.HasIndex(e => e.SalesCount);
+        });
+
+        builder.Entity<AntdBiddingTopSeller>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Collection);
+            entity.HasIndex(e => e.Artist);
+            entity.HasIndex(e => e.Verified);
+            entity.HasIndex(e => e.Volume);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdBiddingTransaction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TransactionType);
+            entity.HasIndex(e => e.TransactionDate);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.PurchasePrice).HasPrecision(18, 2);
+            entity.Property(e => e.SalePrice).HasPrecision(18, 2);
+            entity.Property(e => e.Profit).HasPrecision(18, 2);
         });
 
         // Configure Product entity
