@@ -56,6 +56,10 @@ public static class Permissions
         public const string RecommendedCourses = "Permissions.Antd.RecommendedCourses";
         public const string Exams = "Permissions.Antd.Exams";
         public const string CommunityGroups = "Permissions.Antd.CommunityGroups";
+        public const string TruckDeliveries = "Permissions.Antd.TruckDeliveries";
+        public const string DeliveryAnalytics = "Permissions.Antd.DeliveryAnalytics";
+        public const string Trucks = "Permissions.Antd.Trucks";
+        public const string TruckDeliveryRequests = "Permissions.Antd.TruckDeliveryRequests";
     }
 
 

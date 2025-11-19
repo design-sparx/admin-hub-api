@@ -687,6 +687,94 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd community groups data seeded successfully");
                 }
+
+                // Seed Antd Truck Deliveries (10 rows)
+                if (!await context.AntdTruckDeliveries.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd truck deliveries data...");
+                    var truckDeliveries = new List<AntdTruckDelivery>
+                    {
+                        new AntdTruckDelivery { ShipmentId = Guid.Parse("d79bd5bf-732b-4bb2-b1d0-ce11d81436a2"), TruckId = Guid.Parse("6cf8fbcd-fd5a-449a-ba4e-9bf580770071"), CustomerId = Guid.Parse("79192439-9814-41c2-81cc-a0752c715df2"), CustomerName = "Powlowski, Stanton and Goyette", DriverName = "Ada Coxall", OriginCity = "Mergayu", DestinationCity = "Longjiang", ShipmentDate = DateTime.UtcNow.AddDays(-365), DeliveryTime = 14, ShipmentWeight = 1752.78m, DeliveryStatus = "delivered", ShipmentCost = 7389.89m, FavoriteColor = "gold" },
+                        new AntdTruckDelivery { ShipmentId = Guid.Parse("e409d5b5-a6c1-4a02-9ca1-90d3f99e75f5"), TruckId = Guid.Parse("39f994b0-bf2d-4a13-84b4-ea80a9cb683f"), CustomerId = Guid.Parse("c05c7cbc-e80e-45d6-a07a-0b027d45e448"), CustomerName = "Baumbach LLC", DriverName = "Cherry Jentin", OriginCity = "Asikkala", DestinationCity = "Bakıxanov", ShipmentDate = DateTime.UtcNow.AddDays(-240), DeliveryTime = 23, ShipmentWeight = 16025.23m, DeliveryStatus = "delayed", ShipmentCost = 5075.07m, FavoriteColor = "teal" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Smith & Associates", DriverName = "John Miller", OriginCity = "New York", DestinationCity = "Los Angeles", ShipmentDate = DateTime.UtcNow.AddDays(-30), DeliveryTime = 48, ShipmentWeight = 5000.00m, DeliveryStatus = "in transit", ShipmentCost = 3500.00m, FavoriteColor = "blue" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Johnson Industries", DriverName = "Sarah Williams", OriginCity = "Chicago", DestinationCity = "Houston", ShipmentDate = DateTime.UtcNow.AddDays(-15), DeliveryTime = 24, ShipmentWeight = 8500.50m, DeliveryStatus = "delivered", ShipmentCost = 4200.00m, FavoriteColor = "green" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Davis Corp", DriverName = "Michael Brown", OriginCity = "Seattle", DestinationCity = "Denver", ShipmentDate = DateTime.UtcNow.AddDays(-10), DeliveryTime = 18, ShipmentWeight = 3200.75m, DeliveryStatus = "pending", ShipmentCost = 2800.00m, FavoriteColor = "red" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Wilson Logistics", DriverName = "Emily Chen", OriginCity = "Miami", DestinationCity = "Atlanta", ShipmentDate = DateTime.UtcNow.AddDays(-5), DeliveryTime = 12, ShipmentWeight = 6750.25m, DeliveryStatus = "in transit", ShipmentCost = 3100.00m, FavoriteColor = "purple" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Anderson Trading", DriverName = "David Lee", OriginCity = "Phoenix", DestinationCity = "San Diego", ShipmentDate = DateTime.UtcNow.AddDays(-3), DeliveryTime = 8, ShipmentWeight = 2100.00m, DeliveryStatus = "delivered", ShipmentCost = 1500.00m, FavoriteColor = "orange" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Taylor Enterprises", DriverName = "Jennifer Kim", OriginCity = "Boston", DestinationCity = "Philadelphia", ShipmentDate = DateTime.UtcNow.AddDays(-2), DeliveryTime = 6, ShipmentWeight = 4500.00m, DeliveryStatus = "delayed", ShipmentCost = 2200.00m, FavoriteColor = "cyan" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Martinez Supply", DriverName = "Robert Garcia", OriginCity = "Dallas", DestinationCity = "Austin", ShipmentDate = DateTime.UtcNow.AddDays(-1), DeliveryTime = 4, ShipmentWeight = 1800.50m, DeliveryStatus = "in transit", ShipmentCost = 950.00m, FavoriteColor = "pink" },
+                        new AntdTruckDelivery { ShipmentId = Guid.NewGuid(), TruckId = Guid.NewGuid(), CustomerId = Guid.NewGuid(), CustomerName = "Garcia Manufacturing", DriverName = "Lisa Rodriguez", OriginCity = "Portland", DestinationCity = "Sacramento", ShipmentDate = DateTime.UtcNow, DeliveryTime = 10, ShipmentWeight = 7200.00m, DeliveryStatus = "pending", ShipmentCost = 3800.00m, FavoriteColor = "yellow" }
+                    };
+                    context.AntdTruckDeliveries.AddRange(truckDeliveries);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd truck deliveries data seeded successfully");
+                }
+
+                // Seed Antd Delivery Analytics (10 rows)
+                if (!await context.AntdDeliveryAnalytics.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd delivery analytics data...");
+                    var deliveryAnalytics = new List<AntdDeliveryAnalytic>
+                    {
+                        new AntdDeliveryAnalytic { Value = 82441, Month = "October", Status = "in transit" },
+                        new AntdDeliveryAnalytic { Value = 71714, Month = "June", Status = "in transit" },
+                        new AntdDeliveryAnalytic { Value = 51185, Month = "March", Status = "delivered" },
+                        new AntdDeliveryAnalytic { Value = 45230, Month = "January", Status = "delivered" },
+                        new AntdDeliveryAnalytic { Value = 63890, Month = "February", Status = "pending" },
+                        new AntdDeliveryAnalytic { Value = 58720, Month = "April", Status = "delivered" },
+                        new AntdDeliveryAnalytic { Value = 77340, Month = "May", Status = "in transit" },
+                        new AntdDeliveryAnalytic { Value = 69450, Month = "July", Status = "delayed" },
+                        new AntdDeliveryAnalytic { Value = 84120, Month = "August", Status = "delivered" },
+                        new AntdDeliveryAnalytic { Value = 92560, Month = "September", Status = "in transit" }
+                    };
+                    context.AntdDeliveryAnalytics.AddRange(deliveryAnalytics);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd delivery analytics data seeded successfully");
+                }
+
+                // Seed Antd Trucks (10 rows)
+                if (!await context.AntdTrucks.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd trucks data...");
+                    var trucks = new List<AntdTruck>
+                    {
+                        new AntdTruck { TruckId = Guid.Parse("a81b31a8-dffa-421d-b500-ebd89eca3eb8"), Make = "Chevrolet", Model = "Ram", Year = 2012, Mileage = 305728, Price = 544573.35m, Color = "olive", Status = "in transit", Availability = false, Origin = "Soljani", Destination = "Sarbīsheh", Progress = 35 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Ford", Model = "F-150", Year = 2020, Mileage = 45000, Price = 42000.00m, Color = "white", Status = "available", Availability = true, Origin = "New York", Destination = "Chicago", Progress = 0 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Freightliner", Model = "Cascadia", Year = 2019, Mileage = 180000, Price = 85000.00m, Color = "blue", Status = "in transit", Availability = false, Origin = "Los Angeles", Destination = "Seattle", Progress = 65 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Kenworth", Model = "T680", Year = 2021, Mileage = 95000, Price = 125000.00m, Color = "red", Status = "maintenance", Availability = false, Origin = "Houston", Destination = "Dallas", Progress = 0 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Peterbilt", Model = "579", Year = 2018, Mileage = 250000, Price = 68000.00m, Color = "black", Status = "available", Availability = true, Origin = "Miami", Destination = "Atlanta", Progress = 0 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Volvo", Model = "VNL", Year = 2022, Mileage = 35000, Price = 145000.00m, Color = "silver", Status = "in transit", Availability = false, Origin = "Denver", Destination = "Phoenix", Progress = 80 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Mack", Model = "Anthem", Year = 2020, Mileage = 120000, Price = 95000.00m, Color = "green", Status = "available", Availability = true, Origin = "Boston", Destination = "Philadelphia", Progress = 0 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "International", Model = "LT", Year = 2019, Mileage = 200000, Price = 72000.00m, Color = "yellow", Status = "in transit", Availability = false, Origin = "San Francisco", Destination = "Portland", Progress = 45 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Western Star", Model = "5700XE", Year = 2021, Mileage = 80000, Price = 115000.00m, Color = "orange", Status = "maintenance", Availability = false, Origin = "Nashville", Destination = "Memphis", Progress = 0 },
+                        new AntdTruck { TruckId = Guid.NewGuid(), Make = "Hino", Model = "XL8", Year = 2023, Mileage = 15000, Price = 98000.00m, Color = "gray", Status = "available", Availability = true, Origin = "Detroit", Destination = "Cleveland", Progress = 0 }
+                    };
+                    context.AntdTrucks.AddRange(trucks);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd trucks data seeded successfully");
+                }
+
+                // Seed Antd Truck Delivery Requests (10 rows)
+                if (!await context.AntdTruckDeliveryRequests.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd truck delivery requests data...");
+                    var deliveryRequests = new List<AntdTruckDeliveryRequest>
+                    {
+                        new AntdTruckDeliveryRequest { Name = "sollicitudin mi sit", PickupLocation = "887 Anderson Trail", DeliveryLocation = "0041 Talisman Plaza", DeliveryDate = DateTime.UtcNow.AddDays(-180), DeliveryTime = 8, TruckType = "medium", CargoWeight = 8190.37m, DeliveryStatus = "pending", DriverName = "Lonnard Sheahan", ContactNumber = "685-807-2981" },
+                        new AntdTruckDeliveryRequest { Name = "in consequat ut", PickupLocation = "758 Rusk Street", DeliveryLocation = "3300 Southridge Lane", DeliveryDate = DateTime.UtcNow.AddDays(-120), DeliveryTime = 2, TruckType = "medium", CargoWeight = 759.08m, DeliveryStatus = "pending", DriverName = "Borg Rothert", ContactNumber = "630-323-2763" },
+                        new AntdTruckDeliveryRequest { Name = "Electronics Shipment", PickupLocation = "123 Tech Park Drive", DeliveryLocation = "456 Retail Center Blvd", DeliveryDate = DateTime.UtcNow.AddDays(7), DeliveryTime = 10, TruckType = "large", CargoWeight = 5500.00m, DeliveryStatus = "confirmed", DriverName = "Marcus Johnson", ContactNumber = "555-123-4567" },
+                        new AntdTruckDeliveryRequest { Name = "Furniture Delivery", PickupLocation = "789 Warehouse Ave", DeliveryLocation = "321 Home Depot Rd", DeliveryDate = DateTime.UtcNow.AddDays(3), DeliveryTime = 14, TruckType = "large", CargoWeight = 3200.50m, DeliveryStatus = "in progress", DriverName = "Sarah Williams", ContactNumber = "555-234-5678" },
+                        new AntdTruckDeliveryRequest { Name = "Food Supplies", PickupLocation = "456 Farm Road", DeliveryLocation = "789 Restaurant Row", DeliveryDate = DateTime.UtcNow.AddDays(1), DeliveryTime = 6, TruckType = "small", CargoWeight = 1200.00m, DeliveryStatus = "confirmed", DriverName = "Mike Chen", ContactNumber = "555-345-6789" },
+                        new AntdTruckDeliveryRequest { Name = "Construction Materials", PickupLocation = "234 Industrial Blvd", DeliveryLocation = "567 Building Site", DeliveryDate = DateTime.UtcNow.AddDays(5), DeliveryTime = 7, TruckType = "large", CargoWeight = 12000.00m, DeliveryStatus = "pending", DriverName = "David Brown", ContactNumber = "555-456-7890" },
+                        new AntdTruckDeliveryRequest { Name = "Medical Equipment", PickupLocation = "890 Medical Center Dr", DeliveryLocation = "123 Hospital Way", DeliveryDate = DateTime.UtcNow.AddDays(2), DeliveryTime = 9, TruckType = "medium", CargoWeight = 2500.75m, DeliveryStatus = "confirmed", DriverName = "Emily Davis", ContactNumber = "555-567-8901" },
+                        new AntdTruckDeliveryRequest { Name = "Retail Stock", PickupLocation = "567 Distribution Center", DeliveryLocation = "890 Shopping Mall", DeliveryDate = DateTime.UtcNow.AddDays(4), DeliveryTime = 11, TruckType = "medium", CargoWeight = 4800.00m, DeliveryStatus = "in progress", DriverName = "Robert Garcia", ContactNumber = "555-678-9012" },
+                        new AntdTruckDeliveryRequest { Name = "Office Supplies", PickupLocation = "345 Supply Store", DeliveryLocation = "678 Corporate Park", DeliveryDate = DateTime.UtcNow.AddDays(6), DeliveryTime = 13, TruckType = "small", CargoWeight = 850.25m, DeliveryStatus = "pending", DriverName = "Lisa Anderson", ContactNumber = "555-789-0123" },
+                        new AntdTruckDeliveryRequest { Name = "Automotive Parts", PickupLocation = "901 Auto Parts Warehouse", DeliveryLocation = "234 Car Dealership", DeliveryDate = DateTime.UtcNow.AddDays(8), DeliveryTime = 15, TruckType = "medium", CargoWeight = 3500.00m, DeliveryStatus = "confirmed", DriverName = "James Wilson", ContactNumber = "555-890-1234" }
+                    };
+                    context.AntdTruckDeliveryRequests.AddRange(deliveryRequests);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd truck delivery requests data seeded successfully");
+                }
             }
             catch (Exception ex)
             {

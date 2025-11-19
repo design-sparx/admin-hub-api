@@ -51,6 +51,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdRecommendedCourse> AntdRecommendedCourses { get; set; }
     public DbSet<AntdExam> AntdExams { get; set; }
     public DbSet<AntdCommunityGroup> AntdCommunityGroups { get; set; }
+    public DbSet<AntdTruckDelivery> AntdTruckDeliveries { get; set; }
+    public DbSet<AntdDeliveryAnalytic> AntdDeliveryAnalytics { get; set; }
+    public DbSet<AntdTruck> AntdTrucks { get; set; }
+    public DbSet<AntdTruckDeliveryRequest> AntdTruckDeliveryRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -356,6 +360,44 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Location);
             entity.HasIndex(e => e.Leader);
             entity.HasIndex(e => e.StartDate);
+        });
+
+        builder.Entity<AntdTruckDelivery>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ShipmentId);
+            entity.HasIndex(e => e.TruckId);
+            entity.HasIndex(e => e.CustomerId);
+            entity.HasIndex(e => e.DeliveryStatus);
+            entity.HasIndex(e => e.ShipmentDate);
+            entity.Property(e => e.ShipmentWeight).HasPrecision(18, 2);
+            entity.Property(e => e.ShipmentCost).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdDeliveryAnalytic>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Month);
+            entity.HasIndex(e => e.Status);
+        });
+
+        builder.Entity<AntdTruck>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TruckId);
+            entity.HasIndex(e => e.Make);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.Availability);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdTruckDeliveryRequest>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TruckType);
+            entity.HasIndex(e => e.DeliveryStatus);
+            entity.HasIndex(e => e.DeliveryDate);
+            entity.Property(e => e.CargoWeight).HasPrecision(18, 2);
         });
 
         // Configure Product entity
