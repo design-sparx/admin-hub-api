@@ -4,11 +4,13 @@ using AdminHubApi.Data;
 using AdminHubApi.Data.Seeders;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Interfaces.Antd;
 using AdminHubApi.Interfaces.Mantine;
 using AdminHubApi.Repositories;
 using AdminHubApi.Security;
 using AdminHubApi.Security.Permissions;
 using AdminHubApi.Services;
+using AdminHubApi.Services.Antd;
 using AdminHubApi.Services.Mantine;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -166,6 +168,9 @@ builder.Services.AddScoped<IKanbanTaskService, KanbanTaskService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileManagementService, FileManagementService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
+
+// Antd Dashboard Services
+builder.Services.AddScoped<IAntdProjectService, AntdProjectService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
