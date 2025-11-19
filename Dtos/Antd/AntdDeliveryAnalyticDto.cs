@@ -42,19 +42,14 @@ namespace AdminHubApi.Dtos.Antd
         public string Status { get; set; }
     }
 
-    public class AntdDeliveryAnalyticQueryParams : PaginationParams
+    public class AntdDeliveryAnalyticQueryParams
     {
-        [JsonPropertyName("month")]
         public string Month { get; set; }
-
-        [JsonPropertyName("status")]
         public string Status { get; set; }
-
-        [JsonPropertyName("sort_by")]
         public string SortBy { get; set; }
-
-        [JsonPropertyName("sort_order")]
         public string SortOrder { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 
     public class AntdDeliveryAnalyticListResponse
