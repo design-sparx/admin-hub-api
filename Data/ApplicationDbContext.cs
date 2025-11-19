@@ -34,6 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     // Antd Dashboard Entities
     public DbSet<AntdProject> AntdProjects { get; set; }
+    public DbSet<AntdClient> AntdClients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -172,6 +173,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.ClientName);
             entity.HasIndex(e => new { e.StartDate, e.EndDate });
             entity.Property(e => e.ProjectDuration).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdClient>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.ProductName);
+            entity.HasIndex(e => e.PurchaseDate);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
+            entity.Property(e => e.TotalPrice).HasPrecision(18, 2);
         });
 
         // Configure Product entity

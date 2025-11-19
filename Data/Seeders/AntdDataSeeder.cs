@@ -196,6 +196,149 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd projects data seeded successfully");
                 }
+
+                // Seed Antd Clients (10 rows)
+                if (!await context.AntdClients.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd clients data...");
+                    var clients = new List<AntdClient>
+                    {
+                        new AntdClient
+                        {
+                            FirstName = "Twyla",
+                            LastName = "Leggett",
+                            Email = "tleggett@techcorp.com",
+                            PhoneNumber = "839-632-0876",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-180),
+                            ProductName = "Enterprise Software License",
+                            Quantity = 50,
+                            UnitPrice = 299.99m,
+                            TotalPrice = 14999.50m,
+                            Country = "United States"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Marcus",
+                            LastName = "Chen",
+                            Email = "mchen@globalfinance.com",
+                            PhoneNumber = "415-555-0198",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-120),
+                            ProductName = "Cloud Storage Plan",
+                            Quantity = 100,
+                            UnitPrice = 49.99m,
+                            TotalPrice = 4999.00m,
+                            Country = "Canada"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Sophie",
+                            LastName = "Williams",
+                            Email = "swilliams@eurotech.eu",
+                            PhoneNumber = "44-20-7946-0958",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-90),
+                            ProductName = "Security Suite",
+                            Quantity = 25,
+                            UnitPrice = 199.99m,
+                            TotalPrice = 4999.75m,
+                            Country = "United Kingdom"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Hiroshi",
+                            LastName = "Tanaka",
+                            Email = "htanaka@tokyosoft.jp",
+                            PhoneNumber = "81-3-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-60),
+                            ProductName = "Developer Tools",
+                            Quantity = 15,
+                            UnitPrice = 599.99m,
+                            TotalPrice = 8999.85m,
+                            Country = "Japan"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Elena",
+                            LastName = "Rodriguez",
+                            Email = "erodriguez@latamtech.mx",
+                            PhoneNumber = "52-55-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-45),
+                            ProductName = "Database License",
+                            Quantity = 10,
+                            UnitPrice = 899.99m,
+                            TotalPrice = 8999.90m,
+                            Country = "Mexico"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Oliver",
+                            LastName = "Schmidt",
+                            Email = "oschmidt@berlindata.de",
+                            PhoneNumber = "49-30-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-30),
+                            ProductName = "Analytics Platform",
+                            Quantity = 5,
+                            UnitPrice = 1499.99m,
+                            TotalPrice = 7499.95m,
+                            Country = "Germany"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Priya",
+                            LastName = "Patel",
+                            Email = "ppatel@mumbaitech.in",
+                            PhoneNumber = "91-22-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-20),
+                            ProductName = "API Gateway",
+                            Quantity = 3,
+                            UnitPrice = 2999.99m,
+                            TotalPrice = 8999.97m,
+                            Country = "India"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Lucas",
+                            LastName = "Silva",
+                            Email = "lsilva@brazilsoft.br",
+                            PhoneNumber = "55-11-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-15),
+                            ProductName = "Monitoring Tools",
+                            Quantity = 20,
+                            UnitPrice = 149.99m,
+                            TotalPrice = 2999.80m,
+                            Country = "Brazil"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "Emma",
+                            LastName = "Dubois",
+                            Email = "edubois@paristech.fr",
+                            PhoneNumber = "33-1-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-10),
+                            ProductName = "Collaboration Suite",
+                            Quantity = 75,
+                            UnitPrice = 79.99m,
+                            TotalPrice = 5999.25m,
+                            Country = "France"
+                        },
+                        new AntdClient
+                        {
+                            FirstName = "James",
+                            LastName = "O'Brien",
+                            Email = "jobrien@sydneydata.au",
+                            PhoneNumber = "61-2-1234-5678",
+                            PurchaseDate = DateTime.UtcNow.AddDays(-5),
+                            ProductName = "Backup Solution",
+                            Quantity = 30,
+                            UnitPrice = 249.99m,
+                            TotalPrice = 7499.70m,
+                            Country = "Australia"
+                        }
+                    };
+
+                    context.AntdClients.AddRange(clients);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd clients data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
