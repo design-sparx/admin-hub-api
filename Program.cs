@@ -333,11 +333,11 @@ app.MapScalarApiReference(options =>
 {
     options
         .WithTitle("Admin Hub API")
-        .WithTheme(ScalarTheme.Purple)
+        .WithTheme(ScalarTheme.Kepler)
         .WithDarkModeToggle(true)
         .WithSidebar(true)
         .WithModels(true)
-        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+        .WithDefaultHttpClient(ScalarTarget.Node, ScalarClient.Axios)
         .WithPreferredScheme("Bearer");
 });
 app.MapOpenApi();
