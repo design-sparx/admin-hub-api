@@ -49,6 +49,8 @@ public static class Permissions
         public const string ScheduledPosts = "Permissions.Antd.ScheduledPosts";
         public const string LiveAuctions = "Permissions.Antd.LiveAuctions";
         public const string AuctionCreators = "Permissions.Antd.AuctionCreators";
+        public const string BiddingTopSellers = "Permissions.Antd.BiddingTopSellers";
+        public const string BiddingTransactions = "Permissions.Antd.BiddingTransactions";
     }
 
 
