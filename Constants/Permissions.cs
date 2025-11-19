@@ -35,6 +35,12 @@ public static class Permissions
         public const string Chats = "Permissions.Personal.Chats";
     }
 
+    // Antd Dashboard permissions
+    public static class Antd
+    {
+        public const string Projects = "Permissions.Antd.Projects";
+    }
+
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()

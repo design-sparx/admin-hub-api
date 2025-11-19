@@ -172,6 +172,9 @@ builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 // Antd Dashboard Services
 builder.Services.AddScoped<ITaskService, TaskService>();
 
+// Antd Dashboard Services
+builder.Services.AddScoped<IAntdProjectService, AntdProjectService>();
+
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
 
