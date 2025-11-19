@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -179,7 +180,65 @@ builder.Services.AddSingleton<IPermissionMessageService, PermissionMessageServic
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info = new OpenApiInfo
+        {
+            Title = "Admin Hub API",
+            Version = "v1",
+            Description = """
+                ## Introduction
+
+                Admin Hub API is a centralized backend service powering multiple administrative dashboards.
+                Built with .NET 9.0 and PostgreSQL, it provides a robust foundation for enterprise administration.
+
+                ### Key Features
+
+                - **Authentication & Security**: JWT-based authentication with token refresh and blacklisting
+                - **Role-Based Access Control**: Fine-grained permissions with dynamic policy enforcement
+                - **Audit Logging**: Complete audit trail of all user operations
+                - **Multi-Dashboard Support**: Dedicated endpoints for Mantine and Ant Design dashboards
+
+                ### Getting Started
+
+                1. **Authenticate**: POST to `/api/auth/login` with your credentials
+                2. **Get Token**: Extract the JWT token from the response
+                3. **Make Requests**: Include the token in subsequent requests
+
+                ### Authentication
+
+                All endpoints (except `/api/auth/login` and `/api/auth/register`) require authentication.
+
+                Include the JWT token in the `Authorization` header:
+                ```
+                Authorization: Bearer <your-token>
+                ```
+
+                ### Rate Limiting
+
+                API requests are subject to rate limiting. If you receive a 429 response, please wait before retrying.
+
+                ### Support
+
+                For issues or questions, please contact the development team.
+                """,
+            Contact = new OpenApiContact
+            {
+                Name = "Admin Hub Support",
+                Email = "support@adminhub.dev",
+                Url = new Uri("https://github.com/design-sparx/admin-hub-api")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "MIT License",
+                Url = new Uri("https://opensource.org/licenses/MIT")
+            }
+        };
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 
@@ -270,7 +329,17 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-app.MapScalarApiReference();
+app.MapScalarApiReference(options =>
+{
+    options
+        .WithTitle("Admin Hub API")
+        .WithTheme(ScalarTheme.Purple)
+        .WithDarkModeToggle(true)
+        .WithSidebar(true)
+        .WithModels(true)
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+        .WithPreferredScheme("Bearer");
+});
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
