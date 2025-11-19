@@ -35,6 +35,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     // Antd Dashboard Entities
     public DbSet<AntdProject> AntdProjects { get; set; }
     public DbSet<AntdClient> AntdClients { get; set; }
+    public DbSet<AntdProduct> AntdProducts { get; set; }
+    public DbSet<AntdSeller> AntdSellers { get; set; }
+    public DbSet<AntdOrder> AntdOrders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -184,6 +187,39 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.PurchaseDate);
             entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
             entity.Property(e => e.TotalPrice).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdProduct>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.IsFeatured);
+            entity.HasIndex(e => e.QuantitySold);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+            entity.Property(e => e.AverageRating).HasPrecision(3, 1);
+        });
+
+        builder.Entity<AntdSeller>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.SalesRegion);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.SalesVolume).HasPrecision(18, 2);
+            entity.Property(e => e.TotalSales).HasPrecision(18, 2);
+            entity.Property(e => e.CustomerSatisfaction).HasPrecision(5, 2);
+        });
+
+        builder.Entity<AntdOrder>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.OrderDate);
+            entity.HasIndex(e => e.PaymentMethod);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+            entity.Property(e => e.ShippingCost).HasPrecision(18, 2);
+            entity.Property(e => e.Tax).HasPrecision(18, 2);
         });
 
         // Configure Product entity
