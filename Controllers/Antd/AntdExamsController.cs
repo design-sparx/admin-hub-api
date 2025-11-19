@@ -13,7 +13,8 @@ namespace AdminHubApi.Controllers.Antd
     {
         private readonly IAntdExamService _examService;
 
-        public AntdExamsController(IAntdExamService examService)
+        public AntdExamsController(IAntdExamService examService, ILogger<AntdExamsController> logger)
+            : base(logger)
         {
             _examService = examService;
         }
