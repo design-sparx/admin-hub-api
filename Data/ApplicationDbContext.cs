@@ -39,6 +39,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdSeller> AntdSellers { get; set; }
     public DbSet<AntdOrder> AntdOrders { get; set; }
     public DbSet<AntdCampaignAd> AntdCampaignAds { get; set; }
+    public DbSet<AntdSocialMediaStats> AntdSocialMediaStats { get; set; }
+    public DbSet<AntdSocialMediaActivity> AntdSocialMediaActivities { get; set; }
+    public DbSet<AntdScheduledPost> AntdScheduledPosts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -233,6 +236,31 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.ConversionRate).HasPrecision(6, 4);
             entity.Property(e => e.Revenue).HasPrecision(18, 2);
             entity.Property(e => e.Roi).HasPrecision(8, 2);
+        });
+
+        builder.Entity<AntdSocialMediaStats>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Title);
+            entity.Property(e => e.EngagementRate).HasPrecision(10, 2);
+        });
+
+        builder.Entity<AntdSocialMediaActivity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Platform);
+            entity.HasIndex(e => e.ActivityType);
+            entity.HasIndex(e => e.Timestamp);
+            entity.HasIndex(e => e.UserGender);
+        });
+
+        builder.Entity<AntdScheduledPost>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Platform);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.ScheduledDate);
+            entity.HasIndex(e => e.Author);
         });
 
         // Configure Product entity
