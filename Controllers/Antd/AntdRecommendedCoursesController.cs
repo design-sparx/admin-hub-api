@@ -13,7 +13,8 @@ namespace AdminHubApi.Controllers.Antd
     {
         private readonly IAntdRecommendedCourseService _recommendedCourseService;
 
-        public AntdRecommendedCoursesController(IAntdRecommendedCourseService recommendedCourseService)
+        public AntdRecommendedCoursesController(IAntdRecommendedCourseService recommendedCourseService, ILogger<AntdRecommendedCoursesController> logger)
+            : base(logger)
         {
             _recommendedCourseService = recommendedCourseService;
         }

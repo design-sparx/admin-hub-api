@@ -60,9 +60,9 @@ namespace AdminHubApi.Services.Antd
                 Data = groups.Select(MapToResponseDto).ToList(),
                 Meta = new PaginationMeta
                 {
-                    CurrentPage = queryParams.Page,
-                    PageSize = queryParams.PageSize,
-                    TotalCount = totalCount,
+                    Page = queryParams.Page,
+                    Limit = queryParams.PageSize,
+                    Total = totalCount,
                     TotalPages = (int)Math.Ceiling(totalCount / (double)queryParams.PageSize)
                 }
             };

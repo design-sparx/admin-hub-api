@@ -13,7 +13,8 @@ namespace AdminHubApi.Controllers.Antd
     {
         private readonly IAntdCommunityGroupService _communityGroupService;
 
-        public AntdCommunityGroupsController(IAntdCommunityGroupService communityGroupService)
+        public AntdCommunityGroupsController(IAntdCommunityGroupService communityGroupService, ILogger<AntdCommunityGroupsController> logger)
+            : base(logger)
         {
             _communityGroupService = communityGroupService;
         }

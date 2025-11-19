@@ -13,7 +13,8 @@ namespace AdminHubApi.Controllers.Antd
     {
         private readonly IAntdStudyStatisticService _studyStatisticService;
 
-        public AntdStudyStatisticsController(IAntdStudyStatisticService studyStatisticService)
+        public AntdStudyStatisticsController(IAntdStudyStatisticService studyStatisticService, ILogger<AntdStudyStatisticsController> logger)
+            : base(logger)
         {
             _studyStatisticService = studyStatisticService;
         }
