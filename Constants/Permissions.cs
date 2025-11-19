@@ -39,6 +39,7 @@ public static class Permissions
     public static class Antd
     {
         public const string Projects = "Permissions.Antd.Projects";
+        public const string Clients = "Permissions.Antd.Clients";
     }
 
 
