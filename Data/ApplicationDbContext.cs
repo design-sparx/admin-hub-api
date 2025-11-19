@@ -38,6 +38,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdProduct> AntdProducts { get; set; }
     public DbSet<AntdSeller> AntdSellers { get; set; }
     public DbSet<AntdOrder> AntdOrders { get; set; }
+    public DbSet<AntdCampaignAd> AntdCampaignAds { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -220,6 +221,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Price).HasPrecision(18, 2);
             entity.Property(e => e.ShippingCost).HasPrecision(18, 2);
             entity.Property(e => e.Tax).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdCampaignAd>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.AdSource);
+            entity.HasIndex(e => e.AdCampaign);
+            entity.HasIndex(e => e.StartDate);
+            entity.Property(e => e.Cost).HasPrecision(18, 2);
+            entity.Property(e => e.ConversionRate).HasPrecision(6, 4);
+            entity.Property(e => e.Revenue).HasPrecision(18, 2);
+            entity.Property(e => e.Roi).HasPrecision(8, 2);
         });
 
         // Configure Product entity

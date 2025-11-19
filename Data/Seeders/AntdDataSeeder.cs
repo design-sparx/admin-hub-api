@@ -405,6 +405,28 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd orders data seeded successfully");
                 }
+
+                // Seed Antd Campaign Ads (10 rows)
+                if (!await context.AntdCampaignAds.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd campaign ads data...");
+                    var campaignAds = new List<AntdCampaignAd>
+                    {
+                        new AntdCampaignAd { AdSource = "Instagram", AdCampaign = "Back to School", AdGroup = "Women's Clothing", AdType = "Banner Ad", Impressions = 922427, Clicks = 5956, Conversions = 47, Cost = 613.11m, ConversionRate = 0.0958m, Revenue = 2463.28m, Roi = 3.54m, StartDate = DateTime.UtcNow.AddDays(-90) },
+                        new AntdCampaignAd { AdSource = "LinkedIn", AdCampaign = "Holiday Promotion", AdGroup = "Electronics", AdType = "Sponsored Post", Impressions = 920343, Clicks = 1680, Conversions = 17, Cost = 254.11m, ConversionRate = 0.0797m, Revenue = 2894.63m, Roi = 10.39m, StartDate = DateTime.UtcNow.AddDays(-60) },
+                        new AntdCampaignAd { AdSource = "Facebook", AdCampaign = "Summer Sale", AdGroup = "Home & Garden", AdType = "Carousel Ad", Impressions = 1543678, Clicks = 12453, Conversions = 234, Cost = 1245.67m, ConversionRate = 0.0188m, Revenue = 8976.45m, Roi = 6.20m, StartDate = DateTime.UtcNow.AddDays(-45) },
+                        new AntdCampaignAd { AdSource = "Google Ads", AdCampaign = "Black Friday", AdGroup = "Electronics", AdType = "Search Ad", Impressions = 2345678, Clicks = 34567, Conversions = 567, Cost = 3456.78m, ConversionRate = 0.0164m, Revenue = 23456.78m, Roi = 5.78m, StartDate = DateTime.UtcNow.AddDays(-30) },
+                        new AntdCampaignAd { AdSource = "Twitter", AdCampaign = "New Product Launch", AdGroup = "Tech Gadgets", AdType = "Promoted Tweet", Impressions = 567890, Clicks = 4567, Conversions = 89, Cost = 567.89m, ConversionRate = 0.0195m, Revenue = 3456.78m, Roi = 5.08m, StartDate = DateTime.UtcNow.AddDays(-25) },
+                        new AntdCampaignAd { AdSource = "YouTube", AdCampaign = "Brand Awareness", AdGroup = "Lifestyle", AdType = "Video Ad", Impressions = 3456789, Clicks = 23456, Conversions = 345, Cost = 4567.89m, ConversionRate = 0.0147m, Revenue = 12345.67m, Roi = 1.70m, StartDate = DateTime.UtcNow.AddDays(-20) },
+                        new AntdCampaignAd { AdSource = "TikTok", AdCampaign = "Viral Challenge", AdGroup = "Youth Fashion", AdType = "In-Feed Ad", Impressions = 4567890, Clicks = 45678, Conversions = 678, Cost = 2345.67m, ConversionRate = 0.0148m, Revenue = 15678.90m, Roi = 5.68m, StartDate = DateTime.UtcNow.AddDays(-15) },
+                        new AntdCampaignAd { AdSource = "Pinterest", AdCampaign = "Home Decor Ideas", AdGroup = "Interior Design", AdType = "Pin Ad", Impressions = 789012, Clicks = 6789, Conversions = 123, Cost = 789.01m, ConversionRate = 0.0181m, Revenue = 4567.89m, Roi = 4.79m, StartDate = DateTime.UtcNow.AddDays(-10) },
+                        new AntdCampaignAd { AdSource = "Snapchat", AdCampaign = "Flash Sale", AdGroup = "Accessories", AdType = "Story Ad", Impressions = 1234567, Clicks = 9876, Conversions = 156, Cost = 1234.56m, ConversionRate = 0.0158m, Revenue = 6789.01m, Roi = 4.50m, StartDate = DateTime.UtcNow.AddDays(-5) },
+                        new AntdCampaignAd { AdSource = "Reddit", AdCampaign = "Community Engagement", AdGroup = "Gaming", AdType = "Promoted Post", Impressions = 456789, Clicks = 3456, Conversions = 67, Cost = 456.78m, ConversionRate = 0.0194m, Revenue = 2345.67m, Roi = 4.13m, StartDate = DateTime.UtcNow.AddDays(-2) }
+                    };
+                    context.AntdCampaignAds.AddRange(campaignAds);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd campaign ads data seeded successfully");
+                }
             }
             catch (Exception ex)
             {

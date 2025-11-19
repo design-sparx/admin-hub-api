@@ -175,6 +175,7 @@ builder.Services.AddScoped<IAntdClientService, AntdClientService>();
 builder.Services.AddScoped<IAntdProductService, AntdProductService>();
 builder.Services.AddScoped<IAntdSellerService, AntdSellerService>();
 builder.Services.AddScoped<IAntdOrderService, AntdOrderService>();
+builder.Services.AddScoped<IAntdCampaignAdService, AntdCampaignAdService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
