@@ -489,6 +489,50 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd scheduled posts data seeded successfully");
                 }
+
+                // Seed Antd Live Auctions (10 rows)
+                if (!await context.AntdLiveAuctions.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd live auctions data...");
+                    var auctions = new List<AntdLiveAuction>
+                    {
+                        new AntdLiveAuction { NftName = "Cosmic Dreams #42", NftImage = "https://images.unsplash.com/photo-1644361566696-3d442b5b482a", SellerUsername = "rsingleton0", BuyerUsername = "fandretti0", StartPrice = 33611.73m, EndPrice = 95441.53m, StartDate = DateTime.UtcNow.AddDays(-60), EndDate = DateTime.UtcNow.AddDays(10), Status = "active", IsHighestBidMine = false, WinningBid = 140.94m, TimeLeft = "8:20 PM" },
+                        new AntdLiveAuction { NftName = "Digital Horizon", NftImage = "https://images.unsplash.com/photo-1645731505493-7a13123374fd", SellerUsername = "atroyes1", BuyerUsername = "lkiehnlt1", StartPrice = 1311.85m, EndPrice = 55786.0m, StartDate = DateTime.UtcNow.AddDays(-90), EndDate = DateTime.UtcNow.AddDays(2), Status = "ending soon", IsHighestBidMine = true, WinningBid = 389.21m, TimeLeft = "8:31 PM" },
+                        new AntdLiveAuction { NftName = "Neon Nights Collection", NftImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe", SellerUsername = "cryptoartist", BuyerUsername = "nftcollector", StartPrice = 5000.00m, EndPrice = 25000.00m, StartDate = DateTime.UtcNow.AddDays(-30), EndDate = DateTime.UtcNow.AddDays(15), Status = "active", IsHighestBidMine = false, WinningBid = 7500.00m, TimeLeft = "3:45 PM" },
+                        new AntdLiveAuction { NftName = "Abstract Reality #7", NftImage = "https://images.unsplash.com/photo-1634986666676-ec8fd927c23d", SellerUsername = "digitalmaster", BuyerUsername = "artlover99", StartPrice = 2500.00m, EndPrice = 15000.00m, StartDate = DateTime.UtcNow.AddDays(-45), EndDate = DateTime.UtcNow.AddDays(5), Status = "active", IsHighestBidMine = true, WinningBid = 4200.00m, TimeLeft = "11:00 AM" },
+                        new AntdLiveAuction { NftName = "Pixel Perfect", NftImage = "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e", SellerUsername = "pixelking", BuyerUsername = "collector42", StartPrice = 800.00m, EndPrice = 5000.00m, StartDate = DateTime.UtcNow.AddDays(-20), EndDate = DateTime.UtcNow.AddDays(8), Status = "active", IsHighestBidMine = false, WinningBid = 1200.00m, TimeLeft = "6:30 PM" },
+                        new AntdLiveAuction { NftName = "Cyberpunk City", NftImage = "https://images.unsplash.com/photo-1633356122544-f134324a6cee", SellerUsername = "futureart", BuyerUsername = "techbro", StartPrice = 10000.00m, EndPrice = 50000.00m, StartDate = DateTime.UtcNow.AddDays(-15), EndDate = DateTime.UtcNow.AddDays(1), Status = "ending soon", IsHighestBidMine = false, WinningBid = 35000.00m, TimeLeft = "2:15 PM" },
+                        new AntdLiveAuction { NftName = "Ocean Depths", NftImage = "https://images.unsplash.com/photo-1618172193622-ae2d025f4032", SellerUsername = "naturenft", BuyerUsername = "sealover", StartPrice = 1500.00m, EndPrice = 8000.00m, StartDate = DateTime.UtcNow.AddDays(-25), EndDate = DateTime.UtcNow.AddDays(12), Status = "active", IsHighestBidMine = true, WinningBid = 2800.00m, TimeLeft = "9:45 AM" },
+                        new AntdLiveAuction { NftName = "Golden Age", NftImage = "https://images.unsplash.com/photo-1639762681485-074b7f938ba0", SellerUsername = "vintagearts", BuyerUsername = "goldcollector", StartPrice = 20000.00m, EndPrice = 100000.00m, StartDate = DateTime.UtcNow.AddDays(-10), EndDate = DateTime.UtcNow.AddDays(20), Status = "active", IsHighestBidMine = false, WinningBid = 45000.00m, TimeLeft = "4:00 PM" },
+                        new AntdLiveAuction { NftName = "Space Explorer", NftImage = "https://images.unsplash.com/photo-1634193295627-1cdddf751ebf", SellerUsername = "spacenft", BuyerUsername = "astronaut", StartPrice = 3000.00m, EndPrice = 18000.00m, StartDate = DateTime.UtcNow.AddDays(-35), EndDate = DateTime.UtcNow.AddDays(3), Status = "ending soon", IsHighestBidMine = true, WinningBid = 12500.00m, TimeLeft = "7:00 PM" },
+                        new AntdLiveAuction { NftName = "Retro Waves", NftImage = "https://images.unsplash.com/photo-1618172193763-c511deb635ca", SellerUsername = "retromaster", BuyerUsername = "80slover", StartPrice = 600.00m, EndPrice = 3500.00m, StartDate = DateTime.UtcNow.AddDays(-40), EndDate = DateTime.UtcNow.AddDays(7), Status = "active", IsHighestBidMine = false, WinningBid = 950.00m, TimeLeft = "1:30 PM" }
+                    };
+                    context.AntdLiveAuctions.AddRange(auctions);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd live auctions data seeded successfully");
+                }
+
+                // Seed Antd Auction Creators (10 rows)
+                if (!await context.AntdAuctionCreators.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd auction creators data...");
+                    var creators = new List<AntdAuctionCreator>
+                    {
+                        new AntdAuctionCreator { FirstName = "Eda", LastName = "Crighton", Age = 84, Email = "ecrighton0@aboutads.info", Country = "Indonesia", PostalCode = "", FavoriteColor = "blue", SalesCount = 46, TotalSales = "Rupiah" },
+                        new AntdAuctionCreator { FirstName = "Page", LastName = "Nickoles", Age = 83, Email = "pnickoles1@ycombinator.com", Country = "Thailand", PostalCode = "49120", FavoriteColor = "blue", SalesCount = 736, TotalSales = "Baht" },
+                        new AntdAuctionCreator { FirstName = "Marcus", LastName = "Chen", Age = 35, Email = "mchen@nftcreator.com", Country = "USA", PostalCode = "10001", FavoriteColor = "green", SalesCount = 523, TotalSales = "USD" },
+                        new AntdAuctionCreator { FirstName = "Sofia", LastName = "Rodriguez", Age = 28, Email = "srodriguez@artworld.com", Country = "Spain", PostalCode = "28001", FavoriteColor = "red", SalesCount = 312, TotalSales = "EUR" },
+                        new AntdAuctionCreator { FirstName = "Yuki", LastName = "Tanaka", Age = 42, Email = "ytanaka@digitalart.jp", Country = "Japan", PostalCode = "100-0001", FavoriteColor = "purple", SalesCount = 891, TotalSales = "JPY" },
+                        new AntdAuctionCreator { FirstName = "Oliver", LastName = "Smith", Age = 31, Email = "osmith@nftmarket.uk", Country = "UK", PostalCode = "SW1A 1AA", FavoriteColor = "blue", SalesCount = 445, TotalSales = "GBP" },
+                        new AntdAuctionCreator { FirstName = "Emma", LastName = "Johnson", Age = 39, Email = "ejohnson@crypto.au", Country = "Australia", PostalCode = "2000", FavoriteColor = "yellow", SalesCount = 267, TotalSales = "AUD" },
+                        new AntdAuctionCreator { FirstName = "Lucas", LastName = "Mueller", Age = 45, Email = "lmueller@kunst.de", Country = "Germany", PostalCode = "10115", FavoriteColor = "black", SalesCount = 634, TotalSales = "EUR" },
+                        new AntdAuctionCreator { FirstName = "Aria", LastName = "Kim", Age = 26, Email = "akim@nftseoul.kr", Country = "South Korea", PostalCode = "03171", FavoriteColor = "pink", SalesCount = 178, TotalSales = "KRW" },
+                        new AntdAuctionCreator { FirstName = "Carlos", LastName = "Santos", Age = 52, Email = "csantos@artbr.com", Country = "Brazil", PostalCode = "01310-100", FavoriteColor = "orange", SalesCount = 389, TotalSales = "BRL" }
+                    };
+                    context.AntdAuctionCreators.AddRange(creators);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd auction creators data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
