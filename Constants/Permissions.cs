@@ -52,6 +52,10 @@ public static class Permissions
         public const string BiddingTopSellers = "Permissions.Antd.BiddingTopSellers";
         public const string BiddingTransactions = "Permissions.Antd.BiddingTransactions";
         public const string Courses = "Permissions.Antd.Courses";
+        public const string StudyStatistics = "Permissions.Antd.StudyStatistics";
+        public const string RecommendedCourses = "Permissions.Antd.RecommendedCourses";
+        public const string Exams = "Permissions.Antd.Exams";
+        public const string CommunityGroups = "Permissions.Antd.CommunityGroups";
     }
 
 

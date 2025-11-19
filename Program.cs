@@ -187,6 +187,10 @@ builder.Services.AddScoped<IAntdAuctionCreatorService, AntdAuctionCreatorService
 builder.Services.AddScoped<IAntdBiddingTopSellerService, AntdBiddingTopSellerService>();
 builder.Services.AddScoped<IAntdBiddingTransactionService, AntdBiddingTransactionService>();
 builder.Services.AddScoped<IAntdCourseService, AntdCourseService>();
+builder.Services.AddScoped<IAntdStudyStatisticService, AntdStudyStatisticService>();
+builder.Services.AddScoped<IAntdRecommendedCourseService, AntdRecommendedCourseService>();
+builder.Services.AddScoped<IAntdExamService, AntdExamService>();
+builder.Services.AddScoped<IAntdCommunityGroupService, AntdCommunityGroupService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

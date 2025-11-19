@@ -599,6 +599,94 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd courses data seeded successfully");
                 }
+
+                // Seed Antd Study Statistics (10 rows)
+                if (!await context.AntdStudyStatistics.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd study statistics data...");
+                    var studyStats = new List<AntdStudyStatistic>
+                    {
+                        new AntdStudyStatistic { Value = 27.1m, Category = "Mathematics", Month = "Feb" },
+                        new AntdStudyStatistic { Value = 15.2m, Category = "Science", Month = "Mar" },
+                        new AntdStudyStatistic { Value = 42.6m, Category = "Foreign Language", Month = "Apr" },
+                        new AntdStudyStatistic { Value = 33.8m, Category = "History", Month = "Jan" },
+                        new AntdStudyStatistic { Value = 51.3m, Category = "Computer Science", Month = "May" },
+                        new AntdStudyStatistic { Value = 28.9m, Category = "Physics", Month = "Jun" },
+                        new AntdStudyStatistic { Value = 45.2m, Category = "Chemistry", Month = "Jul" },
+                        new AntdStudyStatistic { Value = 19.7m, Category = "Biology", Month = "Aug" },
+                        new AntdStudyStatistic { Value = 38.4m, Category = "English", Month = "Sep" },
+                        new AntdStudyStatistic { Value = 22.5m, Category = "Art", Month = "Oct" }
+                    };
+                    context.AntdStudyStatistics.AddRange(studyStats);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd study statistics data seeded successfully");
+                }
+
+                // Seed Antd Recommended Courses (10 rows)
+                if (!await context.AntdRecommendedCourses.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd recommended courses data...");
+                    var recommendedCourses = new List<AntdRecommendedCourse>
+                    {
+                        new AntdRecommendedCourse { Name = "Advanced Python Programming", Description = "Master advanced Python concepts including decorators, generators, and async programming.", Duration = 8, Level = "advanced", Price = 299.99m, Category = "Computer Science", Instructor = "Perry Maclaine", StartDate = DateTime.UtcNow.AddDays(7), CourseLanguage = "English", FavoriteColor = "silver", Lessons = 72 },
+                        new AntdRecommendedCourse { Name = "Introduction to Data Science", Description = "Learn data analysis, visualization, and basic machine learning concepts.", Duration = 12, Level = "beginner", Price = 199.99m, Category = "Data Science", Instructor = "Kirbie Vannuchi", StartDate = DateTime.UtcNow.AddDays(14), CourseLanguage = "English", FavoriteColor = "yellow", Lessons = 40 },
+                        new AntdRecommendedCourse { Name = "React.js Masterclass", Description = "Build modern web applications with React, Redux, and Next.js.", Duration = 10, Level = "intermediate", Price = 349.99m, Category = "Web Development", Instructor = "Sarah Chen", StartDate = DateTime.UtcNow.AddDays(3), CourseLanguage = "English", FavoriteColor = "blue", Lessons = 85 },
+                        new AntdRecommendedCourse { Name = "Cloud Architecture with AWS", Description = "Design and implement scalable cloud solutions using Amazon Web Services.", Duration = 15, Level = "advanced", Price = 449.99m, Category = "Cloud Computing", Instructor = "Michael Johnson", StartDate = DateTime.UtcNow.AddDays(21), CourseLanguage = "English", FavoriteColor = "orange", Lessons = 95 },
+                        new AntdRecommendedCourse { Name = "Spanish for Beginners", Description = "Start your journey to Spanish fluency with interactive lessons.", Duration = 6, Level = "beginner", Price = 149.99m, Category = "Languages", Instructor = "Maria Rodriguez", StartDate = DateTime.UtcNow.AddDays(5), CourseLanguage = "Spanish", FavoriteColor = "red", Lessons = 30 },
+                        new AntdRecommendedCourse { Name = "Digital Marketing Strategy", Description = "Create effective digital marketing campaigns across multiple channels.", Duration = 8, Level = "intermediate", Price = 279.99m, Category = "Marketing", Instructor = "Emily Davis", StartDate = DateTime.UtcNow.AddDays(10), CourseLanguage = "English", FavoriteColor = "purple", Lessons = 50 },
+                        new AntdRecommendedCourse { Name = "Mobile App Development with Flutter", Description = "Build cross-platform mobile apps with Dart and Flutter.", Duration = 11, Level = "intermediate", Price = 329.99m, Category = "Mobile Development", Instructor = "David Kim", StartDate = DateTime.UtcNow.AddDays(8), CourseLanguage = "English", FavoriteColor = "cyan", Lessons = 68 },
+                        new AntdRecommendedCourse { Name = "Financial Planning Basics", Description = "Learn personal finance, budgeting, and investment fundamentals.", Duration = 4, Level = "beginner", Price = 99.99m, Category = "Finance", Instructor = "Robert Wilson", StartDate = DateTime.UtcNow.AddDays(12), CourseLanguage = "English", FavoriteColor = "green", Lessons = 24 },
+                        new AntdRecommendedCourse { Name = "UI/UX Design Bootcamp", Description = "Master user interface and experience design with Figma and Adobe XD.", Duration = 9, Level = "intermediate", Price = 399.99m, Category = "Design", Instructor = "Lisa Anderson", StartDate = DateTime.UtcNow.AddDays(6), CourseLanguage = "English", FavoriteColor = "pink", Lessons = 55 },
+                        new AntdRecommendedCourse { Name = "Cybersecurity Fundamentals", Description = "Understand security threats and learn to protect digital assets.", Duration = 7, Level = "beginner", Price = 249.99m, Category = "Security", Instructor = "James Taylor", StartDate = DateTime.UtcNow.AddDays(15), CourseLanguage = "English", FavoriteColor = "black", Lessons = 42 }
+                    };
+                    context.AntdRecommendedCourses.AddRange(recommendedCourses);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd recommended courses data seeded successfully");
+                }
+
+                // Seed Antd Exams (10 rows)
+                if (!await context.AntdExams.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd exams data...");
+                    var exams = new List<AntdExam>
+                    {
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Aimee Dalzell", Email = "adalzell0@yahoo.com", Course = "Foreign Language", CourseCode = "LANG101", ExamDate = DateTime.UtcNow.AddDays(-30), ExamTime = 103, ExamDuration = 153, ExamScore = 32 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Rhianna Leeman", Email = "rleeman1@ftc.gov", Course = "Science", CourseCode = "SCI101", ExamDate = DateTime.UtcNow.AddDays(-25), ExamTime = 58, ExamDuration = 101, ExamScore = 53 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Marcus Chen", Email = "mchen@university.edu", Course = "Mathematics", CourseCode = "MATH201", ExamDate = DateTime.UtcNow.AddDays(-20), ExamTime = 90, ExamDuration = 120, ExamScore = 87 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Sarah Johnson", Email = "sjohnson@college.edu", Course = "Computer Science", CourseCode = "CS301", ExamDate = DateTime.UtcNow.AddDays(-15), ExamTime = 75, ExamDuration = 90, ExamScore = 92 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "David Kim", Email = "dkim@student.edu", Course = "Physics", CourseCode = "PHYS201", ExamDate = DateTime.UtcNow.AddDays(-10), ExamTime = 120, ExamDuration = 180, ExamScore = 78 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Emma Wilson", Email = "ewilson@mail.edu", Course = "Chemistry", CourseCode = "CHEM101", ExamDate = DateTime.UtcNow.AddDays(-8), ExamTime = 85, ExamDuration = 120, ExamScore = 65 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "James Brown", Email = "jbrown@academy.edu", Course = "History", CourseCode = "HIST101", ExamDate = DateTime.UtcNow.AddDays(-5), ExamTime = 60, ExamDuration = 90, ExamScore = 71 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Lisa Anderson", Email = "landerson@school.edu", Course = "English", CourseCode = "ENG201", ExamDate = DateTime.UtcNow.AddDays(-3), ExamTime = 95, ExamDuration = 120, ExamScore = 88 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Robert Taylor", Email = "rtaylor@edu.com", Course = "Biology", CourseCode = "BIO101", ExamDate = DateTime.UtcNow.AddDays(-2), ExamTime = 110, ExamDuration = 150, ExamScore = 74 },
+                        new AntdExam { StudentId = Guid.NewGuid(), FullName = "Jennifer Martinez", Email = "jmartinez@univ.edu", Course = "Art History", CourseCode = "ART101", ExamDate = DateTime.UtcNow.AddDays(-1), ExamTime = 70, ExamDuration = 90, ExamScore = 81 }
+                    };
+                    context.AntdExams.AddRange(exams);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd exams data seeded successfully");
+                }
+
+                // Seed Antd Community Groups (10 rows)
+                if (!await context.AntdCommunityGroups.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd community groups data...");
+                    var communityGroups = new List<AntdCommunityGroup>
+                    {
+                        new AntdCommunityGroup { Name = "Tech Enthusiasts", Description = "A community for technology lovers to discuss latest trends and innovations.", Image = "", Category = "Education", Location = "New York", Size = 231, Leader = "Nada Aimer", StartDate = DateTime.UtcNow.AddDays(-180), MeetingTime = "12:36 PM", MemberAgeRange = 18, MemberInterests = "technology programming AI machine learning", FavoriteColor = "teal" },
+                        new AntdCommunityGroup { Name = "Fitness Warriors", Description = "Join us for workout sessions and health tips.", Image = "", Category = "Health", Location = "Los Angeles", Size = 681, Leader = "Clarinda Graeme", StartDate = DateTime.UtcNow.AddDays(-150), MeetingTime = "6:00 AM", MemberAgeRange = 32, MemberInterests = "fitness health nutrition exercise wellness", FavoriteColor = "green" },
+                        new AntdCommunityGroup { Name = "Book Club Central", Description = "Monthly book discussions and literary events.", Image = "", Category = "Education", Location = "Chicago", Size = 156, Leader = "Marcus Chen", StartDate = DateTime.UtcNow.AddDays(-120), MeetingTime = "7:00 PM", MemberAgeRange = 25, MemberInterests = "books reading literature fiction non-fiction", FavoriteColor = "purple" },
+                        new AntdCommunityGroup { Name = "Startup Founders", Description = "Network with entrepreneurs and share startup experiences.", Image = "", Category = "Business", Location = "San Francisco", Size = 423, Leader = "Sarah Johnson", StartDate = DateTime.UtcNow.AddDays(-90), MeetingTime = "5:30 PM", MemberAgeRange = 28, MemberInterests = "entrepreneurship startups business innovation funding", FavoriteColor = "blue" },
+                        new AntdCommunityGroup { Name = "Photography Lovers", Description = "Share your photos and learn new techniques.", Image = "", Category = "Art", Location = "Seattle", Size = 312, Leader = "David Kim", StartDate = DateTime.UtcNow.AddDays(-75), MeetingTime = "10:00 AM", MemberAgeRange = 22, MemberInterests = "photography cameras editing portraits landscapes", FavoriteColor = "orange" },
+                        new AntdCommunityGroup { Name = "Language Exchange", Description = "Practice languages with native speakers.", Image = "", Category = "Education", Location = "Miami", Size = 534, Leader = "Maria Rodriguez", StartDate = DateTime.UtcNow.AddDays(-60), MeetingTime = "3:00 PM", MemberAgeRange = 24, MemberInterests = "languages culture travel communication exchange", FavoriteColor = "red" },
+                        new AntdCommunityGroup { Name = "Gaming Guild", Description = "Connect with gamers and join tournaments.", Image = "", Category = "Entertainment", Location = "Austin", Size = 892, Leader = "James Taylor", StartDate = DateTime.UtcNow.AddDays(-45), MeetingTime = "8:00 PM", MemberAgeRange = 20, MemberInterests = "gaming esports streaming videos entertainment", FavoriteColor = "cyan" },
+                        new AntdCommunityGroup { Name = "Cooking Masters", Description = "Share recipes and cooking tips with fellow food enthusiasts.", Image = "", Category = "Food", Location = "Denver", Size = 267, Leader = "Lisa Anderson", StartDate = DateTime.UtcNow.AddDays(-30), MeetingTime = "11:00 AM", MemberAgeRange = 35, MemberInterests = "cooking recipes food baking cuisine restaurants", FavoriteColor = "yellow" },
+                        new AntdCommunityGroup { Name = "Hiking Adventures", Description = "Explore trails and outdoor activities together.", Image = "", Category = "Sports", Location = "Portland", Size = 445, Leader = "Robert Wilson", StartDate = DateTime.UtcNow.AddDays(-20), MeetingTime = "7:30 AM", MemberAgeRange = 30, MemberInterests = "hiking outdoors nature camping trails mountains", FavoriteColor = "brown" },
+                        new AntdCommunityGroup { Name = "Music Makers", Description = "Collaborate with musicians and share your creations.", Image = "", Category = "Art", Location = "Nashville", Size = 378, Leader = "Emily Davis", StartDate = DateTime.UtcNow.AddDays(-10), MeetingTime = "4:00 PM", MemberAgeRange = 26, MemberInterests = "music instruments singing production concerts bands", FavoriteColor = "pink" }
+                    };
+                    context.AntdCommunityGroups.AddRange(communityGroups);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd community groups data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
