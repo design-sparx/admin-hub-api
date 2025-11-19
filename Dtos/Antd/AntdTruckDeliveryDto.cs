@@ -132,28 +132,17 @@ namespace AdminHubApi.Dtos.Antd
         public string FavoriteColor { get; set; }
     }
 
-    public class AntdTruckDeliveryQueryParams : PaginationParams
+    public class AntdTruckDeliveryQueryParams
     {
-        [JsonPropertyName("customer_name")]
         public string CustomerName { get; set; }
-
-        [JsonPropertyName("driver_name")]
         public string DriverName { get; set; }
-
-        [JsonPropertyName("origin_city")]
         public string OriginCity { get; set; }
-
-        [JsonPropertyName("destination_city")]
         public string DestinationCity { get; set; }
-
-        [JsonPropertyName("delivery_status")]
         public string DeliveryStatus { get; set; }
-
-        [JsonPropertyName("sort_by")]
         public string SortBy { get; set; }
-
-        [JsonPropertyName("sort_order")]
         public string SortOrder { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 
     public class AntdTruckDeliveryListResponse

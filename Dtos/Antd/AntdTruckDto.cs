@@ -123,25 +123,16 @@ namespace AdminHubApi.Dtos.Antd
         public int? Progress { get; set; }
     }
 
-    public class AntdTruckQueryParams : PaginationParams
+    public class AntdTruckQueryParams
     {
-        [JsonPropertyName("make")]
         public string Make { get; set; }
-
-        [JsonPropertyName("model")]
         public string Model { get; set; }
-
-        [JsonPropertyName("status")]
         public string Status { get; set; }
-
-        [JsonPropertyName("availability")]
         public bool? Availability { get; set; }
-
-        [JsonPropertyName("sort_by")]
         public string SortBy { get; set; }
-
-        [JsonPropertyName("sort_order")]
         public string SortOrder { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 
     public class AntdTruckListResponse
