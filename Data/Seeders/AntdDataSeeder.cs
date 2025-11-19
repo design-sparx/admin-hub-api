@@ -427,6 +427,68 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd campaign ads data seeded successfully");
                 }
+
+                // Seed Antd Social Media Stats (6 rows)
+                if (!await context.AntdSocialMediaStats.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd social media stats data...");
+                    var socialMediaStats = new List<AntdSocialMediaStats>
+                    {
+                        new AntdSocialMediaStats { Title = "facebook", Followers = 11374, Following = 53756, Posts = 98954, Likes = 98992, Comments = 41318, EngagementRate = 3413.93m },
+                        new AntdSocialMediaStats { Title = "twitter", Followers = 45020, Following = 79850, Posts = 90705, Likes = 40821, Comments = 14429, EngagementRate = 7672.22m },
+                        new AntdSocialMediaStats { Title = "instagram", Followers = 89234, Following = 12456, Posts = 45678, Likes = 156789, Comments = 23456, EngagementRate = 5234.67m },
+                        new AntdSocialMediaStats { Title = "linkedin", Followers = 23456, Following = 8976, Posts = 12345, Likes = 34567, Comments = 5678, EngagementRate = 2345.89m },
+                        new AntdSocialMediaStats { Title = "youtube", Followers = 156789, Following = 234, Posts = 1234, Likes = 456789, Comments = 78901, EngagementRate = 8901.23m },
+                        new AntdSocialMediaStats { Title = "tiktok", Followers = 234567, Following = 5678, Posts = 23456, Likes = 789012, Comments = 45678, EngagementRate = 12345.67m }
+                    };
+                    context.AntdSocialMediaStats.AddRange(socialMediaStats);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd social media stats data seeded successfully");
+                }
+
+                // Seed Antd Social Media Activities (10 rows)
+                if (!await context.AntdSocialMediaActivities.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd social media activities data...");
+                    var activities = new List<AntdSocialMediaActivity>
+                    {
+                        new AntdSocialMediaActivity { Author = "Adolpho Ibbison", UserId = Guid.NewGuid().ToString(), ActivityType = "post", Timestamp = DateTime.UtcNow.AddDays(-180), PostContent = "Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.", Platform = "linkedin", UserLocation = "Temorlorong", UserAge = 66, UserGender = "Male", UserInterests = "dapibus augue vel accumsan tellus nisi eu orci mauris lacinia sapien quis libero", UserFriendsCount = 396 },
+                        new AntdSocialMediaActivity { Author = "Paquito Mullany", UserId = Guid.NewGuid().ToString(), ActivityType = "comment", Timestamp = DateTime.UtcNow.AddDays(-150), PostContent = "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.", Platform = "facebook", UserLocation = "Banarankrajan", UserAge = 57, UserGender = "Male", UserInterests = "nunc commodo placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget", UserFriendsCount = 957 },
+                        new AntdSocialMediaActivity { Author = "Sarah Chen", UserId = Guid.NewGuid().ToString(), ActivityType = "share", Timestamp = DateTime.UtcNow.AddDays(-120), PostContent = "Great article on sustainable living! Everyone should read this.", Platform = "twitter", UserLocation = "San Francisco", UserAge = 34, UserGender = "Female", UserInterests = "sustainability environment green living eco-friendly", UserFriendsCount = 1234 },
+                        new AntdSocialMediaActivity { Author = "Marcus Johnson", UserId = Guid.NewGuid().ToString(), ActivityType = "post", Timestamp = DateTime.UtcNow.AddDays(-90), PostContent = "Just launched our new product line! Check it out at our website.", Platform = "instagram", UserLocation = "New York", UserAge = 42, UserGender = "Male", UserInterests = "business entrepreneurship marketing startups", UserFriendsCount = 2567 },
+                        new AntdSocialMediaActivity { Author = "Emma Wilson", UserId = Guid.NewGuid().ToString(), ActivityType = "like", Timestamp = DateTime.UtcNow.AddDays(-60), PostContent = "Amazing sunset photo from my trip to Bali!", Platform = "instagram", UserLocation = "London", UserAge = 28, UserGender = "Female", UserInterests = "travel photography adventure nature", UserFriendsCount = 876 },
+                        new AntdSocialMediaActivity { Author = "David Kim", UserId = Guid.NewGuid().ToString(), ActivityType = "comment", Timestamp = DateTime.UtcNow.AddDays(-45), PostContent = "This is exactly what I was looking for. Thanks for sharing!", Platform = "youtube", UserLocation = "Seoul", UserAge = 31, UserGender = "Male", UserInterests = "technology gadgets reviews tutorials", UserFriendsCount = 543 },
+                        new AntdSocialMediaActivity { Author = "Lisa Anderson", UserId = Guid.NewGuid().ToString(), ActivityType = "post", Timestamp = DateTime.UtcNow.AddDays(-30), PostContent = "New recipe alert! Vegan chocolate cake that tastes amazing.", Platform = "pinterest", UserLocation = "Chicago", UserAge = 39, UserGender = "Female", UserInterests = "cooking recipes food vegan healthy", UserFriendsCount = 1789 },
+                        new AntdSocialMediaActivity { Author = "James Brown", UserId = Guid.NewGuid().ToString(), ActivityType = "share", Timestamp = DateTime.UtcNow.AddDays(-15), PostContent = "Important news about climate change. Please read and share.", Platform = "facebook", UserLocation = "Toronto", UserAge = 45, UserGender = "Male", UserInterests = "news politics environment activism", UserFriendsCount = 2345 },
+                        new AntdSocialMediaActivity { Author = "Maria Garcia", UserId = Guid.NewGuid().ToString(), ActivityType = "post", Timestamp = DateTime.UtcNow.AddDays(-7), PostContent = "Excited to announce my new book is now available!", Platform = "twitter", UserLocation = "Madrid", UserAge = 52, UserGender = "Female", UserInterests = "writing books literature publishing", UserFriendsCount = 4567 },
+                        new AntdSocialMediaActivity { Author = "Alex Thompson", UserId = Guid.NewGuid().ToString(), ActivityType = "comment", Timestamp = DateTime.UtcNow.AddDays(-2), PostContent = "Great tips for improving productivity. I'll definitely try these!", Platform = "linkedin", UserLocation = "Sydney", UserAge = 36, UserGender = "Male", UserInterests = "productivity self-improvement career business", UserFriendsCount = 678 }
+                    };
+                    context.AntdSocialMediaActivities.AddRange(activities);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd social media activities data seeded successfully");
+                }
+
+                // Seed Antd Scheduled Posts (10 rows)
+                if (!await context.AntdScheduledPosts.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd scheduled posts data...");
+                    var scheduledPosts = new List<AntdScheduledPost>
+                    {
+                        new AntdScheduledPost { Title = "New Product Launch Announcement", Content = "We're excited to announce the launch of our latest product line. Stay tuned for more details!", ScheduledDate = DateTime.UtcNow.AddDays(7), ScheduledTime = 10, Author = "Oren Stretton", Category = "Promotions", Tags = "launch product new announcement", LikesCount = 511, CommentsCount = 488, SharesCount = 79, ImageUrl = "", Link = "https://example.com/product-launch", Location = "New York", Hashtags = "#newproduct #launch #exciting", Platform = "Instagram" },
+                        new AntdScheduledPost { Title = "Holiday Sale Event", Content = "Don't miss our biggest sale of the year! Up to 50% off on selected items.", ScheduledDate = DateTime.UtcNow.AddDays(14), ScheduledTime = 9, Author = "Dianne Delooze", Category = "Events", Tags = "sale holiday discount", LikesCount = 410, CommentsCount = 400, SharesCount = 74, ImageUrl = "", Link = "https://example.com/holiday-sale", Location = "Los Angeles", Hashtags = "#sale #holiday #discount", Platform = "Facebook" },
+                        new AntdScheduledPost { Title = "Behind the Scenes", Content = "Take a look at how we create our products. From design to delivery.", ScheduledDate = DateTime.UtcNow.AddDays(3), ScheduledTime = 14, Author = "Michael Chen", Category = "Content", Tags = "behind scenes making process", LikesCount = 234, CommentsCount = 156, SharesCount = 45, ImageUrl = "", Link = "https://example.com/bts", Location = "San Francisco", Hashtags = "#behindthescenes #process #creation", Platform = "YouTube" },
+                        new AntdScheduledPost { Title = "Customer Success Story", Content = "Read how our customer achieved amazing results using our solution.", ScheduledDate = DateTime.UtcNow.AddDays(5), ScheduledTime = 11, Author = "Sarah Johnson", Category = "Testimonials", Tags = "customer success story testimonial", LikesCount = 567, CommentsCount = 234, SharesCount = 123, ImageUrl = "", Link = "https://example.com/success-story", Location = "Chicago", Hashtags = "#success #customer #results", Platform = "LinkedIn" },
+                        new AntdScheduledPost { Title = "Weekly Tips and Tricks", Content = "This week's tips for maximizing productivity and efficiency.", ScheduledDate = DateTime.UtcNow.AddDays(1), ScheduledTime = 8, Author = "Emily Davis", Category = "Education", Tags = "tips tricks productivity weekly", LikesCount = 345, CommentsCount = 178, SharesCount = 67, ImageUrl = "", Link = "https://example.com/tips", Location = "Boston", Hashtags = "#tips #productivity #efficiency", Platform = "Twitter" },
+                        new AntdScheduledPost { Title = "Community Spotlight", Content = "Featuring amazing work from our community members this month.", ScheduledDate = DateTime.UtcNow.AddDays(10), ScheduledTime = 15, Author = "Robert Wilson", Category = "Community", Tags = "community spotlight feature", LikesCount = 289, CommentsCount = 134, SharesCount = 56, ImageUrl = "", Link = "https://example.com/community", Location = "Seattle", Hashtags = "#community #spotlight #feature", Platform = "Instagram" },
+                        new AntdScheduledPost { Title = "Industry News Roundup", Content = "Catch up on the latest news and trends in our industry.", ScheduledDate = DateTime.UtcNow.AddDays(2), ScheduledTime = 12, Author = "Lisa Anderson", Category = "News", Tags = "news industry trends roundup", LikesCount = 456, CommentsCount = 267, SharesCount = 89, ImageUrl = "", Link = "https://example.com/news", Location = "Denver", Hashtags = "#news #industry #trends", Platform = "LinkedIn" },
+                        new AntdScheduledPost { Title = "Flash Sale Alert", Content = "24-hour flash sale starting now! Limited quantities available.", ScheduledDate = DateTime.UtcNow.AddDays(4), ScheduledTime = 6, Author = "David Brown", Category = "Promotions", Tags = "flash sale alert limited", LikesCount = 678, CommentsCount = 345, SharesCount = 156, ImageUrl = "", Link = "https://example.com/flash-sale", Location = "Miami", Hashtags = "#flashsale #limited #deal", Platform = "Facebook" },
+                        new AntdScheduledPost { Title = "Tutorial: Getting Started", Content = "Step-by-step guide for new users to get the most out of our platform.", ScheduledDate = DateTime.UtcNow.AddDays(6), ScheduledTime = 13, Author = "Anna Martinez", Category = "Education", Tags = "tutorial getting started guide", LikesCount = 234, CommentsCount = 123, SharesCount = 78, ImageUrl = "", Link = "https://example.com/tutorial", Location = "Austin", Hashtags = "#tutorial #guide #newuser", Platform = "YouTube" },
+                        new AntdScheduledPost { Title = "Team Introduction", Content = "Meet the amazing team behind our products and services.", ScheduledDate = DateTime.UtcNow.AddDays(8), ScheduledTime = 16, Author = "James Taylor", Category = "About Us", Tags = "team introduction meet", LikesCount = 189, CommentsCount = 98, SharesCount = 34, ImageUrl = "", Link = "https://example.com/team", Location = "Portland", Hashtags = "#team #meettheteam #aboutus", Platform = "Instagram" }
+                    };
+                    context.AntdScheduledPosts.AddRange(scheduledPosts);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd scheduled posts data seeded successfully");
+                }
             }
             catch (Exception ex)
             {

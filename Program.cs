@@ -179,6 +179,9 @@ builder.Services.AddScoped<IAntdProductService, AntdProductService>();
 builder.Services.AddScoped<IAntdSellerService, AntdSellerService>();
 builder.Services.AddScoped<IAntdOrderService, AntdOrderService>();
 builder.Services.AddScoped<IAntdCampaignAdService, AntdCampaignAdService>();
+builder.Services.AddScoped<IAntdSocialMediaStatsService, AntdSocialMediaStatsService>();
+builder.Services.AddScoped<IAntdSocialMediaActivityService, AntdSocialMediaActivityService>();
+builder.Services.AddScoped<IAntdScheduledPostService, AntdScheduledPostService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

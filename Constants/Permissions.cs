@@ -44,6 +44,9 @@ public static class Permissions
         public const string Sellers = "Permissions.Antd.Sellers";
         public const string Orders = "Permissions.Antd.Orders";
         public const string CampaignAds = "Permissions.Antd.CampaignAds";
+        public const string SocialMediaStats = "Permissions.Antd.SocialMediaStats";
+        public const string SocialMediaActivities = "Permissions.Antd.SocialMediaActivities";
+        public const string ScheduledPosts = "Permissions.Antd.ScheduledPosts";
     }
 
 
