@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using AdminHubApi.Dtos.Common;
+using AdminHubApi.Dtos.ApiResponse;
 
 namespace AdminHubApi.Dtos.Antd
 {
