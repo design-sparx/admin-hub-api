@@ -1,5 +1,5 @@
+using AdminHubApi.Data;
 using AdminHubApi.Entities.Antd;
-using AdminHubApi.Enums.Antd;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminHubApi.Data.Seeders
@@ -14,96 +14,194 @@ namespace AdminHubApi.Data.Seeders
 
             try
             {
-                await SeedTasksAsync(context, logger);
+                // Seed Antd Projects (10 rows)
+                if (!await context.AntdProjects.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd projects data...");
+                    var projects = new List<AntdProject>
+                    {
+                        new AntdProject
+                        {
+                            ProjectName = "E-Commerce Platform Redesign",
+                            StartDate = DateTime.UtcNow.AddDays(-60),
+                            EndDate = DateTime.UtcNow.AddDays(30),
+                            Budget = "USD",
+                            ProjectManager = "John Smith",
+                            ClientName = "TechCorp Inc",
+                            Status = "in progress",
+                            Priority = "high",
+                            TeamSize = 12,
+                            ProjectDescription = "Complete redesign of the e-commerce platform with modern UI/UX, improved performance, and mobile-first approach.",
+                            ProjectLocation = "New York",
+                            ProjectType = "development",
+                            ProjectCategory = "enterprise",
+                            ProjectDuration = 3.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Mobile Banking App",
+                            StartDate = DateTime.UtcNow.AddDays(-30),
+                            EndDate = DateTime.UtcNow.AddDays(90),
+                            Budget = "EUR",
+                            ProjectManager = "Sarah Johnson",
+                            ClientName = "FinanceFirst Bank",
+                            Status = "in progress",
+                            Priority = "high",
+                            TeamSize = 8,
+                            ProjectDescription = "Development of a secure mobile banking application with biometric authentication and real-time transactions.",
+                            ProjectLocation = "London",
+                            ProjectType = "development",
+                            ProjectCategory = "finance",
+                            ProjectDuration = 4.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Healthcare Portal Migration",
+                            StartDate = DateTime.UtcNow.AddDays(-90),
+                            EndDate = DateTime.UtcNow.AddDays(-10),
+                            Budget = "USD",
+                            ProjectManager = "Michael Chen",
+                            ClientName = "MedCare Solutions",
+                            Status = "completed",
+                            Priority = "medium",
+                            TeamSize = 6,
+                            ProjectDescription = "Migration of legacy healthcare portal to cloud infrastructure with enhanced security compliance.",
+                            ProjectLocation = "San Francisco",
+                            ProjectType = "migration",
+                            ProjectCategory = "healthcare",
+                            ProjectDuration = 2.5m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Marketing Campaign Dashboard",
+                            StartDate = DateTime.UtcNow.AddDays(-15),
+                            EndDate = DateTime.UtcNow.AddDays(45),
+                            Budget = "GBP",
+                            ProjectManager = "Emily Davis",
+                            ClientName = "AdVenture Media",
+                            Status = "in progress",
+                            Priority = "medium",
+                            TeamSize = 4,
+                            ProjectDescription = "Real-time marketing analytics dashboard with campaign tracking, ROI calculation, and automated reporting.",
+                            ProjectLocation = "Manchester",
+                            ProjectType = "marketing",
+                            ProjectCategory = "advertising",
+                            ProjectDuration = 2.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Government Document System",
+                            StartDate = DateTime.UtcNow.AddDays(-120),
+                            EndDate = DateTime.UtcNow.AddDays(60),
+                            Budget = "USD",
+                            ProjectManager = "Robert Wilson",
+                            ClientName = "State Department",
+                            Status = "on hold",
+                            Priority = "high",
+                            TeamSize = 15,
+                            ProjectDescription = "Secure document management system for government agencies with audit trails and compliance reporting.",
+                            ProjectLocation = "Washington DC",
+                            ProjectType = "development",
+                            ProjectCategory = "government",
+                            ProjectDuration = 6.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Inventory Management System",
+                            StartDate = DateTime.UtcNow.AddDays(-45),
+                            EndDate = DateTime.UtcNow.AddDays(15),
+                            Budget = "CAD",
+                            ProjectManager = "Lisa Anderson",
+                            ClientName = "RetailMax",
+                            Status = "in progress",
+                            Priority = "medium",
+                            TeamSize = 5,
+                            ProjectDescription = "Automated inventory tracking with barcode scanning, stock alerts, and supplier integration.",
+                            ProjectLocation = "Toronto",
+                            ProjectType = "development",
+                            ProjectCategory = "retail",
+                            ProjectDuration = 2.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Employee Training Platform",
+                            StartDate = DateTime.UtcNow.AddDays(-10),
+                            EndDate = DateTime.UtcNow.AddDays(80),
+                            Budget = "USD",
+                            ProjectManager = "David Brown",
+                            ClientName = "GlobalTech Corp",
+                            Status = "in progress",
+                            Priority = "low",
+                            TeamSize = 7,
+                            ProjectDescription = "Interactive e-learning platform with video courses, quizzes, certifications, and progress tracking.",
+                            ProjectLocation = "Chicago",
+                            ProjectType = "development",
+                            ProjectCategory = "education",
+                            ProjectDuration = 3.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Supply Chain Analytics",
+                            StartDate = DateTime.UtcNow.AddDays(-75),
+                            EndDate = DateTime.UtcNow.AddDays(-5),
+                            Budget = "EUR",
+                            ProjectManager = "Anna Martinez",
+                            ClientName = "LogiFlow Systems",
+                            Status = "completed",
+                            Priority = "high",
+                            TeamSize = 9,
+                            ProjectDescription = "Advanced analytics platform for supply chain optimization with predictive modeling and demand forecasting.",
+                            ProjectLocation = "Berlin",
+                            ProjectType = "analytics",
+                            ProjectCategory = "logistics",
+                            ProjectDuration = 2.3m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Customer Support Chatbot",
+                            StartDate = DateTime.UtcNow.AddDays(-20),
+                            EndDate = DateTime.UtcNow.AddDays(40),
+                            Budget = "USD",
+                            ProjectManager = "James Taylor",
+                            ClientName = "ServicePro Inc",
+                            Status = "in progress",
+                            Priority = "medium",
+                            TeamSize = 3,
+                            ProjectDescription = "AI-powered chatbot for customer support with natural language processing and ticket escalation.",
+                            ProjectLocation = "Austin",
+                            ProjectType = "ai",
+                            ProjectCategory = "customer service",
+                            ProjectDuration = 2.0m
+                        },
+                        new AntdProject
+                        {
+                            ProjectName = "Real Estate Portal",
+                            StartDate = DateTime.UtcNow.AddDays(-5),
+                            EndDate = DateTime.UtcNow.AddDays(120),
+                            Budget = "AUD",
+                            ProjectManager = "Sophie Lee",
+                            ClientName = "PropertyHub",
+                            Status = "in progress",
+                            Priority = "high",
+                            TeamSize = 10,
+                            ProjectDescription = "Comprehensive real estate listing platform with virtual tours, mortgage calculator, and agent management.",
+                            ProjectLocation = "Sydney",
+                            ProjectType = "development",
+                            ProjectCategory = "real estate",
+                            ProjectDuration = 4.0m
+                        }
+                    };
+
+                    context.AntdProjects.AddRange(projects);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd projects data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred while seeding Antd data");
+                logger.LogError(ex, "Error seeding Antd data");
                 throw;
             }
-        }
-
-        private static async Task SeedTasksAsync(ApplicationDbContext context, ILogger logger)
-        {
-            if (await context.AntdTasks.AnyAsync())
-            {
-                logger.LogInformation("Antd tasks data already exists, skipping seeding");
-                return;
-            }
-
-            logger.LogInformation("Seeding Antd tasks data...");
-
-            var priorities = Enum.GetValues<AntdTaskPriority>();
-            var statuses = Enum.GetValues<AntdTaskStatus>();
-            var categories = Enum.GetValues<AntdTaskCategory>();
-            var colors = Enum.GetValues<AntdTaskColor>();
-
-            var assignees = new[]
-            {
-                "Florina Kirtlan", "Randi Asbrey", "Flory Nollet", "Chaunce Corcoran",
-                "Vite Dumberell", "Con Duckering", "Robby Paffot", "David Gapper",
-                "Annie Oxbie", "Corey Wrathall", "Aloin Binge", "Kev Lamberti",
-                "Susana Dartnall", "Kara-lynn Whitten", "Lorna Salmoni", "Trefor Bentham",
-                "Marjie Eccersley", "Gianna Howman", "Quillan Baiyle", "Kordula McAline"
-            };
-
-            var taskNames = new[]
-            {
-                "Review quarterly sales report",
-                "Update customer database records",
-                "Prepare marketing presentation",
-                "Conduct team performance reviews",
-                "Implement new security protocols",
-                "Optimize database queries",
-                "Design new landing page",
-                "Create social media content calendar",
-                "Analyze competitor pricing",
-                "Document API endpoints",
-                "Test mobile app functionality",
-                "Review vendor contracts",
-                "Update employee handbook",
-                "Plan Q4 budget allocation",
-                "Organize team building event",
-                "Audit inventory levels",
-                "Implement feedback system",
-                "Create onboarding materials",
-                "Review insurance policies",
-                "Setup automated testing"
-            };
-
-            var random = new Random(42);
-            var tasks = new List<AntdTask>();
-
-            for (int i = 0; i < 100; i++)
-            {
-                var dueDate = DateTime.UtcNow.AddDays(random.Next(-60, 90));
-                var status = statuses[random.Next(statuses.Length)];
-                var completedDate = status == AntdTaskStatus.Completed
-                    ? dueDate.AddDays(random.Next(-5, 5))
-                    : (DateTime?)null;
-
-                tasks.Add(new AntdTask
-                {
-                    Id = Guid.NewGuid(),
-                    Name = taskNames[random.Next(taskNames.Length)] + $" - Task {i + 1}",
-                    Description = $"This is a detailed description for task {i + 1}. It contains important information about the task requirements and expected outcomes.",
-                    Priority = priorities[random.Next(priorities.Length)],
-                    DueDate = dueDate,
-                    AssignedTo = assignees[random.Next(assignees.Length)],
-                    Status = status,
-                    Notes = $"Additional notes for task {i + 1}. Please review carefully before proceeding.",
-                    Category = categories[random.Next(categories.Length)],
-                    Duration = Math.Round((decimal)(random.NextDouble() * 24), 2),
-                    CompletedDate = completedDate,
-                    Color = colors[random.Next(colors.Length)],
-                    CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 90)),
-                    UpdatedAt = DateTime.UtcNow
-                });
-            }
-
-            context.AntdTasks.AddRange(tasks);
-            await context.SaveChangesAsync();
-            logger.LogInformation("Antd tasks data seeded successfully with {Count} records", tasks.Count);
         }
     }
 }
