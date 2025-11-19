@@ -43,6 +43,7 @@ public static class Permissions
         public const string Products = "Permissions.Antd.Products";
         public const string Sellers = "Permissions.Antd.Sellers";
         public const string Orders = "Permissions.Antd.Orders";
+        public const string CampaignAds = "Permissions.Antd.CampaignAds";
     }
 
 
