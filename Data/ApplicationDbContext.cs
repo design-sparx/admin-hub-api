@@ -1,4 +1,5 @@
 ﻿using AdminHubApi.Entities;
+using AdminHubApi.Entities.Antd;
 using AdminHubApi.Entities.Mantine;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,33 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Languages> Languages { get; set; }
     public DbSet<Countries> Countries { get; set; }
     public DbSet<Traffic> Traffic { get; set; }
+
+    // Antd Dashboard Entities
+    public DbSet<AntdTask> AntdTasks { get; set; }
+
+    // Antd Dashboard Entities
+    public DbSet<AntdProject> AntdProjects { get; set; }
+    public DbSet<AntdClient> AntdClients { get; set; }
+    public DbSet<AntdProduct> AntdProducts { get; set; }
+    public DbSet<AntdSeller> AntdSellers { get; set; }
+    public DbSet<AntdOrder> AntdOrders { get; set; }
+    public DbSet<AntdCampaignAd> AntdCampaignAds { get; set; }
+    public DbSet<AntdSocialMediaStats> AntdSocialMediaStats { get; set; }
+    public DbSet<AntdSocialMediaActivity> AntdSocialMediaActivities { get; set; }
+    public DbSet<AntdScheduledPost> AntdScheduledPosts { get; set; }
+    public DbSet<AntdLiveAuction> AntdLiveAuctions { get; set; }
+    public DbSet<AntdAuctionCreator> AntdAuctionCreators { get; set; }
+    public DbSet<AntdBiddingTopSeller> AntdBiddingTopSellers { get; set; }
+    public DbSet<AntdBiddingTransaction> AntdBiddingTransactions { get; set; }
+    public DbSet<AntdCourse> AntdCourses { get; set; }
+    public DbSet<AntdStudyStatistic> AntdStudyStatistics { get; set; }
+    public DbSet<AntdRecommendedCourse> AntdRecommendedCourses { get; set; }
+    public DbSet<AntdExam> AntdExams { get; set; }
+    public DbSet<AntdCommunityGroup> AntdCommunityGroups { get; set; }
+    public DbSet<AntdTruckDelivery> AntdTruckDeliveries { get; set; }
+    public DbSet<AntdDeliveryAnalytic> AntdDeliveryAnalytics { get; set; }
+    public DbSet<AntdTruck> AntdTrucks { get; set; }
+    public DbSet<AntdTruckDeliveryRequest> AntdTruckDeliveryRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -158,6 +186,223 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Date);
         });
 
+        // Configure Antd entities
+        builder.Entity<AntdProject>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.Priority);
+            entity.HasIndex(e => e.ProjectManager);
+            entity.HasIndex(e => e.ClientName);
+            entity.HasIndex(e => new { e.StartDate, e.EndDate });
+            entity.Property(e => e.ProjectDuration).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdClient>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.ProductName);
+            entity.HasIndex(e => e.PurchaseDate);
+            entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
+            entity.Property(e => e.TotalPrice).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdProduct>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.IsFeatured);
+            entity.HasIndex(e => e.QuantitySold);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+            entity.Property(e => e.AverageRating).HasPrecision(3, 1);
+        });
+
+        builder.Entity<AntdSeller>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.SalesRegion);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.SalesVolume).HasPrecision(18, 2);
+            entity.Property(e => e.TotalSales).HasPrecision(18, 2);
+            entity.Property(e => e.CustomerSatisfaction).HasPrecision(5, 2);
+        });
+
+        builder.Entity<AntdOrder>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.OrderDate);
+            entity.HasIndex(e => e.PaymentMethod);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+            entity.Property(e => e.ShippingCost).HasPrecision(18, 2);
+            entity.Property(e => e.Tax).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdCampaignAd>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.AdSource);
+            entity.HasIndex(e => e.AdCampaign);
+            entity.HasIndex(e => e.StartDate);
+            entity.Property(e => e.Cost).HasPrecision(18, 2);
+            entity.Property(e => e.ConversionRate).HasPrecision(6, 4);
+            entity.Property(e => e.Revenue).HasPrecision(18, 2);
+            entity.Property(e => e.Roi).HasPrecision(8, 2);
+        });
+
+        builder.Entity<AntdSocialMediaStats>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Title);
+            entity.Property(e => e.EngagementRate).HasPrecision(10, 2);
+        });
+
+        builder.Entity<AntdSocialMediaActivity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Platform);
+            entity.HasIndex(e => e.ActivityType);
+            entity.HasIndex(e => e.Timestamp);
+            entity.HasIndex(e => e.UserGender);
+        });
+
+        builder.Entity<AntdScheduledPost>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Platform);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.ScheduledDate);
+            entity.HasIndex(e => e.Author);
+        });
+
+        builder.Entity<AntdLiveAuction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.SellerUsername);
+            entity.HasIndex(e => e.StartDate);
+            entity.HasIndex(e => e.EndDate);
+            entity.Property(e => e.StartPrice).HasPrecision(18, 2);
+            entity.Property(e => e.EndPrice).HasPrecision(18, 2);
+            entity.Property(e => e.WinningBid).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdAuctionCreator>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.SalesCount);
+        });
+
+        builder.Entity<AntdBiddingTopSeller>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Collection);
+            entity.HasIndex(e => e.Artist);
+            entity.HasIndex(e => e.Verified);
+            entity.HasIndex(e => e.Volume);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdBiddingTransaction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TransactionType);
+            entity.HasIndex(e => e.TransactionDate);
+            entity.HasIndex(e => e.Country);
+            entity.Property(e => e.PurchasePrice).HasPrecision(18, 2);
+            entity.Property(e => e.SalePrice).HasPrecision(18, 2);
+            entity.Property(e => e.Profit).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdCourse>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Code);
+            entity.HasIndex(e => e.Department);
+            entity.HasIndex(e => e.InstructorName);
+            entity.HasIndex(e => e.StartDate);
+        });
+
+        builder.Entity<AntdStudyStatistic>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Month);
+            entity.Property(e => e.Value).HasPrecision(10, 2);
+        });
+
+        builder.Entity<AntdRecommendedCourse>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Level);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Instructor);
+            entity.HasIndex(e => e.StartDate);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdExam>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.StudentId);
+            entity.HasIndex(e => e.Course);
+            entity.HasIndex(e => e.CourseCode);
+            entity.HasIndex(e => e.ExamDate);
+        });
+
+        builder.Entity<AntdCommunityGroup>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Location);
+            entity.HasIndex(e => e.Leader);
+            entity.HasIndex(e => e.StartDate);
+        });
+
+        builder.Entity<AntdTruckDelivery>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ShipmentId);
+            entity.HasIndex(e => e.TruckId);
+            entity.HasIndex(e => e.CustomerId);
+            entity.HasIndex(e => e.DeliveryStatus);
+            entity.HasIndex(e => e.ShipmentDate);
+            entity.Property(e => e.ShipmentWeight).HasPrecision(18, 2);
+            entity.Property(e => e.ShipmentCost).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdDeliveryAnalytic>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Month);
+            entity.HasIndex(e => e.Status);
+        });
+
+        builder.Entity<AntdTruck>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TruckId);
+            entity.HasIndex(e => e.Make);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.Availability);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdTruckDeliveryRequest>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.TruckType);
+            entity.HasIndex(e => e.DeliveryStatus);
+            entity.HasIndex(e => e.DeliveryDate);
+            entity.Property(e => e.CargoWeight).HasPrecision(18, 2);
+        });
+
         // Configure Product entity
         builder.Entity<Product>(entity =>
         {
@@ -193,6 +438,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // Configure Antd entities
+        builder.Entity<AntdTask>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.Priority);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.DueDate);
+            entity.HasIndex(e => e.AssignedTo);
         });
     }
 }

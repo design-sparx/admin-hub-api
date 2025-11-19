@@ -4,11 +4,13 @@ using AdminHubApi.Data;
 using AdminHubApi.Data.Seeders;
 using AdminHubApi.Entities;
 using AdminHubApi.Interfaces;
+using AdminHubApi.Interfaces.Antd;
 using AdminHubApi.Interfaces.Mantine;
 using AdminHubApi.Repositories;
 using AdminHubApi.Security;
 using AdminHubApi.Security.Permissions;
 using AdminHubApi.Services;
+using AdminHubApi.Services.Antd;
 using AdminHubApi.Services.Mantine;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -167,6 +169,33 @@ builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileManagementService, FileManagementService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 
+// Antd Dashboard Services
+builder.Services.AddScoped<ITaskService, TaskService>();
+
+// Antd Dashboard Services
+builder.Services.AddScoped<IAntdProjectService, AntdProjectService>();
+builder.Services.AddScoped<IAntdClientService, AntdClientService>();
+builder.Services.AddScoped<IAntdProductService, AntdProductService>();
+builder.Services.AddScoped<IAntdSellerService, AntdSellerService>();
+builder.Services.AddScoped<IAntdOrderService, AntdOrderService>();
+builder.Services.AddScoped<IAntdCampaignAdService, AntdCampaignAdService>();
+builder.Services.AddScoped<IAntdSocialMediaStatsService, AntdSocialMediaStatsService>();
+builder.Services.AddScoped<IAntdSocialMediaActivityService, AntdSocialMediaActivityService>();
+builder.Services.AddScoped<IAntdScheduledPostService, AntdScheduledPostService>();
+builder.Services.AddScoped<IAntdLiveAuctionService, AntdLiveAuctionService>();
+builder.Services.AddScoped<IAntdAuctionCreatorService, AntdAuctionCreatorService>();
+builder.Services.AddScoped<IAntdBiddingTopSellerService, AntdBiddingTopSellerService>();
+builder.Services.AddScoped<IAntdBiddingTransactionService, AntdBiddingTransactionService>();
+builder.Services.AddScoped<IAntdCourseService, AntdCourseService>();
+builder.Services.AddScoped<IAntdStudyStatisticService, AntdStudyStatisticService>();
+builder.Services.AddScoped<IAntdRecommendedCourseService, AntdRecommendedCourseService>();
+builder.Services.AddScoped<IAntdExamService, AntdExamService>();
+builder.Services.AddScoped<IAntdCommunityGroupService, AntdCommunityGroupService>();
+builder.Services.AddScoped<IAntdTruckDeliveryService, AntdTruckDeliveryService>();
+builder.Services.AddScoped<IAntdDeliveryAnalyticService, AntdDeliveryAnalyticService>();
+builder.Services.AddScoped<IAntdTruckService, AntdTruckService>();
+builder.Services.AddScoped<IAntdTruckDeliveryRequestService, AntdTruckDeliveryRequestService>();
+
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
 
@@ -312,6 +341,11 @@ using (var scope = app.Services.CreateScope())
         logger.LogInformation("Seeding Mantine dashboard data...");
         await MantineDataSeeder.SeedMantineDataAsync(app.Services);
         logger.LogInformation("Mantine dashboard data seeded successfully");
+
+        // Seed Antd dashboard data
+        logger.LogInformation("Seeding Antd dashboard data...");
+        await AntdDataSeeder.SeedAntdDataAsync(app.Services);
+        logger.LogInformation("Antd dashboard data seeded successfully");
 
         // Seed Products
         logger.LogInformation("Seeding products...");

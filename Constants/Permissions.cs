@@ -35,6 +35,33 @@ public static class Permissions
         public const string Chats = "Permissions.Personal.Chats";
     }
 
+    // Antd Dashboard permissions
+    public static class Antd
+    {
+        public const string Projects = "Permissions.Antd.Projects";
+        public const string Clients = "Permissions.Antd.Clients";
+        public const string Products = "Permissions.Antd.Products";
+        public const string Sellers = "Permissions.Antd.Sellers";
+        public const string Orders = "Permissions.Antd.Orders";
+        public const string CampaignAds = "Permissions.Antd.CampaignAds";
+        public const string SocialMediaStats = "Permissions.Antd.SocialMediaStats";
+        public const string SocialMediaActivities = "Permissions.Antd.SocialMediaActivities";
+        public const string ScheduledPosts = "Permissions.Antd.ScheduledPosts";
+        public const string LiveAuctions = "Permissions.Antd.LiveAuctions";
+        public const string AuctionCreators = "Permissions.Antd.AuctionCreators";
+        public const string BiddingTopSellers = "Permissions.Antd.BiddingTopSellers";
+        public const string BiddingTransactions = "Permissions.Antd.BiddingTransactions";
+        public const string Courses = "Permissions.Antd.Courses";
+        public const string StudyStatistics = "Permissions.Antd.StudyStatistics";
+        public const string RecommendedCourses = "Permissions.Antd.RecommendedCourses";
+        public const string Exams = "Permissions.Antd.Exams";
+        public const string CommunityGroups = "Permissions.Antd.CommunityGroups";
+        public const string TruckDeliveries = "Permissions.Antd.TruckDeliveries";
+        public const string DeliveryAnalytics = "Permissions.Antd.DeliveryAnalytics";
+        public const string Trucks = "Permissions.Antd.Trucks";
+        public const string TruckDeliveryRequests = "Permissions.Antd.TruckDeliveryRequests";
+    }
+
 
     // Helper method to get all permissions
     public static IEnumerable<string> GetAllPermissions()
