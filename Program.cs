@@ -175,6 +175,9 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 // Antd Dashboard Services
 builder.Services.AddScoped<IAntdProjectService, AntdProjectService>();
 builder.Services.AddScoped<IAntdClientService, AntdClientService>();
+builder.Services.AddScoped<IAntdProductService, AntdProductService>();
+builder.Services.AddScoped<IAntdSellerService, AntdSellerService>();
+builder.Services.AddScoped<IAntdOrderService, AntdOrderService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
