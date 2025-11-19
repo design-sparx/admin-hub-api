@@ -318,6 +318,11 @@ using (var scope = app.Services.CreateScope())
         await MantineDataSeeder.SeedMantineDataAsync(app.Services);
         logger.LogInformation("Mantine dashboard data seeded successfully");
 
+        // Seed Antd dashboard data
+        logger.LogInformation("Seeding Antd dashboard data...");
+        await AntdDataSeeder.SeedAntdDataAsync(app.Services);
+        logger.LogInformation("Antd dashboard data seeded successfully");
+
         // Seed Products
         logger.LogInformation("Seeding products...");
         await ProductSeeder.SeedProductsAsync(app.Services);
