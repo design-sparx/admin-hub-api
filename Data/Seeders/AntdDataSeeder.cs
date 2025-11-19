@@ -577,6 +577,28 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd bidding transactions data seeded successfully");
                 }
+
+                // Seed Antd Courses (10 rows)
+                if (!await context.AntdCourses.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd courses data...");
+                    var courses = new List<AntdCourse>
+                    {
+                        new AntdCourse { Name = "Introduction to Web Development", Code = "WEB101", Description = "Learn the fundamentals of HTML, CSS, and JavaScript to build modern websites.", InstructorName = "Dr. Sarah Chen", StartDate = DateTime.UtcNow.AddDays(-60), EndDate = DateTime.UtcNow.AddDays(30), CreditHours = 3, Department = "Computer Science", Prerequisites = "None", CourseLocation = "Room 101, Tech Building", TotalLessons = 24, CurrentLessons = 18, FavoriteColor = "blue" },
+                        new AntdCourse { Name = "Data Structures and Algorithms", Code = "CS201", Description = "Master essential data structures and algorithmic problem-solving techniques.", InstructorName = "Prof. Michael Johnson", StartDate = DateTime.UtcNow.AddDays(-45), EndDate = DateTime.UtcNow.AddDays(45), CreditHours = 4, Department = "Computer Science", Prerequisites = "CS101", CourseLocation = "Room 205, Science Hall", TotalLessons = 32, CurrentLessons = 20, FavoriteColor = "green" },
+                        new AntdCourse { Name = "Digital Marketing Fundamentals", Code = "MKT110", Description = "Explore digital marketing strategies including SEO, social media, and content marketing.", InstructorName = "Emily Rodriguez", StartDate = DateTime.UtcNow.AddDays(-30), EndDate = DateTime.UtcNow.AddDays(60), CreditHours = 3, Department = "Business", Prerequisites = "None", CourseLocation = "Room 302, Business Center", TotalLessons = 20, CurrentLessons = 10, FavoriteColor = "purple" },
+                        new AntdCourse { Name = "Machine Learning Basics", Code = "AI301", Description = "Introduction to machine learning algorithms and their practical applications.", InstructorName = "Dr. James Liu", StartDate = DateTime.UtcNow.AddDays(-20), EndDate = DateTime.UtcNow.AddDays(70), CreditHours = 4, Department = "Computer Science", Prerequisites = "CS201, MATH201", CourseLocation = "Room 401, AI Lab", TotalLessons = 28, CurrentLessons = 8, FavoriteColor = "red" },
+                        new AntdCourse { Name = "Project Management Professional", Code = "PM200", Description = "Learn industry-standard project management methodologies and tools.", InstructorName = "Lisa Anderson", StartDate = DateTime.UtcNow.AddDays(-90), EndDate = DateTime.UtcNow.AddDays(-10), CreditHours = 3, Department = "Business", Prerequisites = "None", CourseLocation = "Room 201, Admin Building", TotalLessons = 16, CurrentLessons = 16, FavoriteColor = "orange" },
+                        new AntdCourse { Name = "UX/UI Design Principles", Code = "DES150", Description = "Master user experience and interface design principles for digital products.", InstructorName = "Alex Thompson", StartDate = DateTime.UtcNow.AddDays(-15), EndDate = DateTime.UtcNow.AddDays(75), CreditHours = 3, Department = "Design", Prerequisites = "None", CourseLocation = "Room 105, Design Studio", TotalLessons = 22, CurrentLessons = 5, FavoriteColor = "pink" },
+                        new AntdCourse { Name = "Database Management Systems", Code = "CS250", Description = "Learn relational database design, SQL, and database administration.", InstructorName = "Dr. Robert Wilson", StartDate = DateTime.UtcNow.AddDays(-50), EndDate = DateTime.UtcNow.AddDays(40), CreditHours = 4, Department = "Computer Science", Prerequisites = "CS101", CourseLocation = "Room 303, Tech Building", TotalLessons = 26, CurrentLessons = 15, FavoriteColor = "cyan" },
+                        new AntdCourse { Name = "Financial Analysis", Code = "FIN220", Description = "Develop skills in financial statement analysis and valuation techniques.", InstructorName = "Prof. Maria Santos", StartDate = DateTime.UtcNow.AddDays(-40), EndDate = DateTime.UtcNow.AddDays(50), CreditHours = 3, Department = "Finance", Prerequisites = "ACC101", CourseLocation = "Room 402, Business Center", TotalLessons = 18, CurrentLessons = 12, FavoriteColor = "gold" },
+                        new AntdCourse { Name = "Cloud Computing Fundamentals", Code = "IT310", Description = "Explore cloud platforms, services, and deployment strategies.", InstructorName = "David Kim", StartDate = DateTime.UtcNow.AddDays(-10), EndDate = DateTime.UtcNow.AddDays(80), CreditHours = 3, Department = "Information Technology", Prerequisites = "IT101", CourseLocation = "Room 501, Cloud Lab", TotalLessons = 20, CurrentLessons = 3, FavoriteColor = "lightblue" },
+                        new AntdCourse { Name = "Business Communication", Code = "COM100", Description = "Enhance professional writing and presentation skills for business contexts.", InstructorName = "Jennifer Brown", StartDate = DateTime.UtcNow.AddDays(-75), EndDate = DateTime.UtcNow.AddDays(15), CreditHours = 2, Department = "Communications", Prerequisites = "None", CourseLocation = "Room 102, Arts Building", TotalLessons = 14, CurrentLessons = 12, FavoriteColor = "teal" }
+                    };
+                    context.AntdCourses.AddRange(courses);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd courses data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
