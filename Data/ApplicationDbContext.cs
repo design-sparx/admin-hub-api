@@ -47,6 +47,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdBiddingTopSeller> AntdBiddingTopSellers { get; set; }
     public DbSet<AntdBiddingTransaction> AntdBiddingTransactions { get; set; }
     public DbSet<AntdCourse> AntdCourses { get; set; }
+    public DbSet<AntdStudyStatistic> AntdStudyStatistics { get; set; }
+    public DbSet<AntdRecommendedCourse> AntdRecommendedCourses { get; set; }
+    public DbSet<AntdExam> AntdExams { get; set; }
+    public DbSet<AntdCommunityGroup> AntdCommunityGroups { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -315,6 +319,42 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Code);
             entity.HasIndex(e => e.Department);
             entity.HasIndex(e => e.InstructorName);
+            entity.HasIndex(e => e.StartDate);
+        });
+
+        builder.Entity<AntdStudyStatistic>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Month);
+            entity.Property(e => e.Value).HasPrecision(10, 2);
+        });
+
+        builder.Entity<AntdRecommendedCourse>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Level);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Instructor);
+            entity.HasIndex(e => e.StartDate);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdExam>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.StudentId);
+            entity.HasIndex(e => e.Course);
+            entity.HasIndex(e => e.CourseCode);
+            entity.HasIndex(e => e.ExamDate);
+        });
+
+        builder.Entity<AntdCommunityGroup>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.Location);
+            entity.HasIndex(e => e.Leader);
             entity.HasIndex(e => e.StartDate);
         });
 
