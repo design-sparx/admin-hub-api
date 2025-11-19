@@ -1,6 +1,6 @@
 using AdminHubApi.Data;
 using AdminHubApi.Dtos.Antd;
-using AdminHubApi.Dtos.Common;
+using AdminHubApi.Dtos.ApiResponse;
 using AdminHubApi.Entities.Antd;
 using AdminHubApi.Interfaces.Antd;
 using Microsoft.EntityFrameworkCore;

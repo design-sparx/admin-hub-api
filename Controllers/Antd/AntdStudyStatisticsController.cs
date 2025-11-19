@@ -1,7 +1,7 @@
 using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Antd;
 using AdminHubApi.Interfaces.Antd;
-using AdminHubApi.Security.Permissions;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
