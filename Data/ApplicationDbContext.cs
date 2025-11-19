@@ -46,6 +46,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdAuctionCreator> AntdAuctionCreators { get; set; }
     public DbSet<AntdBiddingTopSeller> AntdBiddingTopSellers { get; set; }
     public DbSet<AntdBiddingTransaction> AntdBiddingTransactions { get; set; }
+    public DbSet<AntdCourse> AntdCourses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -306,6 +307,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.PurchasePrice).HasPrecision(18, 2);
             entity.Property(e => e.SalePrice).HasPrecision(18, 2);
             entity.Property(e => e.Profit).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdCourse>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Code);
+            entity.HasIndex(e => e.Department);
+            entity.HasIndex(e => e.InstructorName);
+            entity.HasIndex(e => e.StartDate);
         });
 
         // Configure Product entity

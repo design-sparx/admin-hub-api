@@ -183,6 +183,7 @@ builder.Services.AddScoped<IAntdLiveAuctionService, AntdLiveAuctionService>();
 builder.Services.AddScoped<IAntdAuctionCreatorService, AntdAuctionCreatorService>();
 builder.Services.AddScoped<IAntdBiddingTopSellerService, AntdBiddingTopSellerService>();
 builder.Services.AddScoped<IAntdBiddingTransactionService, AntdBiddingTransactionService>();
+builder.Services.AddScoped<IAntdCourseService, AntdCourseService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();
