@@ -1,4 +1,5 @@
 ﻿using AdminHubApi.Entities;
+using AdminHubApi.Entities.Antd;
 using AdminHubApi.Entities.Mantine;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Languages> Languages { get; set; }
     public DbSet<Countries> Countries { get; set; }
     public DbSet<Traffic> Traffic { get; set; }
+
+    // Antd Dashboard Entities
+    public DbSet<AntdTask> AntdTasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -193,6 +197,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // Configure Antd entities
+        builder.Entity<AntdTask>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.Priority);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.DueDate);
+            entity.HasIndex(e => e.AssignedTo);
         });
     }
 }
