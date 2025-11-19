@@ -182,6 +182,8 @@ builder.Services.AddScoped<IAntdCampaignAdService, AntdCampaignAdService>();
 builder.Services.AddScoped<IAntdSocialMediaStatsService, AntdSocialMediaStatsService>();
 builder.Services.AddScoped<IAntdSocialMediaActivityService, AntdSocialMediaActivityService>();
 builder.Services.AddScoped<IAntdScheduledPostService, AntdScheduledPostService>();
+builder.Services.AddScoped<IAntdLiveAuctionService, AntdLiveAuctionService>();
+builder.Services.AddScoped<IAntdAuctionCreatorService, AntdAuctionCreatorService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

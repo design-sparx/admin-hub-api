@@ -45,6 +45,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdSocialMediaStats> AntdSocialMediaStats { get; set; }
     public DbSet<AntdSocialMediaActivity> AntdSocialMediaActivities { get; set; }
     public DbSet<AntdScheduledPost> AntdScheduledPosts { get; set; }
+    public DbSet<AntdLiveAuction> AntdLiveAuctions { get; set; }
+    public DbSet<AntdAuctionCreator> AntdAuctionCreators { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -264,6 +266,26 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Category);
             entity.HasIndex(e => e.ScheduledDate);
             entity.HasIndex(e => e.Author);
+        });
+
+        builder.Entity<AntdLiveAuction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.SellerUsername);
+            entity.HasIndex(e => e.StartDate);
+            entity.HasIndex(e => e.EndDate);
+            entity.Property(e => e.StartPrice).HasPrecision(18, 2);
+            entity.Property(e => e.EndPrice).HasPrecision(18, 2);
+            entity.Property(e => e.WinningBid).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdAuctionCreator>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.SalesCount);
         });
 
         // Configure Product entity
