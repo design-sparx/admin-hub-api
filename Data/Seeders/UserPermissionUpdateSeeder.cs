@@ -41,6 +41,7 @@ namespace AdminHubApi.Data.Seeders
                     new Claim(CustomClaimTypes.Permission, Permissions.Personal.Chats),
 
                     // Antd Dashboard permissions
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Tasks),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.Projects),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.Clients),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.Products),

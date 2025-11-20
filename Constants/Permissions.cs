@@ -38,6 +38,7 @@ public static class Permissions
     // Antd Dashboard permissions
     public static class Antd
     {
+        public const string Tasks = "Permissions.Antd.Tasks";
         public const string Projects = "Permissions.Antd.Projects";
         public const string Clients = "Permissions.Antd.Clients";
         public const string Products = "Permissions.Antd.Products";

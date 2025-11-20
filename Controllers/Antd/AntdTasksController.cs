@@ -1,5 +1,7 @@
+using AdminHubApi.Constants;
 using AdminHubApi.Dtos.Antd;
 using AdminHubApi.Interfaces.Antd;
+using AdminHubApi.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +10,12 @@ namespace AdminHubApi.Controllers.Antd
     [Route("/api/v1/antd/tasks")]
     [Tags("Antd - Tasks")]
     [Authorize]
-    public class TasksController : AntdBaseController
+    [PermissionAuthorize(Permissions.Antd.Tasks)]
+    public class AntdTasksController : AntdBaseController
     {
         private readonly ITaskService _taskService;
 
-        public TasksController(ITaskService taskService, ILogger<TasksController> logger)
+        public AntdTasksController(ITaskService taskService, ILogger<AntdTasksController> logger)
             : base(logger)
         {
             _taskService = taskService;
