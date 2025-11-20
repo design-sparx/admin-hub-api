@@ -58,7 +58,7 @@ namespace AdminHubApi.Controllers.Antd
             try
             {
                 var response = await _sellerService.GetByIdAsync(id);
-                if (!response.Succeeded) return NotFound(response);
+                if (!response.Success) return NotFound(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -93,7 +93,7 @@ namespace AdminHubApi.Controllers.Antd
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 var response = await _sellerService.UpdateAsync(id, sellerDto);
-                if (!response.Succeeded) return NotFound(response);
+                if (!response.Success) return NotFound(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -110,7 +110,7 @@ namespace AdminHubApi.Controllers.Antd
             try
             {
                 var response = await _sellerService.DeleteAsync(id);
-                if (!response.Succeeded) return NotFound(response);
+                if (!response.Success) return NotFound(response);
                 return Ok(response);
             }
             catch (Exception ex)

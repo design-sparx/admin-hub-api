@@ -107,7 +107,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdProjectListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = projectsDto,
                     Message = "Projects retrieved successfully",
                     Meta = new PaginationMeta
@@ -134,7 +134,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -144,14 +144,14 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
 
                 return new AntdProjectResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(project),
                     Message = "Project retrieved successfully"
                 };
@@ -193,7 +193,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdProjectCreateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(project),
                     Message = "Project created successfully"
                 };
@@ -213,7 +213,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -223,7 +223,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
@@ -248,7 +248,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdProjectUpdateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(project),
                     Message = "Project updated successfully"
                 };
@@ -268,7 +268,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -278,7 +278,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdProjectDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
@@ -288,7 +288,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdProjectDeleteResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Project deleted successfully"
                 };
             }

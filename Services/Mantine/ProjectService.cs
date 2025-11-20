@@ -84,7 +84,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new ProjectListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = projectsDto,
                     Message = "Projects retrieved successfully",
                     Meta = new PaginationMeta
@@ -111,7 +111,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -121,7 +121,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
@@ -138,7 +138,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new ProjectResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = projectDto,
                     Message = "Project retrieved successfully"
                 };
@@ -181,7 +181,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new ProjectCreateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = createdProjectDto,
                     Message = "Project created successfully"
                 };
@@ -201,7 +201,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -211,7 +211,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
@@ -237,7 +237,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new ProjectUpdateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = updatedProjectDto,
                     Message = "Project updated successfully"
                 };
@@ -257,7 +257,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid project ID format"
                     };
                 }
@@ -267,7 +267,7 @@ namespace AdminHubApi.Services.Mantine
                 {
                     return new ProjectDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Project not found"
                     };
                 }
@@ -277,7 +277,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new ProjectDeleteResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Project deleted successfully"
                 };
             }

@@ -27,14 +27,7 @@ namespace AdminHubApi.Controllers.Antd
             try
             {
                 var tasks = await _taskService.GetAllAsync(queryParams);
-                return Ok(new
-                {
-                    success = true,
-                    data = tasks.Data,
-                    message = "Tasks retrieved successfully",
-                    timestamp = DateTime.UtcNow,
-                    meta = tasks.Meta
-                });
+                return SuccessResponse(tasks.Data, "Tasks retrieved successfully", tasks.Meta);
             }
             catch (Exception ex)
             {
@@ -53,7 +46,7 @@ namespace AdminHubApi.Controllers.Antd
             {
                 var task = await _taskService.GetByIdAsync(id);
                 if (task == null)
-                    return NotFound(new { success = false, message = "Task not found" });
+                    return ErrorResponse("Task not found", 404);
 
                 return SuccessResponse(task, "Task retrieved successfully");
             }
@@ -98,7 +91,7 @@ namespace AdminHubApi.Controllers.Antd
 
                 var task = await _taskService.UpdateAsync(id, taskDto);
                 if (task == null)
-                    return NotFound(new { success = false, message = "Task not found" });
+                    return ErrorResponse("Task not found", 404);
 
                 return SuccessResponse(task, "Task updated successfully");
             }
@@ -119,7 +112,7 @@ namespace AdminHubApi.Controllers.Antd
             {
                 var deleted = await _taskService.DeleteAsync(id);
                 if (!deleted)
-                    return NotFound(new { success = false, message = "Task not found" });
+                    return ErrorResponse("Task not found", 404);
 
                 return SuccessResponse(new { }, "Task deleted successfully");
             }

@@ -54,7 +54,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdScheduledPostListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = posts.Select(MapToDto).ToList(),
                     Message = "Scheduled posts retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -72,13 +72,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdScheduledPostResponse { Succeeded = false, Message = "Invalid scheduled post ID format" };
+                    return new AntdScheduledPostResponse { Success = false, Message = "Invalid scheduled post ID format" };
 
                 var post = await _context.AntdScheduledPosts.FindAsync(guidId);
                 if (post == null)
-                    return new AntdScheduledPostResponse { Succeeded = false, Message = "Scheduled post not found" };
+                    return new AntdScheduledPostResponse { Success = false, Message = "Scheduled post not found" };
 
-                return new AntdScheduledPostResponse { Succeeded = true, Data = MapToDto(post), Message = "Scheduled post retrieved successfully" };
+                return new AntdScheduledPostResponse { Success = true, Data = MapToDto(post), Message = "Scheduled post retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -116,7 +116,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdScheduledPosts.Add(post);
                 await _context.SaveChangesAsync();
 
-                return new AntdScheduledPostCreateResponse { Succeeded = true, Data = MapToDto(post), Message = "Scheduled post created successfully" };
+                return new AntdScheduledPostCreateResponse { Success = true, Data = MapToDto(post), Message = "Scheduled post created successfully" };
             }
             catch (Exception ex)
             {
@@ -130,11 +130,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdScheduledPostUpdateResponse { Succeeded = false, Message = "Invalid scheduled post ID format" };
+                    return new AntdScheduledPostUpdateResponse { Success = false, Message = "Invalid scheduled post ID format" };
 
                 var post = await _context.AntdScheduledPosts.FindAsync(guidId);
                 if (post == null)
-                    return new AntdScheduledPostUpdateResponse { Succeeded = false, Message = "Scheduled post not found" };
+                    return new AntdScheduledPostUpdateResponse { Success = false, Message = "Scheduled post not found" };
 
                 post.Title = dto.Title;
                 post.Content = dto.Content;
@@ -155,7 +155,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdScheduledPostUpdateResponse { Succeeded = true, Data = MapToDto(post), Message = "Scheduled post updated successfully" };
+                return new AntdScheduledPostUpdateResponse { Success = true, Data = MapToDto(post), Message = "Scheduled post updated successfully" };
             }
             catch (Exception ex)
             {
@@ -169,16 +169,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdScheduledPostDeleteResponse { Succeeded = false, Message = "Invalid scheduled post ID format" };
+                    return new AntdScheduledPostDeleteResponse { Success = false, Message = "Invalid scheduled post ID format" };
 
                 var post = await _context.AntdScheduledPosts.FindAsync(guidId);
                 if (post == null)
-                    return new AntdScheduledPostDeleteResponse { Succeeded = false, Message = "Scheduled post not found" };
+                    return new AntdScheduledPostDeleteResponse { Success = false, Message = "Scheduled post not found" };
 
                 _context.AntdScheduledPosts.Remove(post);
                 await _context.SaveChangesAsync();
 
-                return new AntdScheduledPostDeleteResponse { Succeeded = true, Message = "Scheduled post deleted successfully" };
+                return new AntdScheduledPostDeleteResponse { Success = true, Message = "Scheduled post deleted successfully" };
             }
             catch (Exception ex)
             {

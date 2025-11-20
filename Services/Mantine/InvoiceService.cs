@@ -107,7 +107,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new InvoiceListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Invoices retrieved successfully",
                     Data = invoicesDto,
                     Meta = new PaginationMeta
@@ -131,11 +131,11 @@ namespace AdminHubApi.Services.Mantine
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new InvoiceResponse { Succeeded = false, Message = "Invalid invoice ID format" };
+                    return new InvoiceResponse { Success = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
                 if (invoice == null)
-                    return new InvoiceResponse { Succeeded = false, Message = "Invoice not found" };
+                    return new InvoiceResponse { Success = false, Message = "Invoice not found" };
 
                 var invoiceDto = new InvoiceDto
                 {
@@ -162,7 +162,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new InvoiceResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Invoice retrieved successfully",
                     Data = invoiceDto
                 };
@@ -221,7 +221,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new InvoiceCreateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Invoice created successfully",
                     Data = invoiceDto
                 };
@@ -238,11 +238,11 @@ namespace AdminHubApi.Services.Mantine
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new InvoiceUpdateResponse { Succeeded = false, Message = "Invalid invoice ID format" };
+                    return new InvoiceUpdateResponse { Success = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
                 if (invoice == null)
-                    return new InvoiceUpdateResponse { Succeeded = false, Message = "Invoice not found" };
+                    return new InvoiceUpdateResponse { Success = false, Message = "Invoice not found" };
 
                 invoice.FullName = invoiceDto.FullName;
                 invoice.Email = invoiceDto.Email;
@@ -270,7 +270,7 @@ namespace AdminHubApi.Services.Mantine
 
                 return new InvoiceUpdateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Invoice updated successfully",
                     Data = invoiceDto
                 };
@@ -287,18 +287,18 @@ namespace AdminHubApi.Services.Mantine
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new InvoiceDeleteResponse { Succeeded = false, Message = "Invalid invoice ID format" };
+                    return new InvoiceDeleteResponse { Success = false, Message = "Invalid invoice ID format" };
 
                 var invoice = await _context.Invoices.FindAsync(guidId);
                 if (invoice == null)
-                    return new InvoiceDeleteResponse { Succeeded = false, Message = "Invoice not found" };
+                    return new InvoiceDeleteResponse { Success = false, Message = "Invoice not found" };
 
                 _context.Invoices.Remove(invoice);
                 await _context.SaveChangesAsync();
 
                 return new InvoiceDeleteResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Invoice deleted successfully",
                     Data = new { id }
                 };

@@ -63,9 +63,9 @@ namespace AdminHubApi.Controllers.Mantine
                 // Log the READ action
                 await _auditService.LogAsync("Invoice", id, AuditActions.READ,
                     Request.Path, Request.Method,
-                    newValues: JsonSerializer.Serialize(new { found = response.Succeeded }));
+                    newValues: JsonSerializer.Serialize(new { found = response.Success }));
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);
@@ -92,7 +92,7 @@ namespace AdminHubApi.Controllers.Mantine
                 var response = await _invoiceService.CreateAsync(invoiceDto);
 
                 // Log the CREATE action
-                if (response.Succeeded && response.Data != null)
+                if (response.Success && response.Data != null)
                 {
                     await _auditService.LogAsync("Invoice", response.Data.Id, AuditActions.CREATE,
                         Request.Path, Request.Method,
@@ -122,12 +122,12 @@ namespace AdminHubApi.Controllers.Mantine
 
                 // Get old values for audit trail
                 var oldInvoice = await _invoiceService.GetByIdAsync(id);
-                string? oldValues = oldInvoice.Succeeded ? JsonSerializer.Serialize(oldInvoice.Data) : null;
+                string? oldValues = oldInvoice.Success ? JsonSerializer.Serialize(oldInvoice.Data) : null;
 
                 var response = await _invoiceService.UpdateAsync(id, invoiceDto);
 
                 // Log the UPDATE action
-                if (response.Succeeded && response.Data != null)
+                if (response.Success && response.Data != null)
                 {
                     await _auditService.LogAsync("Invoice", id, AuditActions.UPDATE,
                         Request.Path, Request.Method,
@@ -135,7 +135,7 @@ namespace AdminHubApi.Controllers.Mantine
                         newValues: JsonSerializer.Serialize(response.Data));
                 }
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);
@@ -158,19 +158,19 @@ namespace AdminHubApi.Controllers.Mantine
             {
                 // Get invoice data before deletion for audit trail
                 var existingInvoice = await _invoiceService.GetByIdAsync(id);
-                string? oldValues = existingInvoice.Succeeded ? JsonSerializer.Serialize(existingInvoice.Data) : null;
+                string? oldValues = existingInvoice.Success ? JsonSerializer.Serialize(existingInvoice.Data) : null;
 
                 var response = await _invoiceService.DeleteAsync(id);
 
                 // Log the DELETE action
-                if (response.Succeeded)
+                if (response.Success)
                 {
                     await _auditService.LogAsync("Invoice", id, AuditActions.DELETE,
                         Request.Path, Request.Method,
                         oldValues: oldValues);
                 }
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);

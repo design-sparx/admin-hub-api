@@ -58,7 +58,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdCampaignAdListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = ads.Select(MapToDto).ToList(),
                     Message = "Campaign ads retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -76,13 +76,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCampaignAdResponse { Succeeded = false, Message = "Invalid campaign ad ID format" };
+                    return new AntdCampaignAdResponse { Success = false, Message = "Invalid campaign ad ID format" };
 
                 var ad = await _context.AntdCampaignAds.FindAsync(guidId);
                 if (ad == null)
-                    return new AntdCampaignAdResponse { Succeeded = false, Message = "Campaign ad not found" };
+                    return new AntdCampaignAdResponse { Success = false, Message = "Campaign ad not found" };
 
-                return new AntdCampaignAdResponse { Succeeded = true, Data = MapToDto(ad), Message = "Campaign ad retrieved successfully" };
+                return new AntdCampaignAdResponse { Success = true, Data = MapToDto(ad), Message = "Campaign ad retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdCampaignAds.Add(ad);
                 await _context.SaveChangesAsync();
 
-                return new AntdCampaignAdCreateResponse { Succeeded = true, Data = MapToDto(ad), Message = "Campaign ad created successfully" };
+                return new AntdCampaignAdCreateResponse { Success = true, Data = MapToDto(ad), Message = "Campaign ad created successfully" };
             }
             catch (Exception ex)
             {
@@ -131,11 +131,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCampaignAdUpdateResponse { Succeeded = false, Message = "Invalid campaign ad ID format" };
+                    return new AntdCampaignAdUpdateResponse { Success = false, Message = "Invalid campaign ad ID format" };
 
                 var ad = await _context.AntdCampaignAds.FindAsync(guidId);
                 if (ad == null)
-                    return new AntdCampaignAdUpdateResponse { Succeeded = false, Message = "Campaign ad not found" };
+                    return new AntdCampaignAdUpdateResponse { Success = false, Message = "Campaign ad not found" };
 
                 ad.AdSource = dto.AdSource;
                 ad.AdCampaign = dto.AdCampaign;
@@ -153,7 +153,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdCampaignAdUpdateResponse { Succeeded = true, Data = MapToDto(ad), Message = "Campaign ad updated successfully" };
+                return new AntdCampaignAdUpdateResponse { Success = true, Data = MapToDto(ad), Message = "Campaign ad updated successfully" };
             }
             catch (Exception ex)
             {
@@ -167,16 +167,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCampaignAdDeleteResponse { Succeeded = false, Message = "Invalid campaign ad ID format" };
+                    return new AntdCampaignAdDeleteResponse { Success = false, Message = "Invalid campaign ad ID format" };
 
                 var ad = await _context.AntdCampaignAds.FindAsync(guidId);
                 if (ad == null)
-                    return new AntdCampaignAdDeleteResponse { Succeeded = false, Message = "Campaign ad not found" };
+                    return new AntdCampaignAdDeleteResponse { Success = false, Message = "Campaign ad not found" };
 
                 _context.AntdCampaignAds.Remove(ad);
                 await _context.SaveChangesAsync();
 
-                return new AntdCampaignAdDeleteResponse { Succeeded = true, Message = "Campaign ad deleted successfully" };
+                return new AntdCampaignAdDeleteResponse { Success = true, Message = "Campaign ad deleted successfully" };
             }
             catch (Exception ex)
             {

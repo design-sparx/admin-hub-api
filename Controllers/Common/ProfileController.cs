@@ -116,7 +116,7 @@ public class ProfileController : ControllerBase
         // Save changes
         var result = await _userManager.UpdateAsync(user);
 
-        if (!result.Succeeded)
+        if (!result.Success)
         {
             return BadRequest(new
             {
@@ -162,7 +162,7 @@ public class ProfileController : ControllerBase
         // Verify current password and change to new password
         var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
     
-        if (!result.Succeeded)
+        if (!result.Success)
         {
             return BadRequest(new {
                 message = "Failed to change password",

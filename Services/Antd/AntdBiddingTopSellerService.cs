@@ -53,7 +53,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdBiddingTopSellerListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = sellers.Select(MapToDto).ToList(),
                     Message = "Bidding top sellers retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -71,13 +71,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTopSellerResponse { Succeeded = false, Message = "Invalid seller ID format" };
+                    return new AntdBiddingTopSellerResponse { Success = false, Message = "Invalid seller ID format" };
 
                 var seller = await _context.AntdBiddingTopSellers.FindAsync(guidId);
                 if (seller == null)
-                    return new AntdBiddingTopSellerResponse { Succeeded = false, Message = "Seller not found" };
+                    return new AntdBiddingTopSellerResponse { Success = false, Message = "Seller not found" };
 
-                return new AntdBiddingTopSellerResponse { Succeeded = true, Data = MapToDto(seller), Message = "Seller retrieved successfully" };
+                return new AntdBiddingTopSellerResponse { Success = true, Data = MapToDto(seller), Message = "Seller retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdBiddingTopSellers.Add(seller);
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTopSellerCreateResponse { Succeeded = true, Data = MapToDto(seller), Message = "Seller created successfully" };
+                return new AntdBiddingTopSellerCreateResponse { Success = true, Data = MapToDto(seller), Message = "Seller created successfully" };
             }
             catch (Exception ex)
             {
@@ -127,11 +127,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTopSellerUpdateResponse { Succeeded = false, Message = "Invalid seller ID format" };
+                    return new AntdBiddingTopSellerUpdateResponse { Success = false, Message = "Invalid seller ID format" };
 
                 var seller = await _context.AntdBiddingTopSellers.FindAsync(guidId);
                 if (seller == null)
-                    return new AntdBiddingTopSellerUpdateResponse { Succeeded = false, Message = "Seller not found" };
+                    return new AntdBiddingTopSellerUpdateResponse { Success = false, Message = "Seller not found" };
 
                 seller.Title = dto.Title;
                 seller.Artist = dto.Artist;
@@ -150,7 +150,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTopSellerUpdateResponse { Succeeded = true, Data = MapToDto(seller), Message = "Seller updated successfully" };
+                return new AntdBiddingTopSellerUpdateResponse { Success = true, Data = MapToDto(seller), Message = "Seller updated successfully" };
             }
             catch (Exception ex)
             {
@@ -164,16 +164,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTopSellerDeleteResponse { Succeeded = false, Message = "Invalid seller ID format" };
+                    return new AntdBiddingTopSellerDeleteResponse { Success = false, Message = "Invalid seller ID format" };
 
                 var seller = await _context.AntdBiddingTopSellers.FindAsync(guidId);
                 if (seller == null)
-                    return new AntdBiddingTopSellerDeleteResponse { Succeeded = false, Message = "Seller not found" };
+                    return new AntdBiddingTopSellerDeleteResponse { Success = false, Message = "Seller not found" };
 
                 _context.AntdBiddingTopSellers.Remove(seller);
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTopSellerDeleteResponse { Succeeded = true, Message = "Seller deleted successfully" };
+                return new AntdBiddingTopSellerDeleteResponse { Success = true, Message = "Seller deleted successfully" };
             }
             catch (Exception ex)
             {

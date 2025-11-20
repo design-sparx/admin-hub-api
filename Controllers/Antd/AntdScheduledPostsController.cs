@@ -29,7 +29,7 @@ namespace AdminHubApi.Controllers.Antd
         public async Task<IActionResult> GetById(string id)
         {
             var result = await _postService.GetByIdAsync(id);
-            if (!result.Succeeded)
+            if (!result.Success)
                 return NotFound(result);
             return Ok(result);
         }
@@ -45,7 +45,7 @@ namespace AdminHubApi.Controllers.Antd
         public async Task<IActionResult> Update(string id, [FromBody] AntdScheduledPostDto dto)
         {
             var result = await _postService.UpdateAsync(id, dto);
-            if (!result.Succeeded)
+            if (!result.Success)
                 return NotFound(result);
             return Ok(result);
         }
@@ -54,7 +54,7 @@ namespace AdminHubApi.Controllers.Antd
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _postService.DeleteAsync(id);
-            if (!result.Succeeded)
+            if (!result.Success)
                 return NotFound(result);
             return Ok(result);
         }

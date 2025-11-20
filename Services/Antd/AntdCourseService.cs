@@ -57,7 +57,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdCourseListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = courses.Select(MapToDto).ToList(),
                     Message = "Courses retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -75,13 +75,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCourseResponse { Succeeded = false, Message = "Invalid course ID format" };
+                    return new AntdCourseResponse { Success = false, Message = "Invalid course ID format" };
 
                 var course = await _context.AntdCourses.FindAsync(guidId);
                 if (course == null)
-                    return new AntdCourseResponse { Succeeded = false, Message = "Course not found" };
+                    return new AntdCourseResponse { Success = false, Message = "Course not found" };
 
-                return new AntdCourseResponse { Succeeded = true, Data = MapToDto(course), Message = "Course retrieved successfully" };
+                return new AntdCourseResponse { Success = true, Data = MapToDto(course), Message = "Course retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdCourses.Add(course);
                 await _context.SaveChangesAsync();
 
-                return new AntdCourseCreateResponse { Succeeded = true, Data = MapToDto(course), Message = "Course created successfully" };
+                return new AntdCourseCreateResponse { Success = true, Data = MapToDto(course), Message = "Course created successfully" };
             }
             catch (Exception ex)
             {
@@ -131,11 +131,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCourseUpdateResponse { Succeeded = false, Message = "Invalid course ID format" };
+                    return new AntdCourseUpdateResponse { Success = false, Message = "Invalid course ID format" };
 
                 var course = await _context.AntdCourses.FindAsync(guidId);
                 if (course == null)
-                    return new AntdCourseUpdateResponse { Succeeded = false, Message = "Course not found" };
+                    return new AntdCourseUpdateResponse { Success = false, Message = "Course not found" };
 
                 course.Name = dto.Name;
                 course.Code = dto.Code;
@@ -154,7 +154,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdCourseUpdateResponse { Succeeded = true, Data = MapToDto(course), Message = "Course updated successfully" };
+                return new AntdCourseUpdateResponse { Success = true, Data = MapToDto(course), Message = "Course updated successfully" };
             }
             catch (Exception ex)
             {
@@ -168,16 +168,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdCourseDeleteResponse { Succeeded = false, Message = "Invalid course ID format" };
+                    return new AntdCourseDeleteResponse { Success = false, Message = "Invalid course ID format" };
 
                 var course = await _context.AntdCourses.FindAsync(guidId);
                 if (course == null)
-                    return new AntdCourseDeleteResponse { Succeeded = false, Message = "Course not found" };
+                    return new AntdCourseDeleteResponse { Success = false, Message = "Course not found" };
 
                 _context.AntdCourses.Remove(course);
                 await _context.SaveChangesAsync();
 
-                return new AntdCourseDeleteResponse { Succeeded = true, Message = "Course deleted successfully" };
+                return new AntdCourseDeleteResponse { Success = true, Message = "Course deleted successfully" };
             }
             catch (Exception ex)
             {

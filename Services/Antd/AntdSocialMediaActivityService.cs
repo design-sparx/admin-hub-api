@@ -59,7 +59,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdSocialMediaActivityListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = activities.Select(MapToDto).ToList(),
                     Message = "Social media activities retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -77,13 +77,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaActivityResponse { Succeeded = false, Message = "Invalid activity ID format" };
+                    return new AntdSocialMediaActivityResponse { Success = false, Message = "Invalid activity ID format" };
 
                 var activity = await _context.AntdSocialMediaActivities.FindAsync(guidId);
                 if (activity == null)
-                    return new AntdSocialMediaActivityResponse { Succeeded = false, Message = "Activity not found" };
+                    return new AntdSocialMediaActivityResponse { Success = false, Message = "Activity not found" };
 
-                return new AntdSocialMediaActivityResponse { Succeeded = true, Data = MapToDto(activity), Message = "Activity retrieved successfully" };
+                return new AntdSocialMediaActivityResponse { Success = true, Data = MapToDto(activity), Message = "Activity retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdSocialMediaActivities.Add(activity);
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaActivityCreateResponse { Succeeded = true, Data = MapToDto(activity), Message = "Activity created successfully" };
+                return new AntdSocialMediaActivityCreateResponse { Success = true, Data = MapToDto(activity), Message = "Activity created successfully" };
             }
             catch (Exception ex)
             {
@@ -131,11 +131,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaActivityUpdateResponse { Succeeded = false, Message = "Invalid activity ID format" };
+                    return new AntdSocialMediaActivityUpdateResponse { Success = false, Message = "Invalid activity ID format" };
 
                 var activity = await _context.AntdSocialMediaActivities.FindAsync(guidId);
                 if (activity == null)
-                    return new AntdSocialMediaActivityUpdateResponse { Succeeded = false, Message = "Activity not found" };
+                    return new AntdSocialMediaActivityUpdateResponse { Success = false, Message = "Activity not found" };
 
                 activity.Author = dto.Author;
                 activity.UserId = dto.UserId;
@@ -152,7 +152,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaActivityUpdateResponse { Succeeded = true, Data = MapToDto(activity), Message = "Activity updated successfully" };
+                return new AntdSocialMediaActivityUpdateResponse { Success = true, Data = MapToDto(activity), Message = "Activity updated successfully" };
             }
             catch (Exception ex)
             {
@@ -166,16 +166,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaActivityDeleteResponse { Succeeded = false, Message = "Invalid activity ID format" };
+                    return new AntdSocialMediaActivityDeleteResponse { Success = false, Message = "Invalid activity ID format" };
 
                 var activity = await _context.AntdSocialMediaActivities.FindAsync(guidId);
                 if (activity == null)
-                    return new AntdSocialMediaActivityDeleteResponse { Succeeded = false, Message = "Activity not found" };
+                    return new AntdSocialMediaActivityDeleteResponse { Success = false, Message = "Activity not found" };
 
                 _context.AntdSocialMediaActivities.Remove(activity);
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaActivityDeleteResponse { Succeeded = true, Message = "Activity deleted successfully" };
+                return new AntdSocialMediaActivityDeleteResponse { Success = true, Message = "Activity deleted successfully" };
             }
             catch (Exception ex)
             {

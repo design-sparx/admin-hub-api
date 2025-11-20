@@ -1,3 +1,4 @@
+using AdminHubApi.Dtos.ApiResponse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -15,25 +16,29 @@ namespace AdminHubApi.Controllers.Common
             _logger = logger;
         }
 
-        protected IActionResult SuccessResponse<T>(T data, string message = "Success")
+        protected IActionResult SuccessResponse<T>(T data, string message = "Success", PaginationMeta? meta = null)
         {
-            return Ok(new
+            var response = new ApiResponse<T>
             {
-                success = true,
-                data = data,
-                message = message,
-                timestamp = DateTime.UtcNow
-            });
+                Success = true,
+                Message = message,
+                Data = data,
+                Meta = meta,
+                Timestamp = DateTime.UtcNow
+            };
+            return Ok(response);
         }
 
-        protected IActionResult ErrorResponse(string message, int statusCode = 400)
+        protected IActionResult ErrorResponse(string message, int statusCode = 400, List<string>? errors = null)
         {
-            return StatusCode(statusCode, new
+            var response = new ApiResponse<object>
             {
-                success = false,
-                message = message,
-                timestamp = DateTime.UtcNow
-            });
+                Success = false,
+                Message = message,
+                Errors = errors ?? new List<string>(),
+                Timestamp = DateTime.UtcNow
+            };
+            return StatusCode(statusCode, response);
         }
     }
 }

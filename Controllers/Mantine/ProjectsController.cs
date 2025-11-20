@@ -49,7 +49,7 @@ namespace AdminHubApi.Controllers.Mantine
             {
                 var response = await _projectService.GetByIdAsync(id);
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);
@@ -97,7 +97,7 @@ namespace AdminHubApi.Controllers.Mantine
 
                 var response = await _projectService.UpdateAsync(id, projectDto);
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);
@@ -120,7 +120,7 @@ namespace AdminHubApi.Controllers.Mantine
             {
                 var response = await _projectService.DeleteAsync(id);
 
-                if (!response.Succeeded)
+                if (!response.Success)
                     return NotFound(response);
 
                 return Ok(response);

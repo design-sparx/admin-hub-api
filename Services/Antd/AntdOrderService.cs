@@ -52,7 +52,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdOrderListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = orders.Select(MapToDto).ToList(),
                     Message = "Orders retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -70,13 +70,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdOrderResponse { Succeeded = false, Message = "Invalid order ID format" };
+                    return new AntdOrderResponse { Success = false, Message = "Invalid order ID format" };
 
                 var order = await _context.AntdOrders.FindAsync(guidId);
                 if (order == null)
-                    return new AntdOrderResponse { Succeeded = false, Message = "Order not found" };
+                    return new AntdOrderResponse { Success = false, Message = "Order not found" };
 
-                return new AntdOrderResponse { Succeeded = true, Data = MapToDto(order), Message = "Order retrieved successfully" };
+                return new AntdOrderResponse { Success = true, Data = MapToDto(order), Message = "Order retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 var orders = await _context.AntdOrders.OrderByDescending(o => o.OrderDate).Take(limit).ToListAsync();
-                return new AntdOrderListResponse { Succeeded = true, Data = orders.Select(MapToDto).ToList(), Message = "Recent orders retrieved successfully" };
+                return new AntdOrderListResponse { Success = true, Data = orders.Select(MapToDto).ToList(), Message = "Recent orders retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdOrders.Add(order);
                 await _context.SaveChangesAsync();
 
-                return new AntdOrderCreateResponse { Succeeded = true, Data = MapToDto(order), Message = "Order created successfully" };
+                return new AntdOrderCreateResponse { Success = true, Data = MapToDto(order), Message = "Order created successfully" };
             }
             catch (Exception ex)
             {
@@ -144,11 +144,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdOrderUpdateResponse { Succeeded = false, Message = "Invalid order ID format" };
+                    return new AntdOrderUpdateResponse { Success = false, Message = "Invalid order ID format" };
 
                 var order = await _context.AntdOrders.FindAsync(guidId);
                 if (order == null)
-                    return new AntdOrderUpdateResponse { Succeeded = false, Message = "Order not found" };
+                    return new AntdOrderUpdateResponse { Success = false, Message = "Order not found" };
 
                 order.CustomerId = Guid.Parse(orderDto.CustomerId);
                 order.ProductId = Guid.Parse(orderDto.ProductId);
@@ -171,7 +171,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdOrderUpdateResponse { Succeeded = true, Data = MapToDto(order), Message = "Order updated successfully" };
+                return new AntdOrderUpdateResponse { Success = true, Data = MapToDto(order), Message = "Order updated successfully" };
             }
             catch (Exception ex)
             {
@@ -185,16 +185,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdOrderDeleteResponse { Succeeded = false, Message = "Invalid order ID format" };
+                    return new AntdOrderDeleteResponse { Success = false, Message = "Invalid order ID format" };
 
                 var order = await _context.AntdOrders.FindAsync(guidId);
                 if (order == null)
-                    return new AntdOrderDeleteResponse { Succeeded = false, Message = "Order not found" };
+                    return new AntdOrderDeleteResponse { Success = false, Message = "Order not found" };
 
                 _context.AntdOrders.Remove(order);
                 await _context.SaveChangesAsync();
 
-                return new AntdOrderDeleteResponse { Succeeded = true, Message = "Order deleted successfully" };
+                return new AntdOrderDeleteResponse { Success = true, Message = "Order deleted successfully" };
             }
             catch (Exception ex)
             {

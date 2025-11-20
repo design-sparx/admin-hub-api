@@ -54,7 +54,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdAuctionCreatorListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = creators.Select(MapToDto).ToList(),
                     Message = "Auction creators retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -72,13 +72,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdAuctionCreatorResponse { Succeeded = false, Message = "Invalid creator ID format" };
+                    return new AntdAuctionCreatorResponse { Success = false, Message = "Invalid creator ID format" };
 
                 var creator = await _context.AntdAuctionCreators.FindAsync(guidId);
                 if (creator == null)
-                    return new AntdAuctionCreatorResponse { Succeeded = false, Message = "Creator not found" };
+                    return new AntdAuctionCreatorResponse { Success = false, Message = "Creator not found" };
 
-                return new AntdAuctionCreatorResponse { Succeeded = true, Data = MapToDto(creator), Message = "Creator retrieved successfully" };
+                return new AntdAuctionCreatorResponse { Success = true, Data = MapToDto(creator), Message = "Creator retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdAuctionCreators.Add(creator);
                 await _context.SaveChangesAsync();
 
-                return new AntdAuctionCreatorCreateResponse { Succeeded = true, Data = MapToDto(creator), Message = "Creator created successfully" };
+                return new AntdAuctionCreatorCreateResponse { Success = true, Data = MapToDto(creator), Message = "Creator created successfully" };
             }
             catch (Exception ex)
             {
@@ -124,11 +124,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdAuctionCreatorUpdateResponse { Succeeded = false, Message = "Invalid creator ID format" };
+                    return new AntdAuctionCreatorUpdateResponse { Success = false, Message = "Invalid creator ID format" };
 
                 var creator = await _context.AntdAuctionCreators.FindAsync(guidId);
                 if (creator == null)
-                    return new AntdAuctionCreatorUpdateResponse { Succeeded = false, Message = "Creator not found" };
+                    return new AntdAuctionCreatorUpdateResponse { Success = false, Message = "Creator not found" };
 
                 creator.FirstName = dto.FirstName;
                 creator.LastName = dto.LastName;
@@ -143,7 +143,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdAuctionCreatorUpdateResponse { Succeeded = true, Data = MapToDto(creator), Message = "Creator updated successfully" };
+                return new AntdAuctionCreatorUpdateResponse { Success = true, Data = MapToDto(creator), Message = "Creator updated successfully" };
             }
             catch (Exception ex)
             {
@@ -157,16 +157,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdAuctionCreatorDeleteResponse { Succeeded = false, Message = "Invalid creator ID format" };
+                    return new AntdAuctionCreatorDeleteResponse { Success = false, Message = "Invalid creator ID format" };
 
                 var creator = await _context.AntdAuctionCreators.FindAsync(guidId);
                 if (creator == null)
-                    return new AntdAuctionCreatorDeleteResponse { Succeeded = false, Message = "Creator not found" };
+                    return new AntdAuctionCreatorDeleteResponse { Success = false, Message = "Creator not found" };
 
                 _context.AntdAuctionCreators.Remove(creator);
                 await _context.SaveChangesAsync();
 
-                return new AntdAuctionCreatorDeleteResponse { Succeeded = true, Message = "Creator deleted successfully" };
+                return new AntdAuctionCreatorDeleteResponse { Success = true, Message = "Creator deleted successfully" };
             }
             catch (Exception ex)
             {

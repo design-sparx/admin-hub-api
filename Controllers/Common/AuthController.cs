@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
 
         var result = await _signinManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-        if (!result.Succeeded)
+        if (!result.Success)
             return Unauthorized(new { message = "Email or password is incorrect" });
 
         var userRoles = await _userManager.GetRolesAsync(user);
@@ -96,7 +96,7 @@ public class AuthController : ControllerBase
 
         var result = await _userManager.CreateAsync(user, request.Password);
 
-        if (!result.Succeeded)
+        if (!result.Success)
             return BadRequest(new
             {
                 message = "User creation failed",
@@ -154,7 +154,7 @@ public class AuthController : ControllerBase
 
         var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
-        if (!result.Succeeded)
+        if (!result.Success)
             return BadRequest(new
             {
                 message = "Password reset failed",

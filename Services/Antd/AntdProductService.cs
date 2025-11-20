@@ -53,7 +53,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdProductListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = products.Select(MapToDto).ToList(),
                     Message = "Products retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -71,13 +71,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdProductResponse { Succeeded = false, Message = "Invalid product ID format" };
+                    return new AntdProductResponse { Success = false, Message = "Invalid product ID format" };
 
                 var product = await _context.AntdProducts.FindAsync(guidId);
                 if (product == null)
-                    return new AntdProductResponse { Succeeded = false, Message = "Product not found" };
+                    return new AntdProductResponse { Success = false, Message = "Product not found" };
 
-                return new AntdProductResponse { Succeeded = true, Data = MapToDto(product), Message = "Product retrieved successfully" };
+                return new AntdProductResponse { Success = true, Data = MapToDto(product), Message = "Product retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -91,7 +91,7 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 var products = await _context.AntdProducts.OrderByDescending(p => p.QuantitySold).Take(limit).ToListAsync();
-                return new AntdProductListResponse { Succeeded = true, Data = products.Select(MapToDto).ToList(), Message = "Top products retrieved successfully" };
+                return new AntdProductListResponse { Success = true, Data = products.Select(MapToDto).ToList(), Message = "Top products retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -116,7 +116,7 @@ namespace AdminHubApi.Services.Antd
                     .OrderByDescending(c => c.TotalQuantitySold)
                     .ToListAsync();
 
-                return new AntdCategoryListResponse { Succeeded = true, Data = categories, Message = "Categories retrieved successfully" };
+                return new AntdCategoryListResponse { Success = true, Data = categories, Message = "Categories retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -149,7 +149,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdProducts.Add(product);
                 await _context.SaveChangesAsync();
 
-                return new AntdProductCreateResponse { Succeeded = true, Data = MapToDto(product), Message = "Product created successfully" };
+                return new AntdProductCreateResponse { Success = true, Data = MapToDto(product), Message = "Product created successfully" };
             }
             catch (Exception ex)
             {
@@ -163,11 +163,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdProductUpdateResponse { Succeeded = false, Message = "Invalid product ID format" };
+                    return new AntdProductUpdateResponse { Success = false, Message = "Invalid product ID format" };
 
                 var product = await _context.AntdProducts.FindAsync(guidId);
                 if (product == null)
-                    return new AntdProductUpdateResponse { Succeeded = false, Message = "Product not found" };
+                    return new AntdProductUpdateResponse { Success = false, Message = "Product not found" };
 
                 product.ProductName = productDto.ProductName;
                 product.Brand = productDto.Brand;
@@ -183,7 +183,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdProductUpdateResponse { Succeeded = true, Data = MapToDto(product), Message = "Product updated successfully" };
+                return new AntdProductUpdateResponse { Success = true, Data = MapToDto(product), Message = "Product updated successfully" };
             }
             catch (Exception ex)
             {
@@ -197,16 +197,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdProductDeleteResponse { Succeeded = false, Message = "Invalid product ID format" };
+                    return new AntdProductDeleteResponse { Success = false, Message = "Invalid product ID format" };
 
                 var product = await _context.AntdProducts.FindAsync(guidId);
                 if (product == null)
-                    return new AntdProductDeleteResponse { Succeeded = false, Message = "Product not found" };
+                    return new AntdProductDeleteResponse { Success = false, Message = "Product not found" };
 
                 _context.AntdProducts.Remove(product);
                 await _context.SaveChangesAsync();
 
-                return new AntdProductDeleteResponse { Succeeded = true, Message = "Product deleted successfully" };
+                return new AntdProductDeleteResponse { Success = true, Message = "Product deleted successfully" };
             }
             catch (Exception ex)
             {

@@ -1,10 +1,24 @@
-﻿namespace AdminHubApi.Dtos.ApiResponse;
+﻿using System.Text.Json.Serialization;
+
+namespace AdminHubApi.Dtos.ApiResponse;
 
 public class ApiResponse<T>
 {
-    public bool Succeeded { get; set; }
-    public string Message { get; set; }
-    public T Data { get; set; }
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }
+
+    [JsonPropertyName("message")]
+    public string Message { get; set; } = string.Empty;
+
+    [JsonPropertyName("data")]
+    public T? Data { get; set; }
+
+    [JsonPropertyName("errors")]
     public List<string> Errors { get; set; } = new List<string>();
-    public PaginationMeta Meta { get; set; }
+
+    [JsonPropertyName("meta")]
+    public PaginationMeta? Meta { get; set; }
+
+    [JsonPropertyName("timestamp")]
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }

@@ -57,7 +57,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdBiddingTransactionListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = transactions.Select(MapToDto).ToList(),
                     Message = "Bidding transactions retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -75,13 +75,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTransactionResponse { Succeeded = false, Message = "Invalid transaction ID format" };
+                    return new AntdBiddingTransactionResponse { Success = false, Message = "Invalid transaction ID format" };
 
                 var transaction = await _context.AntdBiddingTransactions.FindAsync(guidId);
                 if (transaction == null)
-                    return new AntdBiddingTransactionResponse { Succeeded = false, Message = "Transaction not found" };
+                    return new AntdBiddingTransactionResponse { Success = false, Message = "Transaction not found" };
 
-                return new AntdBiddingTransactionResponse { Succeeded = true, Data = MapToDto(transaction), Message = "Transaction retrieved successfully" };
+                return new AntdBiddingTransactionResponse { Success = true, Data = MapToDto(transaction), Message = "Transaction retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdBiddingTransactions.Add(transaction);
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTransactionCreateResponse { Succeeded = true, Data = MapToDto(transaction), Message = "Transaction created successfully" };
+                return new AntdBiddingTransactionCreateResponse { Success = true, Data = MapToDto(transaction), Message = "Transaction created successfully" };
             }
             catch (Exception ex)
             {
@@ -131,11 +131,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTransactionUpdateResponse { Succeeded = false, Message = "Invalid transaction ID format" };
+                    return new AntdBiddingTransactionUpdateResponse { Success = false, Message = "Invalid transaction ID format" };
 
                 var transaction = await _context.AntdBiddingTransactions.FindAsync(guidId);
                 if (transaction == null)
-                    return new AntdBiddingTransactionUpdateResponse { Succeeded = false, Message = "Transaction not found" };
+                    return new AntdBiddingTransactionUpdateResponse { Success = false, Message = "Transaction not found" };
 
                 transaction.Image = dto.Image;
                 transaction.ProductId = dto.ProductId;
@@ -154,7 +154,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTransactionUpdateResponse { Succeeded = true, Data = MapToDto(transaction), Message = "Transaction updated successfully" };
+                return new AntdBiddingTransactionUpdateResponse { Success = true, Data = MapToDto(transaction), Message = "Transaction updated successfully" };
             }
             catch (Exception ex)
             {
@@ -168,16 +168,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdBiddingTransactionDeleteResponse { Succeeded = false, Message = "Invalid transaction ID format" };
+                    return new AntdBiddingTransactionDeleteResponse { Success = false, Message = "Invalid transaction ID format" };
 
                 var transaction = await _context.AntdBiddingTransactions.FindAsync(guidId);
                 if (transaction == null)
-                    return new AntdBiddingTransactionDeleteResponse { Succeeded = false, Message = "Transaction not found" };
+                    return new AntdBiddingTransactionDeleteResponse { Success = false, Message = "Transaction not found" };
 
                 _context.AntdBiddingTransactions.Remove(transaction);
                 await _context.SaveChangesAsync();
 
-                return new AntdBiddingTransactionDeleteResponse { Succeeded = true, Message = "Transaction deleted successfully" };
+                return new AntdBiddingTransactionDeleteResponse { Success = true, Message = "Transaction deleted successfully" };
             }
             catch (Exception ex)
             {

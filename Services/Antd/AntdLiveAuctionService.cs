@@ -60,7 +60,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdLiveAuctionListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = auctions.Select(MapToDto).ToList(),
                     Message = "Live auctions retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -78,13 +78,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdLiveAuctionResponse { Succeeded = false, Message = "Invalid auction ID format" };
+                    return new AntdLiveAuctionResponse { Success = false, Message = "Invalid auction ID format" };
 
                 var auction = await _context.AntdLiveAuctions.FindAsync(guidId);
                 if (auction == null)
-                    return new AntdLiveAuctionResponse { Succeeded = false, Message = "Auction not found" };
+                    return new AntdLiveAuctionResponse { Success = false, Message = "Auction not found" };
 
-                return new AntdLiveAuctionResponse { Succeeded = true, Data = MapToDto(auction), Message = "Auction retrieved successfully" };
+                return new AntdLiveAuctionResponse { Success = true, Data = MapToDto(auction), Message = "Auction retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdLiveAuctions.Add(auction);
                 await _context.SaveChangesAsync();
 
-                return new AntdLiveAuctionCreateResponse { Succeeded = true, Data = MapToDto(auction), Message = "Auction created successfully" };
+                return new AntdLiveAuctionCreateResponse { Success = true, Data = MapToDto(auction), Message = "Auction created successfully" };
             }
             catch (Exception ex)
             {
@@ -133,11 +133,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdLiveAuctionUpdateResponse { Succeeded = false, Message = "Invalid auction ID format" };
+                    return new AntdLiveAuctionUpdateResponse { Success = false, Message = "Invalid auction ID format" };
 
                 var auction = await _context.AntdLiveAuctions.FindAsync(guidId);
                 if (auction == null)
-                    return new AntdLiveAuctionUpdateResponse { Succeeded = false, Message = "Auction not found" };
+                    return new AntdLiveAuctionUpdateResponse { Success = false, Message = "Auction not found" };
 
                 auction.NftName = dto.NftName;
                 auction.NftImage = dto.NftImage;
@@ -155,7 +155,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdLiveAuctionUpdateResponse { Succeeded = true, Data = MapToDto(auction), Message = "Auction updated successfully" };
+                return new AntdLiveAuctionUpdateResponse { Success = true, Data = MapToDto(auction), Message = "Auction updated successfully" };
             }
             catch (Exception ex)
             {
@@ -169,16 +169,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdLiveAuctionDeleteResponse { Succeeded = false, Message = "Invalid auction ID format" };
+                    return new AntdLiveAuctionDeleteResponse { Success = false, Message = "Invalid auction ID format" };
 
                 var auction = await _context.AntdLiveAuctions.FindAsync(guidId);
                 if (auction == null)
-                    return new AntdLiveAuctionDeleteResponse { Succeeded = false, Message = "Auction not found" };
+                    return new AntdLiveAuctionDeleteResponse { Success = false, Message = "Auction not found" };
 
                 _context.AntdLiveAuctions.Remove(auction);
                 await _context.SaveChangesAsync();
 
-                return new AntdLiveAuctionDeleteResponse { Succeeded = true, Message = "Auction deleted successfully" };
+                return new AntdLiveAuctionDeleteResponse { Success = true, Message = "Auction deleted successfully" };
             }
             catch (Exception ex)
             {

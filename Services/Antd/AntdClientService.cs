@@ -99,7 +99,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdClientListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = clientsDto,
                     Message = "Clients retrieved successfully",
                     Meta = new PaginationMeta
@@ -126,7 +126,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid client ID format"
                     };
                 }
@@ -136,14 +136,14 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Client not found"
                     };
                 }
 
                 return new AntdClientResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(client),
                     Message = "Client retrieved successfully"
                 };
@@ -181,7 +181,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdClientCreateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(client),
                     Message = "Client created successfully"
                 };
@@ -201,7 +201,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid client ID format"
                     };
                 }
@@ -211,7 +211,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientUpdateResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Client not found"
                     };
                 }
@@ -232,7 +232,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdClientUpdateResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = MapToDto(client),
                     Message = "Client updated successfully"
                 };
@@ -252,7 +252,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Invalid client ID format"
                     };
                 }
@@ -262,7 +262,7 @@ namespace AdminHubApi.Services.Antd
                 {
                     return new AntdClientDeleteResponse
                     {
-                        Succeeded = false,
+                        Success = false,
                         Message = "Client not found"
                     };
                 }
@@ -272,7 +272,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdClientDeleteResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Message = "Client deleted successfully"
                 };
             }

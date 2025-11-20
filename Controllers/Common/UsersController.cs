@@ -44,7 +44,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetUserByIdAsync(id);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return NotFound(response);
 
         return Ok(response);
@@ -62,7 +62,7 @@ public class UsersController : ControllerBase
 
         var response = await _userService.CreateUserAsync(model);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return BadRequest(response);
 
         return CreatedAtAction(nameof(GetUser), new { id = response.Data.Id }, response);
@@ -78,7 +78,7 @@ public class UsersController : ControllerBase
         // Allow partial updates - skipping model validation
         var response = await _userService.UpdateUserAsync(id, model);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return BadRequest(response);
 
         return Ok(response);
@@ -93,7 +93,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.DeleteUserAsync(id);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return BadRequest(response);
 
         return Ok(response);
@@ -111,7 +111,7 @@ public class UsersController : ControllerBase
 
         var response = await _userService.ResetPasswordAsync(model);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return BadRequest(response);
 
         return Ok(response);
@@ -126,7 +126,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.UpdateUserRolesAsync(id, roles);
 
-        if (!response.Succeeded)
+        if (!response.Success)
             return BadRequest(response);
 
         return Ok(response);
@@ -144,7 +144,7 @@ public class UsersController : ControllerBase
 
         var user = await _userService.GetUserByIdAsync(id);
 
-        if (!user.Succeeded)
+        if (!user.Success)
             return NotFound(new { message = "User not found" });
 
         try

@@ -43,7 +43,7 @@ namespace AdminHubApi.Services.Antd
 
                 return new AntdSocialMediaStatsListResponse
                 {
-                    Succeeded = true,
+                    Success = true,
                     Data = stats.Select(MapToDto).ToList(),
                     Message = "Social media stats retrieved successfully",
                     Meta = new PaginationMeta { Page = queryParams.Page, Limit = queryParams.Limit, Total = total, TotalPages = (int)Math.Ceiling((double)total / queryParams.Limit) }
@@ -61,13 +61,13 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaStatsResponse { Succeeded = false, Message = "Invalid social media stats ID format" };
+                    return new AntdSocialMediaStatsResponse { Success = false, Message = "Invalid social media stats ID format" };
 
                 var stats = await _context.AntdSocialMediaStats.FindAsync(guidId);
                 if (stats == null)
-                    return new AntdSocialMediaStatsResponse { Succeeded = false, Message = "Social media stats not found" };
+                    return new AntdSocialMediaStatsResponse { Success = false, Message = "Social media stats not found" };
 
-                return new AntdSocialMediaStatsResponse { Succeeded = true, Data = MapToDto(stats), Message = "Social media stats retrieved successfully" };
+                return new AntdSocialMediaStatsResponse { Success = true, Data = MapToDto(stats), Message = "Social media stats retrieved successfully" };
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace AdminHubApi.Services.Antd
                 _context.AntdSocialMediaStats.Add(stats);
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaStatsCreateResponse { Succeeded = true, Data = MapToDto(stats), Message = "Social media stats created successfully" };
+                return new AntdSocialMediaStatsCreateResponse { Success = true, Data = MapToDto(stats), Message = "Social media stats created successfully" };
             }
             catch (Exception ex)
             {
@@ -111,11 +111,11 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaStatsUpdateResponse { Succeeded = false, Message = "Invalid social media stats ID format" };
+                    return new AntdSocialMediaStatsUpdateResponse { Success = false, Message = "Invalid social media stats ID format" };
 
                 var stats = await _context.AntdSocialMediaStats.FindAsync(guidId);
                 if (stats == null)
-                    return new AntdSocialMediaStatsUpdateResponse { Succeeded = false, Message = "Social media stats not found" };
+                    return new AntdSocialMediaStatsUpdateResponse { Success = false, Message = "Social media stats not found" };
 
                 stats.Title = dto.Title;
                 stats.Followers = dto.Followers;
@@ -128,7 +128,7 @@ namespace AdminHubApi.Services.Antd
 
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaStatsUpdateResponse { Succeeded = true, Data = MapToDto(stats), Message = "Social media stats updated successfully" };
+                return new AntdSocialMediaStatsUpdateResponse { Success = true, Data = MapToDto(stats), Message = "Social media stats updated successfully" };
             }
             catch (Exception ex)
             {
@@ -142,16 +142,16 @@ namespace AdminHubApi.Services.Antd
             try
             {
                 if (!Guid.TryParse(id, out var guidId))
-                    return new AntdSocialMediaStatsDeleteResponse { Succeeded = false, Message = "Invalid social media stats ID format" };
+                    return new AntdSocialMediaStatsDeleteResponse { Success = false, Message = "Invalid social media stats ID format" };
 
                 var stats = await _context.AntdSocialMediaStats.FindAsync(guidId);
                 if (stats == null)
-                    return new AntdSocialMediaStatsDeleteResponse { Succeeded = false, Message = "Social media stats not found" };
+                    return new AntdSocialMediaStatsDeleteResponse { Success = false, Message = "Social media stats not found" };
 
                 _context.AntdSocialMediaStats.Remove(stats);
                 await _context.SaveChangesAsync();
 
-                return new AntdSocialMediaStatsDeleteResponse { Succeeded = true, Message = "Social media stats deleted successfully" };
+                return new AntdSocialMediaStatsDeleteResponse { Success = true, Message = "Social media stats deleted successfully" };
             }
             catch (Exception ex)
             {

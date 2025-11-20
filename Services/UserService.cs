@@ -28,13 +28,13 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<UserDto>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found"
             };
 
         return new ApiResponse<UserDto>
         {
-            Succeeded = true,
+            Success = true,
             Data = await MapToUserDtoAsync(user)
         };
     }
@@ -73,7 +73,7 @@ public class UserService : IUserService
 
         return new ApiResponse<List<UserDto>>
         {
-            Succeeded = true,
+            Success = true,
             Data = userDtos,
             // You could add pagination info to the response if needed
             // PaginationInfo = new { Page = page, PageSize = pageSize, TotalCount = totalCount, TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize) }
@@ -95,7 +95,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
             return new ApiResponse<UserDto>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "Failed to create user",
                 Errors = result.Errors.Select(e => e.Description).ToList()
             };
@@ -120,7 +120,7 @@ public class UserService : IUserService
 
         return new ApiResponse<UserDto>
         {
-            Succeeded = true,
+            Success = true,
             Message = "User created successfully",
             Data = await MapToUserDtoAsync(user)
         };
@@ -133,7 +133,7 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<UserDto>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found"
             };
 
@@ -160,7 +160,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
             return new ApiResponse<UserDto>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "Failed to update user",
                 Errors = result.Errors.Select(e => e.Description).ToList()
             };
@@ -200,7 +200,7 @@ public class UserService : IUserService
 
         return new ApiResponse<UserDto>
         {
-            Succeeded = true,
+            Success = true,
             Message = "User updated successfully",
             Data = await MapToUserDtoAsync(user)
         };
@@ -213,7 +213,7 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found",
                 Data = false
             };
@@ -225,7 +225,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "Failed to delete user",
                 Errors = result.Errors.Select(e => e.Description).ToList(),
                 Data = false
@@ -233,7 +233,7 @@ public class UserService : IUserService
 
         return new ApiResponse<bool>
         {
-            Succeeded = true,
+            Success = true,
             Message = "User deleted successfully",
             Data = true
         };
@@ -246,7 +246,7 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found",
                 Data = false
             };
@@ -256,7 +256,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "Failed to change password",
                 Errors = result.Errors.Select(e => e.Description).ToList(),
                 Data = false
@@ -264,7 +264,7 @@ public class UserService : IUserService
 
         return new ApiResponse<bool>
         {
-            Succeeded = true,
+            Success = true,
             Message = "Password changed successfully",
             Data = true
         };
@@ -277,7 +277,7 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found",
                 Data = false
             };
@@ -291,7 +291,7 @@ public class UserService : IUserService
         if (!result.Succeeded)
             return new ApiResponse<bool>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "Failed to reset password",
                 Errors = result.Errors.Select(e => e.Description).ToList(),
                 Data = false
@@ -299,7 +299,7 @@ public class UserService : IUserService
 
         return new ApiResponse<bool>
         {
-            Succeeded = true,
+            Success = true,
             Message = "Password reset successfully",
             Data = true
         };
@@ -317,7 +317,7 @@ public class UserService : IUserService
 
         return new ApiResponse<List<RoleDto>>
         {
-            Succeeded = true,
+            Success = true,
             Data = roleDtos
         };
     }
@@ -329,7 +329,7 @@ public class UserService : IUserService
         if (user == null)
             return new ApiResponse<UserDto>
             {
-                Succeeded = false,
+                Success = false,
                 Message = "User not found"
             };
 
@@ -350,7 +350,7 @@ public class UserService : IUserService
 
         return new ApiResponse<UserDto>
         {
-            Succeeded = true,
+            Success = true,
             Message = "User roles updated successfully",
             Data = await MapToUserDtoAsync(user)
         };
