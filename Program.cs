@@ -234,16 +234,15 @@ builder.Services.AddOpenApi(options =>
 
                 1. **Authenticate**: POST to `/api/auth/login` with your credentials
                 2. **Get Token**: Extract the JWT token from the response
-                3. **Make Requests**: Include the token in subsequent requests
+                3. **Authorize**: Click the "Authorize" button (🔓) at the top of the page and enter your token
+                4. **Make Requests**: All subsequent requests will include your authentication token
 
                 ### Authentication
 
                 All endpoints (except `/api/auth/login` and `/api/auth/register`) require authentication.
 
-                Include the JWT token in the `Authorization` header:
-                ```
-                Authorization: Bearer <your-token>
-                ```
+                The API uses JWT Bearer token authentication. After logging in, use the "Authorize" button above
+                to add your token, and it will be automatically included in all requests.
 
                 ### Rate Limiting
 
@@ -265,6 +264,36 @@ builder.Services.AddOpenApi(options =>
                 Url = new Uri("https://opensource.org/licenses/MIT")
             }
         };
+
+        // Add JWT Bearer security scheme
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
+        {
+            ["Bearer"] = new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Description = "Enter your JWT token in the format: your-token-here (without 'Bearer' prefix)"
+            }
+        };
+
+        // Apply security requirement globally
+        document.SecurityRequirements = new List<OpenApiSecurityRequirement>
+        {
+            new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                }] = Array.Empty<string>()
+            }
+        };
+
         return Task.CompletedTask;
     });
 });
