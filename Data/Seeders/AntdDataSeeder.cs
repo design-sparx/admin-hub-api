@@ -775,6 +775,178 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd truck delivery requests data seeded successfully");
                 }
+
+                // Seed Antd Employees (10 rows)
+                if (!await context.AntdEmployees.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd employees data...");
+                    var employees = new List<AntdEmployee>
+                    {
+                        new AntdEmployee
+                        {
+                            Id = Guid.Parse("24e4e64c-bf09-459f-8cea-f9d2de99d15b"),
+                            Title = "Mrs",
+                            FirstName = "Eugen",
+                            MiddleName = "Pål",
+                            LastName = "Tiltman",
+                            Avatar = "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Operator",
+                            Age = 28,
+                            Email = "etiltman0@dailymail.co.uk",
+                            Country = "Indonesia",
+                            FavoriteColor = "gray",
+                            HireDate = new DateTime(2017, 4, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 92877.67m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.Parse("3a33bd87-072b-46f0-847a-0f767bc34dcf"),
+                            Title = "Ms",
+                            FirstName = "Anna-diane",
+                            MiddleName = "Maëlla",
+                            LastName = "O'Hoey",
+                            Avatar = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Nurse Practicioner",
+                            Age = 53,
+                            Email = "aohoey1@eventbrite.com",
+                            Country = "China",
+                            FavoriteColor = "maroon",
+                            HireDate = new DateTime(2010, 9, 27, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 32804.83m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Mr",
+                            FirstName = "James",
+                            MiddleName = "Michael",
+                            LastName = "Anderson",
+                            Avatar = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Software Engineer",
+                            Age = 32,
+                            Email = "janderson@techcorp.com",
+                            Country = "United States",
+                            FavoriteColor = "blue",
+                            HireDate = new DateTime(2019, 3, 15, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 125000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Dr",
+                            FirstName = "Sarah",
+                            MiddleName = "Elizabeth",
+                            LastName = "Martinez",
+                            Avatar = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Medical Director",
+                            Age = 45,
+                            Email = "smartinez@healthcare.com",
+                            Country = "Spain",
+                            FavoriteColor = "green",
+                            HireDate = new DateTime(2015, 7, 22, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 185000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Mr",
+                            FirstName = "David",
+                            MiddleName = "John",
+                            LastName = "Chen",
+                            Avatar = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Product Manager",
+                            Age = 38,
+                            Email = "dchen@product.io",
+                            Country = "Singapore",
+                            FavoriteColor = "red",
+                            HireDate = new DateTime(2018, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 142000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Ms",
+                            FirstName = "Emma",
+                            MiddleName = "Rose",
+                            LastName = "Thompson",
+                            Avatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "HR Manager",
+                            Age = 41,
+                            Email = "ethompson@company.com",
+                            Country = "Canada",
+                            FavoriteColor = "purple",
+                            HireDate = new DateTime(2016, 5, 8, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 98000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Mr",
+                            FirstName = "Mohammed",
+                            MiddleName = "Ali",
+                            LastName = "Hassan",
+                            Avatar = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Marketing Specialist",
+                            Age = 29,
+                            Email = "mhassan@marketing.com",
+                            Country = "United Arab Emirates",
+                            FavoriteColor = "orange",
+                            HireDate = new DateTime(2020, 11, 3, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 78000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Mrs",
+                            FirstName = "Lisa",
+                            MiddleName = "Marie",
+                            LastName = "Schmidt",
+                            Avatar = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Financial Analyst",
+                            Age = 35,
+                            Email = "lschmidt@finance.de",
+                            Country = "Germany",
+                            FavoriteColor = "yellow",
+                            HireDate = new DateTime(2017, 9, 14, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 95000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Mr",
+                            FirstName = "Raj",
+                            MiddleName = "Kumar",
+                            LastName = "Patel",
+                            Avatar = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "Data Scientist",
+                            Age = 31,
+                            Email = "rpatel@datascience.in",
+                            Country = "India",
+                            FavoriteColor = "teal",
+                            HireDate = new DateTime(2019, 6, 20, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 112000.00m
+                        },
+                        new AntdEmployee
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = "Ms",
+                            FirstName = "Yuki",
+                            MiddleName = "Sakura",
+                            LastName = "Tanaka",
+                            Avatar = "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=400&q=60",
+                            Role = "UX Designer",
+                            Age = 27,
+                            Email = "ytanaka@design.jp",
+                            Country = "Japan",
+                            FavoriteColor = "pink",
+                            HireDate = new DateTime(2021, 2, 18, 0, 0, 0, DateTimeKind.Utc),
+                            Salary = 88000.00m
+                        }
+                    };
+                    context.AntdEmployees.AddRange(employees);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd employees data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
