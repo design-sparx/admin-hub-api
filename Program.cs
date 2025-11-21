@@ -196,6 +196,7 @@ builder.Services.AddScoped<IAntdDeliveryAnalyticService, AntdDeliveryAnalyticSer
 builder.Services.AddScoped<IAntdTruckService, AntdTruckService>();
 builder.Services.AddScoped<IAntdTruckDeliveryRequestService, AntdTruckDeliveryRequestService>();
 builder.Services.AddScoped<IAntdEmployeeService, AntdEmployeeService>();
+builder.Services.AddScoped<IAntdFaqService, AntdFaqService>();
 
 // Repository
 builder.Services.AddScoped<ITokenBlacklistRepository, TokenBlacklistRepository>();

@@ -947,6 +947,148 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd employees data seeded successfully");
                 }
+
+                // Seed Antd FAQs (10 rows)
+                if (!await context.AntdFaqs.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd FAQs data...");
+                    var faqs = new List<AntdFaq>
+                    {
+                        new AntdFaq
+                        {
+                            Id = Guid.Parse("e57b6904-1e99-45c0-8eaf-ecfc28346ab1"),
+                            Question = "How do I track my order?",
+                            Answer = "You can track your order by logging into your account and navigating to the 'Orders' section. There you'll find real-time tracking information for all your orders.\n\nAlternatively, you can use the tracking number sent to your email to check the status on our tracking page.\n\nIf you're having trouble, our customer support team is available 24/7 to assist you.",
+                            Category = "Shipping",
+                            DateCreated = new DateTime(2020, 2, 1, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = true,
+                            Views = 23340,
+                            Tags = "tracking, orders, shipping, delivery",
+                            Rating = 4.5m,
+                            Author = "Erastus Hanssmann"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.Parse("8f31ae56-0196-4dee-a3d6-3fcc53ea94c5"),
+                            Question = "What payment methods do you accept?",
+                            Answer = "We accept all major credit cards including Visa, Mastercard, American Express, and Discover.\n\nAdditionally, we support PayPal, Apple Pay, Google Pay, and bank transfers for larger orders.\n\nAll transactions are secured with industry-standard encryption to protect your financial information.\n\nFor enterprise customers, we also offer invoice-based payment terms.",
+                            Category = "Payment",
+                            DateCreated = new DateTime(2020, 8, 2, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = false,
+                            Views = 59358,
+                            Tags = "payment, credit card, paypal, methods",
+                            Rating = 4.8m,
+                            Author = "Cly Moohan"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "How long does shipping take?",
+                            Answer = "Standard shipping typically takes 5-7 business days within the continental United States.\n\nExpress shipping is available and takes 2-3 business days.\n\nOvernight shipping is also available for urgent orders.\n\nInternational shipping times vary by destination, typically ranging from 7-21 business days.",
+                            Category = "Shipping",
+                            DateCreated = new DateTime(2021, 3, 15, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = true,
+                            Views = 45620,
+                            Tags = "shipping, delivery, time, duration",
+                            Rating = 4.2m,
+                            Author = "Maria Garcia"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "What is your return policy?",
+                            Answer = "We offer a 30-day return policy for most items.\n\nProducts must be unused, in original packaging, and in resalable condition.\n\nTo initiate a return, log into your account and select the order you wish to return.\n\nRefunds are typically processed within 5-7 business days after we receive the returned item.\n\nShipping costs are non-refundable unless the return is due to our error.",
+                            Category = "Returns",
+                            DateCreated = new DateTime(2020, 5, 10, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = true,
+                            Views = 67890,
+                            Tags = "returns, refund, policy, exchange",
+                            Rating = 4.6m,
+                            Author = "John Smith"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "Do you ship internationally?",
+                            Answer = "Yes, we ship to over 150 countries worldwide.\n\nInternational shipping rates and delivery times vary by destination.\n\nCustomers are responsible for any customs duties, taxes, or fees imposed by their country.\n\nSome items may have shipping restrictions based on local regulations.",
+                            Category = "Shipping",
+                            DateCreated = new DateTime(2021, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = false,
+                            Views = 34210,
+                            Tags = "international, shipping, worldwide, global",
+                            Rating = 4.3m,
+                            Author = "Sarah Johnson"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "How can I contact customer support?",
+                            Answer = "Our customer support team is available 24/7 through multiple channels:\n\nEmail: support@example.com\nPhone: 1-800-555-0123\nLive Chat: Available on our website\nSocial Media: Facebook, Twitter, Instagram\n\nTypical response time is within 2-4 hours for emails and instant for live chat.",
+                            Category = "Support",
+                            DateCreated = new DateTime(2020, 11, 5, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = true,
+                            Views = 52340,
+                            Tags = "support, contact, help, customer service",
+                            Rating = 4.9m,
+                            Author = "Michael Brown"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "Can I change or cancel my order?",
+                            Answer = "Orders can be modified or cancelled within 1 hour of placement.\n\nAfter this window, orders enter our fulfillment process and cannot be changed.\n\nTo request a change or cancellation, contact customer support immediately with your order number.\n\nIf your order has already shipped, you'll need to wait for delivery and process a return.",
+                            Category = "Orders",
+                            DateCreated = new DateTime(2021, 6, 12, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = false,
+                            Views = 28750,
+                            Tags = "cancel, change, modify, order",
+                            Rating = 4.1m,
+                            Author = "Emily Davis"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "Are there any warranties on products?",
+                            Answer = "Most products come with a manufacturer's warranty ranging from 90 days to 2 years.\n\nWarranty details are listed on each product page.\n\nWe also offer extended warranty options for eligible products.\n\nWarranty claims should be submitted through our customer support portal with proof of purchase.",
+                            Category = "Product",
+                            DateCreated = new DateTime(2020, 9, 18, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = false,
+                            Views = 19630,
+                            Tags = "warranty, guarantee, protection, coverage",
+                            Rating = 4.4m,
+                            Author = "David Wilson"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "Do you offer bulk or wholesale pricing?",
+                            Answer = "Yes, we offer special pricing for bulk orders and wholesale customers.\n\nBulk discounts start at orders of 50 units or more.\n\nWholesale accounts receive additional benefits including dedicated account managers and priority support.\n\nContact our business sales team at business@example.com for more information.",
+                            Category = "Pricing",
+                            DateCreated = new DateTime(2021, 4, 7, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = false,
+                            Views = 15420,
+                            Tags = "bulk, wholesale, discount, pricing",
+                            Rating = 4.7m,
+                            Author = "Robert Taylor"
+                        },
+                        new AntdFaq
+                        {
+                            Id = Guid.NewGuid(),
+                            Question = "How secure is my personal information?",
+                            Answer = "We take data security very seriously and implement industry-leading security measures.\n\nAll personal information is encrypted using SSL/TLS protocols.\n\nPayment information is processed through PCI-DSS compliant payment processors.\n\nWe never store complete credit card information on our servers.\n\nOur privacy policy details how we collect, use, and protect your data.",
+                            Category = "Security",
+                            DateCreated = new DateTime(2020, 7, 25, 0, 0, 0, DateTimeKind.Utc),
+                            IsFeatured = true,
+                            Views = 41280,
+                            Tags = "security, privacy, data, protection",
+                            Rating = 4.9m,
+                            Author = "Jennifer Martinez"
+                        }
+                    };
+                    context.AntdFaqs.AddRange(faqs);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd FAQs data seeded successfully");
+                }
             }
             catch (Exception ex)
             {

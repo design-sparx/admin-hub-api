@@ -62,6 +62,7 @@ public static class Permissions
         public const string Trucks = "Permissions.Antd.Trucks";
         public const string TruckDeliveryRequests = "Permissions.Antd.TruckDeliveryRequests";
         public const string Employees = "Permissions.Antd.Employees";
+        public const string Faqs = "Permissions.Antd.Faqs";
     }
 
 
