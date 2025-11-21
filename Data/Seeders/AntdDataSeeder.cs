@@ -1089,6 +1089,128 @@ namespace AdminHubApi.Data.Seeders
                     await context.SaveChangesAsync();
                     logger.LogInformation("Antd FAQs data seeded successfully");
                 }
+
+                // Seed Antd Pricings (10 rows)
+                if (!await context.AntdPricings.AnyAsync())
+                {
+                    logger.LogInformation("Seeding Antd pricing plans data...");
+                    var pricings = new List<AntdPricing>
+                    {
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "free",
+                            Monthly = 0,
+                            Annually = 0,
+                            SavingsCaption = "Save 0%",
+                            Features = "Basic Dashboard Templates\nLimited Widgets and Customization Options\nEmail Support",
+                            Color = "purple",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "pro",
+                            Monthly = 9.99m,
+                            Annually = 99.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "Advanced Dashboard Templates\nRich Widgets and Customization Options\nPriority Email Support\nData Export and Import\nAccess to Premium Templates Library",
+                            Color = "maroon",
+                            Preferred = true
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "business",
+                            Monthly = 29.99m,
+                            Annually = 299.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "All Pro Features\nAdvanced Analytics and Reporting\nCustom Branding Options\nAPI Access\nPriority Phone Support\n50GB Cloud Storage\nTeam Collaboration Tools",
+                            Color = "blue",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "enterprise",
+                            Monthly = 99.99m,
+                            Annually = 999.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "All Business Features\nUnlimited Users\nDedicated Account Manager\nCustom Integration Support\nAdvanced Security Features\n500GB Cloud Storage\nSLA Guarantee\n24/7 Premium Support",
+                            Color = "green",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "starter",
+                            Monthly = 4.99m,
+                            Annually = 49.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "Basic Dashboard Templates\nStandard Widgets\nEmail Support\n5 Projects\n10GB Storage\nBasic Analytics",
+                            Color = "cyan",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "team",
+                            Monthly = 19.99m,
+                            Annually = 199.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "All Starter Features\nUnlimited Projects\n25GB Storage\nTeam Collaboration\nAdvanced Widgets\nPriority Support\nCustom Templates",
+                            Color = "orange",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "premium",
+                            Monthly = 49.99m,
+                            Annually = 499.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "All Team Features\nWhite Label Options\n100GB Storage\nAdvanced Security\nCustom Domain\nAPI Integration\nWebhooks\nPremium Support",
+                            Color = "red",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "developer",
+                            Monthly = 14.99m,
+                            Annually = 149.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "Unlimited API Calls\nWebhook Support\nAdvanced Documentation\nCode Examples\n20GB Storage\nDeveloper Support\nSandbox Environment",
+                            Color = "indigo",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "agency",
+                            Monthly = 79.99m,
+                            Annually = 799.99m,
+                            SavingsCaption = "Save 17%",
+                            Features = "All Premium Features\nClient Management Portal\nUnlimited Client Accounts\n250GB Storage\nWhite Label Everything\nReseller Pricing\nDedicated Support\nTraining Sessions",
+                            Color = "pink",
+                            Preferred = false
+                        },
+                        new AntdPricing
+                        {
+                            Id = Guid.NewGuid(),
+                            Plan = "lifetime",
+                            Monthly = 0,
+                            Annually = 1999.99m,
+                            SavingsCaption = "One-time payment",
+                            Features = "All Enterprise Features\nLifetime Access\nLifetime Updates\nPriority Feature Requests\nUnlimited Storage\nPersonal Onboarding\nLifetime Support\nExclusive Community Access",
+                            Color = "gold",
+                            Preferred = false
+                        }
+                    };
+                    context.AntdPricings.AddRange(pricings);
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Antd pricing plans data seeded successfully");
+                }
             }
             catch (Exception ex)
             {
