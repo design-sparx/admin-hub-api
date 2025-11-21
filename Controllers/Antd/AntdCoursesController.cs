@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/courses")]
+    [Tags("Antd - Courses")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.Courses)]
     public class AntdCoursesController : ControllerBase

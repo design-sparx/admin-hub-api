@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/bidding-transactions")]
+    [Tags("Antd - Bidding Transactions")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.BiddingTransactions)]
     public class AntdBiddingTransactionsController : ControllerBase
