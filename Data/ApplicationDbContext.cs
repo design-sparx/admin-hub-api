@@ -61,6 +61,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdEmployee> AntdEmployees { get; set; }
     public DbSet<AntdFaq> AntdFaqs { get; set; }
     public DbSet<AntdPricing> AntdPricings { get; set; }
+    public DbSet<AntdLicense> AntdLicenses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -432,6 +433,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Preferred);
             entity.Property(e => e.Monthly).HasPrecision(18, 2);
             entity.Property(e => e.Annually).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdLicense>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Title);
         });
 
         // Configure Product entity
