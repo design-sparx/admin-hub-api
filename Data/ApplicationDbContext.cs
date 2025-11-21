@@ -58,6 +58,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdDeliveryAnalytic> AntdDeliveryAnalytics { get; set; }
     public DbSet<AntdTruck> AntdTrucks { get; set; }
     public DbSet<AntdTruckDeliveryRequest> AntdTruckDeliveryRequests { get; set; }
+    public DbSet<AntdEmployee> AntdEmployees { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -401,6 +402,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.DeliveryStatus);
             entity.HasIndex(e => e.DeliveryDate);
             entity.Property(e => e.CargoWeight).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdEmployee>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Role);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.HireDate);
+            entity.Property(e => e.Salary).HasPrecision(18, 2);
         });
 
         // Configure Product entity
