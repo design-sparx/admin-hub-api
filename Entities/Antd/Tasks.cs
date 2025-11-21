@@ -42,6 +42,9 @@ namespace AdminHubApi.Entities.Antd
         [Required]
         public AntdTaskColor Color { get; set; }
 
+        [MaxLength(50)]
+        public string FavoriteColor { get; set; } = string.Empty;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }

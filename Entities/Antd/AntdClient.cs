@@ -37,6 +37,9 @@ namespace AdminHubApi.Entities.Antd
         [MaxLength(100)]
         public string Country { get; set; } = string.Empty;
 
+        [MaxLength(50)]
+        public string FavoriteColor { get; set; } = string.Empty;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
