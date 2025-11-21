@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/study-statistics")]
+    [Tags("Antd - Study Statistics")]
     [Authorize]
     public class AntdStudyStatisticsController : AntdBaseController
     {

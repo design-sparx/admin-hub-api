@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/recommended-courses")]
+    [Tags("Antd - Recommended Courses")]
     [Authorize]
     public class AntdRecommendedCoursesController : AntdBaseController
     {

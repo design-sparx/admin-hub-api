@@ -58,6 +58,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdDeliveryAnalytic> AntdDeliveryAnalytics { get; set; }
     public DbSet<AntdTruck> AntdTrucks { get; set; }
     public DbSet<AntdTruckDeliveryRequest> AntdTruckDeliveryRequests { get; set; }
+    public DbSet<AntdEmployee> AntdEmployees { get; set; }
+    public DbSet<AntdFaq> AntdFaqs { get; set; }
+    public DbSet<AntdPricing> AntdPricings { get; set; }
+    public DbSet<AntdLicense> AntdLicenses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -401,6 +405,40 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.DeliveryStatus);
             entity.HasIndex(e => e.DeliveryDate);
             entity.Property(e => e.CargoWeight).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdEmployee>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.Role);
+            entity.HasIndex(e => e.Country);
+            entity.HasIndex(e => e.HireDate);
+            entity.Property(e => e.Salary).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdFaq>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Category);
+            entity.HasIndex(e => e.IsFeatured);
+            entity.HasIndex(e => e.DateCreated);
+            entity.Property(e => e.Rating).HasPrecision(3, 1);
+        });
+
+        builder.Entity<AntdPricing>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Plan);
+            entity.HasIndex(e => e.Preferred);
+            entity.Property(e => e.Monthly).HasPrecision(18, 2);
+            entity.Property(e => e.Annually).HasPrecision(18, 2);
+        });
+
+        builder.Entity<AntdLicense>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Title);
         });
 
         // Configure Product entity

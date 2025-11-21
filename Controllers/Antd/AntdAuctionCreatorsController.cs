@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/auction-creators")]
+    [Tags("Antd - Auction Creators")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.AuctionCreators)]
     public class AntdAuctionCreatorsController : ControllerBase

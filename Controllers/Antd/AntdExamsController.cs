@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/exams")]
+    [Tags("Antd - Exams")]
     [Authorize]
     public class AntdExamsController : AntdBaseController
     {

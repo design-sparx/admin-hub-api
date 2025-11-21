@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/delivery-analytics")]
+    [Tags("Antd - Delivery Analytics")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.DeliveryAnalytics)]
     public class AntdDeliveryAnalyticsController : ControllerBase

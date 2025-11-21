@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/scheduled-posts")]
+    [Tags("Antd - Scheduled Posts")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.ScheduledPosts)]
     public class AntdScheduledPostsController : ControllerBase
