@@ -64,6 +64,10 @@ namespace AdminHubApi.Data.Seeders
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.DeliveryAnalytics),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.Trucks),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.TruckDeliveryRequests),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Employees),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Faqs),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Pricings),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Licenses),
                 };
 
                 await UpdateUserPermissions(userManager, adminUser, adminPermissions, logger);
@@ -114,6 +118,10 @@ namespace AdminHubApi.Data.Seeders
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.DeliveryAnalytics),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.Trucks),
                     new Claim(CustomClaimTypes.Permission, Permissions.Antd.TruckDeliveryRequests),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Employees),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Faqs),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Pricings),
+                    new Claim(CustomClaimTypes.Permission, Permissions.Antd.Licenses),
                 };
 
                 await UpdateUserPermissions(userManager, user, userPermissions, logger);
