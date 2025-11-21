@@ -60,6 +60,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AntdTruckDeliveryRequest> AntdTruckDeliveryRequests { get; set; }
     public DbSet<AntdEmployee> AntdEmployees { get; set; }
     public DbSet<AntdFaq> AntdFaqs { get; set; }
+    public DbSet<AntdPricing> AntdPricings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -422,6 +423,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.IsFeatured);
             entity.HasIndex(e => e.DateCreated);
             entity.Property(e => e.Rating).HasPrecision(3, 1);
+        });
+
+        builder.Entity<AntdPricing>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Plan);
+            entity.HasIndex(e => e.Preferred);
+            entity.Property(e => e.Monthly).HasPrecision(18, 2);
+            entity.Property(e => e.Annually).HasPrecision(18, 2);
         });
 
         // Configure Product entity
