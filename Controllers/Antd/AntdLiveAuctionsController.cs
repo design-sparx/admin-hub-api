@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/live-auctions")]
+    [Tags("Antd - Live Auctions")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.LiveAuctions)]
     public class AntdLiveAuctionsController : ControllerBase

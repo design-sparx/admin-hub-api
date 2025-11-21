@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/community-groups")]
+    [Tags("Antd - Community Groups")]
     [Authorize]
     public class AntdCommunityGroupsController : AntdBaseController
     {
