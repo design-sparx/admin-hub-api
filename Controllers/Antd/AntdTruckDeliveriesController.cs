@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/truck-deliveries")]
+    [Tags("Antd - Truck Deliveries")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.TruckDeliveries)]
     public class AntdTruckDeliveriesController : ControllerBase

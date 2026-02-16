@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdminHubApi.Controllers.Antd
 {
     [Route("api/v1/antd/social-media-stats")]
+    [Tags("Antd - Social Media Stats")]
     [ApiController]
     [PermissionAuthorize(Permissions.Antd.SocialMediaStats)]
     public class AntdSocialMediaStatsController : ControllerBase
